@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Triángulo Estratégico de la Política Pública — GEP201</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --navy-light: #1e3050;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f5f0e8;
+  --cream-dim: #e8e0d0;
+  --rust: #c0392b;
+  --sage: #2e7d52;
+  --slate: #5c6b7a;
+  --text-on-dark: #dde4ee;
+  --text-dim: #8a9bb0;
+  --border: rgba(201,168,76,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--text-on-dark);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,27,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex; gap: 1.5rem; list-style: none;
+}
+
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .12em;
+  color: var(--text-dim); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* ── SECTIONS ── */
+section {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
+section + section { padding-top: 2rem; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: none; padding: 8rem 3rem 4rem;
+}
+
+.hero-inner { max-width: 820px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.eyebrow::before {
+  content: ''; display: block;
+  width: 32px; height: 1px; background: var(--gold);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 900; line-height: 1.08;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+
+.hero h1 em {
+  font-style: italic; color: var(--gold-light);
+}
+
+.hero-sub {
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--text-dim); max-width: 560px;
+  margin-bottom: 2.5rem; line-height: 1.8;
+}
+
+.hero-meta {
+  display: flex; gap: 2rem; flex-wrap: wrap;
+}
+
+.hero-meta span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .15em;
+  color: var(--text-dim); text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: .4rem .9rem; border-radius: 2px;
+}
+
+/* ── SECTION HEADERS ── */
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: .3;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700; color: var(--cream);
+  margin-bottom: 1rem; line-height: 1.2;
+}
+
+.section-intro {
+  font-size: 1rem; color: var(--text-dim);
+  max-width: 620px; margin-bottom: 3rem; line-height: 1.8;
+}
+
+/* ── AUTHOR CARD ── */
+.author-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  padding: 1.6rem 2rem;
+  margin-bottom: 2rem;
+  border-radius: 2px;
+}
+
+.author-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--cream); margin-bottom: .3rem;
+}
+
+.author-card .role {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; color: var(--gold);
+  letter-spacing: .1em; margin-bottom: .8rem;
+}
+
+.author-card p { font-size: .9rem; color: var(--text-dim); }
+
+/* ── TRIANGLE DIAGRAM ── */
+.triangle-container {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 3rem 0;
+}
+
+.triangle-svg-wrap {
+  position: relative; width: 100%; max-width: 600px;
+}
+
+.triangle-svg-wrap svg { width: 100%; height: auto; }
+
+.vertex-cards {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; margin-top: 2rem; width: 100%; max-width: 800px;
+}
+
+.vertex-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  padding: 1.4rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .25s;
+  position: relative; overflow: hidden;
+}
+
+.vertex-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(201,168,76,.06) 0%, transparent 60%);
+  opacity: 0; transition: opacity .25s;
+}
+
+.vertex-card:hover { border-color: rgba(201,168,76,.5); transform: translateY(-2px); }
+.vertex-card:hover::before { opacity: 1; }
+
+.vertex-card.valor { border-top-color: var(--gold); }
+.vertex-card.legitimidad { border-top-color: #5bc8a8; }
+.vertex-card.capacidad { border-top-color: #61afef; }
+
+.vertex-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .15em;
+  color: var(--text-dim); margin-bottom: .5rem;
+}
+
+.vertex-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700;
+  color: var(--cream); margin-bottom: .6rem;
+}
+
+.vertex-question {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .72rem; color: var(--gold-light);
+  margin-bottom: .8rem; line-height: 1.5;
+  font-style: italic;
+}
+
+.vertex-desc {
+  font-size: .85rem; color: var(--text-dim); line-height: 1.6;
+}
+
+/* ── ALIGNMENT BOX ── */
+.alignment-box {
+  background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--gold);
+  padding: 2rem; border-radius: 2px; margin: 2rem 0;
+  position: relative;
+}
+
+.alignment-box::before {
+  content: '"'; position: absolute; top: .5rem; left: 1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem; color: var(--gold); opacity: .15; line-height: 1;
+}
+
+.alignment-box p {
+  font-size: 1rem; color: var(--cream); line-height: 1.8;
+  font-style: italic; padding-left: .5rem;
+}
+
+.alignment-box cite {
+  display: block; margin-top: 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .1em;
+  color: var(--text-dim); font-style: normal;
+}
+
+/* ── CASE ACCORDION ── */
+.cases-grid { display: flex; flex-direction: column; gap: .8rem; }
+
+.case-item {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px; overflow: hidden;
+  transition: border-color .2s;
+}
+
+.case-item.open { border-color: rgba(201,168,76,.4); }
+
+.case-header {
+  padding: 1.4rem 1.6rem;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+}
+
+.case-header:hover { background: rgba(255,255,255,.02); }
+
+.case-label-wrap { display: flex; align-items: center; gap: 1rem; }
+
+.case-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .58rem; letter-spacing: .12em;
+  text-transform: uppercase; padding: .25rem .6rem;
+  border-radius: 2px; white-space: nowrap;
+}
+
+.tag-biblioteca { background: rgba(201,168,76,.15); color: var(--gold); }
+.tag-mercurio { background: rgba(192,57,43,.15); color: #e07060; }
+.tag-vacuna { background: rgba(91,200,168,.15); color: #5bc8a8; }
+.tag-anemia { background: rgba(97,175,239,.15); color: #61afef; }
+
+.case-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; font-weight: 700; color: var(--cream);
+}
+
+.case-arrow {
+  font-size: 1rem; color: var(--gold);
+  transition: transform .25s;
+}
+.case-item.open .case-arrow { transform: rotate(180deg); }
+
+.case-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height .4s ease;
+}
+.case-item.open .case-body { max-height: 900px; }
+
+.case-content {
+  padding: 0 1.6rem 1.6rem;
+  border-top: 1px solid var(--border);
+}
+
+.case-situation {
+  font-size: .9rem; color: var(--text-dim);
+  margin: 1rem 0 1.2rem; line-height: 1.7;
+}
+
+.triangle-scores {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: .8rem; margin-bottom: 1rem;
+}
+
+.score-pill {
+  padding: .8rem; border-radius: 2px;
+  text-align: center;
+}
+
+.score-pill.alto { background: rgba(46,125,82,.15); border: 1px solid rgba(46,125,82,.3); }
+.score-pill.medio { background: rgba(201,168,76,.12); border: 1px solid rgba(201,168,76,.25); }
+.score-pill.bajo { background: rgba(192,57,43,.12); border: 1px solid rgba(192,57,43,.25); }
+
+.score-pill .pill-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .58rem; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: .3rem;
+  color: var(--text-dim);
+}
+
+.score-pill .pill-val {
+  font-family: 'Playfair Display', serif;
+  font-size: .85rem; font-weight: 700;
+}
+
+.alto .pill-val { color: #5bc8a8; }
+.medio .pill-val { color: var(--gold); }
+.bajo .pill-val { color: #e07060; }
+
+.case-lesson {
+  background: rgba(255,255,255,.03);
+  border-left: 2px solid var(--gold);
+  padding: .9rem 1rem;
+  font-size: .85rem; color: var(--text-dim);
+  line-height: 1.6; border-radius: 0 2px 2px 0;
+}
+
+.case-lesson strong { color: var(--cream); }
+
+/* ── QUIZ ── */
+.quiz-container { display: flex; flex-direction: column; gap: 2rem; }
+
+.quiz-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px; padding: 1.8rem;
+}
+
+.q-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .15em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: .8rem;
+}
+
+.q-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 400;
+  color: var(--cream); margin-bottom: 1.4rem;
+  line-height: 1.5;
+}
+
+.q-options { display: flex; flex-direction: column; gap: .6rem; }
+
+.q-option {
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 2px; padding: .9rem 1.1rem;
+  cursor: pointer; transition: all .2s;
+  font-size: .9rem; color: var(--text-dim);
+  text-align: left; line-height: 1.5;
+  display: flex; align-items: flex-start; gap: .8rem;
+}
+
+.q-option:hover:not(.locked) {
+  border-color: rgba(201,168,76,.4);
+  color: var(--cream);
+  background: rgba(201,168,76,.05);
+}
+
+.q-option.correct {
+  border-color: rgba(46,125,82,.6);
+  background: rgba(46,125,82,.12);
+  color: #7dd8a8;
+}
+
+.q-option.wrong {
+  border-color: rgba(192,57,43,.5);
+  background: rgba(192,57,43,.1);
+  color: #e08080;
+}
+
+.q-option.locked { cursor: default; }
+
+.opt-letter {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .7rem; font-weight: 500;
+  min-width: 20px; padding-top: .05rem;
+  color: var(--gold); flex-shrink: 0;
+}
+
+.q-feedback {
+  margin-top: 1rem; padding: 1rem;
+  border-radius: 2px; font-size: .85rem;
+  line-height: 1.6; display: none;
+}
+
+.q-feedback.show { display: block; }
+.q-feedback.correct-fb { background: rgba(46,125,82,.12); border: 1px solid rgba(46,125,82,.3); color: #7dd8a8; }
+.q-feedback.wrong-fb { background: rgba(192,57,43,.1); border: 1px solid rgba(192,57,43,.3); color: #e08080; }
+
+.q-feedback strong { display: block; margin-bottom: .4rem; }
+
+/* ── CLASSIFIER EXERCISE ── */
+.classifier {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  border-radius: 2px; padding: 2rem;
+}
+
+.classifier h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; color: var(--cream);
+  margin-bottom: .5rem;
+}
+
+.classifier-intro {
+  font-size: .88rem; color: var(--text-dim);
+  margin-bottom: 1.8rem; line-height: 1.6;
+}
+
+.classify-items { display: flex; flex-direction: column; gap: 1rem; }
+
+.classify-item {
+  background: rgba(255,255,255,.025);
+  border: 1px solid var(--border);
+  border-radius: 2px; padding: 1.2rem 1.4rem;
+}
+
+.ci-scenario {
+  font-size: .9rem; color: var(--cream);
+  margin-bottom: 1rem; line-height: 1.6;
+}
+
+.ci-buttons {
+  display: flex; gap: .5rem; flex-wrap: wrap;
+}
+
+.ci-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .4rem .9rem; border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+
+.ci-btn:hover:not(.locked) { border-color: var(--gold); color: var(--gold); }
+
+.ci-btn.selected-correct {
+  background: rgba(46,125,82,.2);
+  border-color: rgba(46,125,82,.6);
+  color: #7dd8a8;
+}
+
+.ci-btn.selected-wrong {
+  background: rgba(192,57,43,.15);
+  border-color: rgba(192,57,43,.5);
+  color: #e08080;
+}
+
+.ci-btn.locked { cursor: default; }
+
+.ci-result {
+  margin-top: .8rem; font-size: .8rem;
+  line-height: 1.5; display: none;
+}
+.ci-result.show { display: block; }
+.ci-result.ok { color: #7dd8a8; }
+.ci-result.fail { color: #e08080; }
+
+/* ── SCORE COUNTER ── */
+.score-bar {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  padding: 1.4rem 1.8rem;
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.score-bar .label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .15em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+
+.score-display {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem; font-weight: 700; color: var(--gold);
+}
+
+.score-display span { font-size: .9rem; color: var(--text-dim); }
+
+.reset-btn {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .45rem 1rem; border-radius: 2px;
+  border: 1px solid var(--border);
+  background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.reset-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── REFERENCE BOX ── */
+.reference-box {
+  background: var(--navy-mid);
+  border: 1px solid var(--border);
+  padding: 1.6rem 2rem;
+  border-radius: 2px;
+}
+
+.reference-box h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; color: var(--cream);
+  margin-bottom: 1rem;
+}
+
+.ref-item {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .72rem; color: var(--text-dim);
+  line-height: 1.8; border-bottom: 1px solid var(--border);
+  padding-bottom: .8rem; margin-bottom: .8rem;
+}
+.ref-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.ref-item strong { color: var(--cream); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem; text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  border: none; border-top: 1px solid var(--border);
+  margin: 1.5rem 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .vertex-cards { grid-template-columns: 1fr; }
+  .triangle-scores { grid-template-columns: 1fr; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  nav { padding: .8rem 1.2rem; }
+  .nav-links { gap: .8rem; }
+}
+
+/* ── SCROLL ANIMATION ── */
+.fade-in {
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">GEP201 · Clase 2</div>
+  <ul class="nav-links">
+    <li><a href="#marco">Marco</a></li>
+    <li><a href="#vertices">Vértices</a></li>
+    <li><a href="#casos">Casos</a></li>
+    <li><a href="#ejercicios">Ejercicios</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">GEP201 — Gestión Financiera del Estado</div>
+    <h1>El Triángulo<br><em>Estratégico</em><br>de la Política Pública</h1>
+    <p class="hero-sub">Un marco para diagnosticar, diseñar y evaluar políticas públicas que crean valor real para el ciudadano.</p>
+    <div class="hero-meta">
+      <span>Mark H. Moore · Harvard Kennedy School</span>
+      <span>Creating Public Value, 1995</span>
+      <span>Juan Pablo Silva · PUCP 2026-1</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARCO CONCEPTUAL -->
+<section id="marco">
+  <div class="section-label fade-in">01 — Origen y Marco Conceptual</div>
+  <h2 class="section-title fade-in">¿De dónde viene el marco?</h2>
+  <p class="section-intro fade-in">El triángulo estratégico fue desarrollado en la Harvard Kennedy School como respuesta a una pregunta fundamental: ¿qué deben hacer los gestores públicos para mejorar el desempeño de las instituciones del Estado?</p>
+
+  <div class="author-card fade-in">
+    <h3>Mark H. Moore</h3>
+    <div class="role">Hauser Professor of Nonprofit Organizations · Harvard Kennedy School</div>
+    <p>Desarrolló el concepto a lo largo de quince años de investigación, observación y enseñanza. Su obra seminal <em>Creating Public Value: Strategic Management in Government</em> (Harvard University Press, 1995) sintetiza el aprendizaje de cientos de casos reales de gestión pública. El triángulo estratégico busca hacer por los ejecutivos del sector público lo que los modelos de estrategia privada hacen por los ejecutivos corporativos: ayudarlos a posicionar sus organizaciones en entornos dinámicos y heterogéneos.</p>
+  </div>
+
+  <div class="alignment-box fade-in">
+    <p>La idea central es simple: los gestores públicos deben estar enfocados en <strong>crear valor público</strong> a partir de los activos que les confía la ciudadanía. Esos activos incluyen el dinero público recaudado mediante impuestos, la autoridad del Estado para regular conductas privadas, y la capacidad de movilizar el espíritu cívico de los ciudadanos.</p>
+    <cite>— Moore, M. H. (2021). "Creating Public Value: The Core Idea." International Journal of Professional Business Review, 6(1).</cite>
+  </div>
+
+  <p class="fade-in" style="font-size:.9rem; color: var(--text-dim); line-height:1.8; margin-bottom: 1.5rem;">El gestor público no es un burócrata pasivo que administra recursos: es un <strong style="color:var(--cream)">emprendedor de valor</strong> con imaginación activa para identificar oportunidades de mejorar la vida ciudadana. Pero esa imaginación tiene que pasar tres pruebas antes de convertirse en política pública viable. Esas tres pruebas forman los vértices del triángulo.</p>
+</section>
+
+<!-- VÉRTICES -->
+<section id="vertices">
+  <div class="section-label fade-in">02 — Los Tres Vértices</div>
+  <h2 class="section-title fade-in">Anatomía del Triángulo</h2>
+  <p class="section-intro fade-in">Una política pública es estratégicamente viable solo cuando logra alinear los tres vértices de manera simultánea y mutuamente reforzada. Fallar en cualquiera de ellos compromete el conjunto.</p>
+
+  <!-- SVG Triangle -->
+  <div class="triangle-container fade-in">
+    <div class="triangle-svg-wrap">
+      <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Triángulo estratégico de la política pública">
+        <!-- Triangle -->
+        <polygon points="250,30 470,310 30,310" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1.5"/>
+        <!-- Inner glow lines -->
+        <line x1="250" y1="30" x2="30" y2="310" stroke="rgba(91,200,168,0.15)" stroke-width="1"/>
+        <line x1="250" y1="30" x2="470" y2="310" stroke="rgba(97,175,239,0.15)" stroke-width="1"/>
+        <line x1="30" y1="310" x2="470" y2="310" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>
+        <!-- Center label -->
+        <text x="250" y="185" text-anchor="middle" fill="rgba(201,168,76,0.5)" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="3">ALINEACIÓN</text>
+        <text x="250" y="198" text-anchor="middle" fill="rgba(201,168,76,0.3)" font-family="'IBM Plex Mono',monospace" font-size="8" letter-spacing="2">= VALOR PÚBLICO</text>
+        <!-- Vertex 1 — TOP: Valor Público -->
+        <circle cx="250" cy="30" r="22" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/>
+        <text x="250" y="26" text-anchor="middle" fill="#c9a84c" font-family="'IBM Plex Mono',monospace" font-size="8" font-weight="500">VALOR</text>
+        <text x="250" y="37" text-anchor="middle" fill="#c9a84c" font-family="'IBM Plex Mono',monospace" font-size="8" font-weight="500">PÚBLICO</text>
+        <!-- Vertex 2 — BOTTOM RIGHT: Capacidad Operativa -->
+        <circle cx="470" cy="310" r="22" fill="rgba(97,175,239,0.12)" stroke="rgba(97,175,239,0.5)" stroke-width="1.5"/>
+        <text x="470" y="306" text-anchor="middle" fill="#61afef" font-family="'IBM Plex Mono',monospace" font-size="7.5" font-weight="500">CAPACIDAD</text>
+        <text x="470" y="317" text-anchor="middle" fill="#61afef" font-family="'IBM Plex Mono',monospace" font-size="7.5" font-weight="500">OPERATIVA</text>
+        <!-- Vertex 3 — BOTTOM LEFT: Legitimidad -->
+        <circle cx="30" cy="310" r="22" fill="rgba(91,200,168,0.12)" stroke="rgba(91,200,168,0.5)" stroke-width="1.5"/>
+        <text x="30" y="306" text-anchor="middle" fill="#5bc8a8" font-family="'IBM Plex Mono',monospace" font-size="7.5" font-weight="500">LEGITI-</text>
+        <text x="30" y="317" text-anchor="middle" fill="#5bc8a8" font-family="'IBM Plex Mono',monospace" font-size="7.5" font-weight="500">MIDAD</text>
+      </svg>
+    </div>
+
+    <!-- Vertex Cards -->
+    <div class="vertex-cards">
+      <div class="vertex-card valor fade-in">
+        <div class="vertex-num">Vértice 01</div>
+        <div class="vertex-title">Valor Público</div>
+        <div class="vertex-question">¿Qué resultado social justifica la acción?</div>
+        <div class="vertex-desc">La política debe tener una concepción clara del resultado colectivo que busca alcanzar: no solo eficiencia, sino también equidad y justicia. El gestor debe articular una "proposición de valor público" específica, distinta de una misión genérica.</div>
+      </div>
+      <div class="vertex-card legitimidad fade-in">
+        <div class="vertex-num">Vértice 02</div>
+        <div class="vertex-title">Legitimidad y Consenso</div>
+        <div class="vertex-question">¿Quién autoriza y sostiene la acción?</div>
+        <div class="vertex-desc">El entorno autorizador incluye ciudadanos como votantes y contribuyentes, medios de comunicación, organizaciones de la sociedad civil, el Congreso y las instituciones políticas. Sin legitimidad, la política políticamente sostenible no existe, aunque sea técnicamente brillante.</div>
+      </div>
+      <div class="vertex-card capacidad fade-in">
+        <div class="vertex-num">Vértice 03</div>
+        <div class="vertex-title">Capacidad Operativa</div>
+        <div class="vertex-question">¿Puede el Estado efectivamente ejecutarla?</div>
+        <div class="vertex-desc">¿Existen las personas, los procesos, los presupuestos y las alianzas necesarias? La mayoría de los gestores públicos enfrentan baja capacidad operativa inicial, por lo que la co-producción con otros actores —públicos, privados y civiles— es frecuentemente necesaria.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alignment-box fade-in">
+    <p>Los tres nodos del triángulo son <strong>interdependientes</strong>: la alineación entre ellos es condición necesaria —no suficiente— para que una estrategia pública sea exitosa. Y esa alineación es <em>dinámica</em>: un cambio político puede retirar legitimidad a una política técnicamente sólida; un cambio tecnológico puede abrir capacidades operativas que antes no existían.</p>
+    <cite>— Moore (1995); Alford & O'Flynn (2009); Emerald: Accounting, Auditing & Accountability Journal (2021)</cite>
+  </div>
+
+  <div style="background: rgba(201,168,76,.05); border: 1px solid var(--border); padding: 1.4rem 1.6rem; border-radius: 2px;" class="fade-in">
+    <p style="font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.12em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">⚠ Advertencia crítica</p>
+    <p style="font-size:.88rem; color:var(--text-dim); line-height:1.7;">El triángulo <strong style="color:var(--cream)">no es un checklist</strong>. No basta con que cada vértice exista por separado: la pregunta relevante es cuán <em>robusta y mutuamente reforzada</em> es la alineación entre los tres. Investigación empírica (Suecia, 2021) muestra que la alineación es particularmente vulnerable a: (1) exceso de métricas de desempeño a corto plazo, (2) estandarización rígida de procedimientos, y (3) interferencia político-electoral en las decisiones técnicas.</p>
+  </div>
+</section>
+
+<!-- CASOS -->
+<section id="casos">
+  <div class="section-label fade-in">03 — Casos Aplicados</div>
+  <h2 class="section-title fade-in">El Triángulo en Acción</h2>
+  <p class="section-intro fade-in">Cada caso ilustra una configuración distinta del triángulo: algunos muestran alineación completa, otros revelan qué sucede cuando uno o dos vértices fallan. Haz clic para desplegar el análisis.</p>
+
+  <div class="cases-grid">
+
+    <!-- CASO 1: BIBLIOTECA -->
+    <div class="case-item fade-in" id="caso-biblioteca">
+      <div class="case-header" onclick="toggleCase('caso-biblioteca')">
+        <div class="case-label-wrap">
+          <span class="case-tag tag-biblioteca">Clásico · Moore 1995</span>
+          <span class="case-name">La Biblioteca y los Latchkey Children</span>
+        </div>
+        <span class="case-arrow">▾</span>
+      </div>
+      <div class="case-body">
+        <div class="case-content">
+          <p class="case-situation">Una bibliotecaria de pueblo enfrenta una situación inesperada: cada día, entre las 3:00 y las 5:00 p.m., decenas de niños invaden la biblioteca. Una encuesta informal revela que están siendo usados como "niños llave" (<em>latchkey children</em>): sus padres trabajan y los dejan solos. La biblioteca se convierte de facto en guardería. Los libros se deterioran, el personal trabaja horas extra, y la limpieza aumenta. ¿Qué debe hacer la bibliotecaria?</p>
+
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo — Solución adoptada</p>
+
+          <div class="triangle-scores">
+            <div class="score-pill alto">
+              <div class="pill-label">Valor Público</div>
+              <div class="pill-val">Alto ✓</div>
+            </div>
+            <div class="score-pill alto">
+              <div class="pill-label">Legitimidad</div>
+              <div class="pill-val">Alto ✓</div>
+            </div>
+            <div class="score-pill alto">
+              <div class="pill-label">Cap. Operativa</div>
+              <div class="pill-val">Alto ✓</div>
+            </div>
+          </div>
+
+          <div class="case-lesson">
+            <strong>Lección central:</strong> La bibliotecaria no buscó más presupuesto ni expulsó a los niños. Reorganizó espacios, reprogramó turnos del personal, y creó un programa de lectura infantil. Descubrió que atender a estos niños era <em>coherente con la misión de la biblioteca</em>. La solución fue interna, estratégica y construyó legitimidad al generar valor real. El resultado: la institución creció en demanda, satisfacción y recursos. Este caso demuestra que la <strong>alineación de los tres vértices no requiere siempre más presupuesto</strong>, sino imaginación estratégica.
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:.78rem; color:var(--text-dim);">Fuente: Moore, M. H. (1995). <em>Creating Public Value: Strategic Management in Government</em>. Harvard University Press. Cap. 1.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 2: OPERATIVO MERCURIO -->
+    <div class="case-item fade-in" id="caso-mercurio">
+      <div class="case-header" onclick="toggleCase('caso-mercurio')">
+        <div class="case-label-wrap">
+          <span class="case-tag tag-mercurio">Perú · 2019</span>
+          <span class="case-name">Operativo Mercurio — Madre de Dios</span>
+        </div>
+        <span class="case-arrow">▾</span>
+      </div>
+      <div class="case-body">
+        <div class="case-content">
+          <p class="case-situation">En 2019, el gobierno peruano lanzó el Operativo Mercurio en La Pampa, Madre de Dios: movilizó más de 1,500 policías y militares para expulsar a mineros y taladores ilegales, destruyó maquinaria y confiscó madera. Fue presentado como una victoria contra la minería ilegal y la deforestación. Sin embargo, dos años después la actividad ilegal había retornado a niveles similares.</p>
+
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo</p>
+
+          <div class="triangle-scores">
+            <div class="score-pill medio">
+              <div class="pill-label">Valor Público</div>
+              <div class="pill-val">Parcial ~</div>
+            </div>
+            <div class="score-pill alto">
+              <div class="pill-label">Legitimidad</div>
+              <div class="pill-val">Alto ✓</div>
+            </div>
+            <div class="score-pill bajo">
+              <div class="pill-label">Cap. Operativa</div>
+              <div class="pill-val">Bajo ✗</div>
+            </div>
+          </div>
+
+          <div class="case-lesson">
+            <strong>Lección central:</strong> La operación tuvo apoyo político nacional y fue mediáticamente exitosa (legitimidad alta), pero no abordó las <em>causas estructurales</em> de la minería ilegal: la pobreza, la ausencia de alternativas económicas y la debilidad institucional en la región. La capacidad operativa fue suficiente para el golpe inicial, pero insostenible en el tiempo. El valor público creado fue temporal. Este caso ilustra el riesgo de políticas que ganan en <strong>consenso y ejecución puntual pero fallan en sostenibilidad técnica</strong>.
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:.78rem; color:var(--text-dim);">Fuente: Presidencia del Consejo de Ministros del Perú (2019). Informe Operativo Mercurio; análisis propio.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 3: GRIPE PORCINA -->
+    <div class="case-item fade-in" id="caso-vacuna">
+      <div class="case-header" onclick="toggleCase('caso-vacuna')">
+        <div class="case-label-wrap">
+          <span class="case-tag tag-vacuna">EE.UU. · 1976</span>
+          <span class="case-name">La Vacuna de la Gripe Porcina — David Sencer y los CDC</span>
+        </div>
+        <span class="case-arrow">▾</span>
+      </div>
+      <div class="case-body">
+        <div class="case-content">
+          <p class="case-situation">En 1976, el director de los CDC, David Sencer, impulsó una campaña masiva de vacunación contra la gripe porcina tras detectar un brote en Fort Dix. La pandemia nunca llegó. La vacuna causó casos de síndrome de Guillain-Barré. La campaña fue suspendida y Sencer fue removido del cargo. Fue técnicamente ambiciosa, operativamente ejecutada a escala masiva, pero políticamente insostenible cuando los efectos secundarios afectaron la percepción pública.</p>
+
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo</p>
+
+          <div class="triangle-scores">
+            <div class="score-pill medio">
+              <div class="pill-label">Valor Público</div>
+              <div class="pill-val">Incierto ~</div>
+            </div>
+            <div class="score-pill bajo">
+              <div class="pill-label">Legitimidad</div>
+              <div class="pill-val">Frágil ✗</div>
+            </div>
+            <div class="score-pill alto">
+              <div class="pill-label">Cap. Operativa</div>
+              <div class="pill-val">Alto ✓</div>
+            </div>
+          </div>
+
+          <div class="case-lesson">
+            <strong>Lección central:</strong> La capacidad operativa fue impresionante: vacunar a millones de personas en semanas. Pero la proposición de valor estaba basada en una amenaza que no se materializó, y la comunicación del riesgo fue deficiente, erosionando la legitimidad cuando surgieron efectos secundarios. Este caso muestra que la <strong>capacidad técnica no reemplaza a la comunicación y al consenso ciudadano</strong>, y que la incertidumbre científica debe gestionarse públicamente con honestidad.
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:.78rem; color:var(--text-dim);">Fuente: Moore, M. H. (1995). <em>Creating Public Value</em>. Harvard University Press. Caso David Sencer / CDC.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASO 4: ANEMIA PERÚ -->
+    <div class="case-item fade-in" id="caso-anemia">
+      <div class="case-header" onclick="toggleCase('caso-anemia')">
+        <div class="case-label-wrap">
+          <span class="case-tag tag-anemia">Perú · Actual</span>
+          <span class="case-name">Reducción de la Anemia Infantil en el Perú</span>
+        </div>
+        <span class="case-arrow">▾</span>
+      </div>
+      <div class="case-body">
+        <div class="case-content">
+          <p class="case-situation">A pesar de años de intervención pública, Perú mantiene tasas de anemia infantil superiores al 40% en menores de tres años (ENDES 2024). El Estado ha desplegado programas de suplementación con hierro, transferencias condicionadas y capacitación a madres. Sin embargo, los resultados son insuficientes dado el nivel de inversión realizado. El diagnóstico es complejo: las causas van desde la calidad del agua hasta la prevalencia de infecciones intestinales y prácticas de alimentación.</p>
+
+          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo — Tensión persistente</p>
+
+          <div class="triangle-scores">
+            <div class="score-pill alto">
+              <div class="pill-label">Valor Público</div>
+              <div class="pill-val">Claro ✓</div>
+            </div>
+            <div class="score-pill medio">
+              <div class="pill-label">Legitimidad</div>
+              <div class="pill-val">Moderada ~</div>
+            </div>
+            <div class="score-pill bajo">
+              <div class="pill-label">Cap. Operativa</div>
+              <div class="pill-val">Débil ✗</div>
+            </div>
+          </div>
+
+          <div class="case-lesson">
+            <strong>Lección central:</strong> El valor público es indiscutible y hay consenso político declarado. El problema crónico está en la capacidad operativa: fragmentación sectorial (MINSA, MIDIS, gobiernos regionales, municipios), debilidad en el último kilómetro de entrega del servicio, y falta de mecanismos de seguimiento efectivos. Este caso ilustra que <strong>un buen diagnóstico y voluntad política no bastan</strong>: sin capacidad operativa articulada y sostenida, la política no produce resultados, aunque el valor sea evidente para todos.
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:.78rem; color:var(--text-dim);">Fuente: INEI-ENDES (2024); Ministerio de Salud del Perú; MIDIS. Plan Multisectorial de Lucha contra la Anemia.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EJERCICIOS -->
+<section id="ejercicios">
+  <div class="section-label fade-in">04 — Ejercicios Interactivos</div>
+  <h2 class="section-title fade-in">Pon a prueba tu comprensión</h2>
+  <p class="section-intro fade-in">Dos tipos de ejercicio: preguntas de comprensión conceptual y clasificación de escenarios según el vértice del triángulo que falla.</p>
+
+  <!-- Score bar -->
+  <div class="score-bar fade-in">
+    <div>
+      <div class="label">Puntaje acumulado</div>
+    </div>
+    <div class="score-display" id="score-display">0 <span>/ 0 respondidas</span></div>
+    <button class="reset-btn" onclick="resetAll()">↺ Reiniciar todo</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-container fade-in" id="quiz-container">
+
+    <!-- Q1 -->
+    <div class="quiz-card" id="qc-1">
+      <div class="q-num">Pregunta 01</div>
+      <div class="q-text">Según Moore, ¿qué distingue al gestor público ideal de un burócrata tradicional?</div>
+      <div class="q-options">
+        <button class="q-option" onclick="answer(1,'a')"><span class="opt-letter">A</span> El gestor público tiene más autoridad formal y puede ignorar las restricciones políticas cuando lo considera necesario.</button>
+        <button class="q-option" onclick="answer(1,'b')"><span class="opt-letter">B</span> El gestor público posee una "imaginación activa en busca de valor", identifica oportunidades para mejorar condiciones sociales y actúa con espíritu emprendedor dentro de los límites democráticos.</button>
+        <button class="q-option" onclick="answer(1,'c')"><span class="opt-letter">C</span> El gestor público se concentra exclusivamente en ejecutar las instrucciones de sus superiores políticos con la mayor eficiencia posible.</button>
+        <button class="q-option" onclick="answer(1,'d')"><span class="opt-letter">D</span> El gestor público reemplaza los criterios de mercado por criterios de equidad, eliminando completamente el análisis de costos.</button>
+      </div>
+      <div class="q-feedback" id="qf-1"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-card" id="qc-2">
+      <div class="q-num">Pregunta 02</div>
+      <div class="q-text">Una política pública tiene un diseño técnico impecable y cuenta con plena capacidad operativa para implementarse. Sin embargo, no logra sostenerse en el tiempo. Según el triángulo estratégico, ¿cuál es el diagnóstico más probable?</div>
+      <div class="q-options">
+        <button class="q-option" onclick="answer(2,'a')"><span class="opt-letter">A</span> El problema está en la cadena de valor: los insumos no se convierten eficientemente en productos.</button>
+        <button class="q-option" onclick="answer(2,'b')"><span class="opt-letter">B</span> Falta legitimidad y apoyo del entorno autorizador: sin respaldo político y ciudadano sostenido, ninguna política puede mantenerse.</button>
+        <button class="q-option" onclick="answer(2,'c')"><span class="opt-letter">C</span> El gestor público no tiene suficiente autonomía para ejecutar sin interferencia legislativa.</button>
+        <button class="q-option" onclick="answer(2,'d')"><span class="opt-letter">D</span> La política no fue evaluada correctamente en su fase de diseño; el problema era la medición de resultados.</button>
+      </div>
+      <div class="q-feedback" id="qf-2"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-card" id="qc-3">
+      <div class="q-num">Pregunta 03</div>
+      <div class="q-text">La bibliotecaria del caso de Moore adopta una solución que no requiere presupuesto adicional. ¿Qué principio del triángulo estratégico ilustra mejor esa decisión?</div>
+      <div class="q-options">
+        <button class="q-option" onclick="answer(3,'a')"><span class="opt-letter">A</span> Que la capacidad operativa siempre es insuficiente en el sector público y debe compensarse con recursos externos.</button>
+        <button class="q-option" onclick="answer(3,'b')"><span class="opt-letter">B</span> Que el valor público puede crearse reinterpretando la misión de la organización y reorganizando recursos existentes, sin necesidad de presupuesto adicional.</button>
+        <button class="q-option" onclick="answer(3,'c')"><span class="opt-letter">C</span> Que la legitimidad solo se consigue cuando los usuarios directos participan en el diseño de la política.</button>
+        <button class="q-option" onclick="answer(3,'d')"><span class="opt-letter">D</span> Que los gestores públicos deben evitar actuar fuera del mandato formal de su institución, incluso si ven oportunidades de valor.</button>
+      </div>
+      <div class="q-feedback" id="qf-3"></div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-card" id="qc-4">
+      <div class="q-num">Pregunta 04</div>
+      <div class="q-text">¿En qué se diferencia el "entorno autorizador" del sector público del equivalente privado (los inversores)?</div>
+      <div class="q-options">
+        <button class="q-option" onclick="answer(4,'a')"><span class="opt-letter">A</span> En el sector público el entorno autorizador es mucho más pequeño y está compuesto solo por el ministro y el jefe de Estado.</button>
+        <button class="q-option" onclick="answer(4,'b')"><span class="opt-letter">B</span> En el sector público el entorno autorizador incluye a ciudadanos como votantes y contribuyentes, medios, sociedad civil y representantes electos; evalúa no solo eficiencia sino también equidad y justicia, y no puede "vender" su participación.</button>
+        <button class="q-option" onclick="answer(4,'c')"><span class="opt-letter">C</span> El entorno autorizador público es idéntico al privado: ambos buscan maximizar el retorno sobre la inversión.</button>
+        <button class="q-option" onclick="answer(4,'d')"><span class="opt-letter">D</span> El entorno autorizador público opera exclusivamente a través de procesos formales de votación parlamentaria.</button>
+      </div>
+      <div class="q-feedback" id="qf-4"></div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-card" id="qc-5">
+      <div class="q-num">Pregunta 05</div>
+      <div class="q-text">Una crítica recurrente al triángulo estratégico de Moore es que crea una visión excesivamente individualista de la gestión pública. ¿A qué se refiere esta crítica?</div>
+      <div class="q-options">
+        <button class="q-option" onclick="answer(5,'a')"><span class="opt-letter">A</span> Que el marco ignora completamente los factores macroeconómicos que afectan las políticas públicas.</button>
+        <button class="q-option" onclick="answer(5,'b')"><span class="opt-letter">B</span> Que Moore exige que los gestores públicos actúen de manera completamente autónoma, sin rendir cuentas a nadie.</button>
+        <button class="q-option" onclick="answer(5,'c')"><span class="opt-letter">C</span> Que el enfoque basado en casos presenta al gestor público como el "héroe" individual que resuelve todo, subestimando el rol de estructuras organizacionales, rutinas institucionales y juegos de poder colectivos.</button>
+        <button class="q-option" onclick="answer(5,'d')"><span class="opt-letter">D</span> Que el marco solo es aplicable en contextos anglosajones y no puede trasladarse a América Latina.</button>
+      </div>
+      <div class="q-feedback" id="qf-5"></div>
+    </div>
+
+  </div>
+
+  <!-- CLASIFICADOR -->
+  <hr class="divider" style="margin: 3rem 0;">
+
+  <div class="classifier fade-in">
+    <h3>Ejercicio de Clasificación: ¿Qué vértice falla?</h3>
+    <p class="classifier-intro">Lee cada escenario e identifica cuál vértice del triángulo estratégico es el que está fallando o es el más débil. Puede haber más de uno involucrado, pero busca el más crítico.</p>
+
+    <div class="classify-items">
+
+      <div class="classify-item" id="ci-1">
+        <div class="ci-scenario">Un ministerio diseña un programa de empleo rural con evidencia sólida y financiamiento aprobado. Sin embargo, los gobiernos regionales se niegan a implementarlo porque consideran que el ministerio está invadiendo su competencia territorial.</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="classify('ci-1','valor','legitimidad')">Valor Público</button>
+          <button class="ci-btn" onclick="classify('ci-1','legitimidad','legitimidad')">Legitimidad y Consenso</button>
+          <button class="ci-btn" onclick="classify('ci-1','capacidad','legitimidad')">Capacidad Operativa</button>
+        </div>
+        <div class="ci-result" id="cir-1"></div>
+      </div>
+
+      <div class="classify-item" id="ci-2">
+        <div class="ci-scenario">Una municipalidad decide construir bicicleteríos en todos los distritos tras una consulta ciudadana con gran respaldo popular. Sin embargo, el municipio no cuenta con personal técnico para gestionar contratos de obras, ni con sistemas de mantenimiento para los bicicleteríos una vez construidos.</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="classify('ci-2','valor','capacidad')">Valor Público</button>
+          <button class="ci-btn" onclick="classify('ci-2','legitimidad','capacidad')">Legitimidad y Consenso</button>
+          <button class="ci-btn" onclick="classify('ci-2','capacidad','capacidad')">Capacidad Operativa</button>
+        </div>
+        <div class="ci-result" id="cir-2"></div>
+      </div>
+
+      <div class="classify-item" id="ci-3">
+        <div class="ci-scenario">El Ministerio de Educación lanza un programa de tutoría personalizada por inteligencia artificial en colegios públicos. Tiene el presupuesto y el proveedor tecnológico listo. Sin embargo, los docentes no comprenden para qué sirve el programa, los padres temen la "vigilancia digital" de sus hijos, y los medios cubren el tema con desconfianza.</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="classify('ci-3','valor','legitimidad')">Valor Público</button>
+          <button class="ci-btn" onclick="classify('ci-3','legitimidad','legitimidad')">Legitimidad y Consenso</button>
+          <button class="ci-btn" onclick="classify('ci-3','capacidad','legitimidad')">Capacidad Operativa</button>
+        </div>
+        <div class="ci-result" id="cir-3"></div>
+      </div>
+
+      <div class="classify-item" id="ci-4">
+        <div class="ci-scenario">Un gobierno propone una reforma pensionaria que, según todos los modelos actuariales disponibles, es insostenible fiscalmente en el largo plazo. Sin embargo, genera enorme popularidad entre la población adulta mayor y cuenta con respaldo del Congreso.</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="classify('ci-4','valor','valor')">Valor Público</button>
+          <button class="ci-btn" onclick="classify('ci-4','legitimidad','valor')">Legitimidad y Consenso</button>
+          <button class="ci-btn" onclick="classify('ci-4','capacidad','valor')">Capacidad Operativa</button>
+        </div>
+        <div class="ci-result" id="cir-4"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REFERENCIAS -->
+  <div class="reference-box fade-in" style="margin-top: 3rem;">
+    <h3>Referencias del módulo</h3>
+    <div class="ref-item">
+      <strong>Moore, M. H. (1995).</strong> Creating Public Value: Strategic Management in Government. Harvard University Press, Cambridge, MA.
+    </div>
+    <div class="ref-item">
+      <strong>Moore, M. H. (2021).</strong> "Creating Public Value: The Core Idea of Strategic Management in Government." International Journal of Professional Business Review, 6(1), e219. DOI: 10.26668/businessreview/2021.v6i1.219 [Open Access]
+    </div>
+    <div class="ref-item">
+      <strong>Moore, M. H. & Khagram, S. (2004).</strong> "On Creating Public Value: What Business Might Learn from Government about Strategic Management." CSR Initiative Working Paper No. 3. Harvard Kennedy School.
+    </div>
+    <div class="ref-item">
+      <strong>INEI (2024).</strong> Encuesta Demográfica y de Salud Familiar — ENDES 2024. Instituto Nacional de Estadística e Informática, Lima, Perú.
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  GEP201 · Gestión Financiera del Estado · PUCP 2026-1 · Juan Pablo Silva Macher
+</footer>
+
+<script>
+// ── ANSWERS DATA ──
+const answers = {
+  1: { correct: 'b', feedback: { b: 'Correcto. Moore define al buen gestor público como alguien con "restless, value-seeking imagination": identifica oportunidades de crear valor social, diseña estrategias para aprovecharlas y actúa con autonomía responsable dentro del marco democrático. No es un ejecutor pasivo, pero tampoco un actor que ignora su entorno político.', a: 'Incorrecto. Moore no propone que el gestor público ignore las restricciones políticas. Al contrario, la legitimidad y el entorno autorizador son uno de los tres vértices centrales del triángulo. La autonomía del gestor es relativa y debe ganarse, no imponerse.', c: 'Incorrecto. Eso describe precisamente al burócrata tradicional que Moore critica. Ejecutar instrucciones sin visión de valor es lo opuesto a su propuesta.', d: 'Incorrecto. Moore no propone eliminar el análisis de costos. La capacidad operativa —incluyendo la gestión de recursos— es parte esencial del triángulo.' } },
+  2: { correct: 'b', feedback: { b: 'Correcto. Si una política no se sostiene en el tiempo a pesar de tener diseño técnico sólido y capacidad operativa, el diagnóstico del triángulo apunta al vértice de legitimidad. Sin apoyo político y ciudadano continuo, la política pierde su base de autorización y recursos.', a: 'Incorrecto. La cadena de valor y la eficiencia de insumos-productos son parte de la capacidad operativa, que en este caso se menciona como plena.', c: 'Incorrecto. La autonomía del gestor es una variable real, pero no es el diagnóstico que el triángulo señalaría primero ante esta descripción.', d: 'Incorrecto. La evaluación de resultados es relevante, pero el síntoma descrito (insostenibilidad en el tiempo) apunta más directamente a un problema de legitimidad.' } },
+  3: { correct: 'b', feedback: { b: 'Correcto. La bibliotecaria descubre que la atención a los latchkey children es coherente con la misión de la biblioteca —promover la lectura y el acceso al conocimiento— y reorganiza sus recursos existentes. No necesita más presupuesto: necesita imaginación estratégica y redefinición del valor que produce.', a: 'Incorrecto. El caso demuestra precisamente lo contrario: la capacidad operativa existente fue suficiente cuando se reorganizó estratégicamente.', c: 'Incorrecto. La participación de usuarios en el diseño es deseable, pero no es lo que este caso ilustra principalmente.', d: 'Incorrecto. Moore propone exactamente lo contrario: los gestores deben ser emprendedores y aprovechar oportunidades aunque estén fuera del mandato formal rígido, siempre que generen valor público real.' } },
+  4: { correct: 'b', feedback: { b: 'Correcto. Moore señala cuatro diferencias clave: los activos públicos incluyen no solo dinero sino la autoridad del Estado; los resultados se miden en cambios en condiciones sociales; la evaluación incluye justicia y equidad, no solo eficiencia; y los evaluadores son ciudadanos, votantes y contribuyentes —no solo clientes individuales.', a: 'Incorrecto. El entorno autorizador público es mucho más amplio y complejo que solo el ministro y el jefe de Estado.', c: 'Incorrecto. Esta es precisamente la confusión que Moore corrige: el sector público no puede equipararse al privado en la lógica de retorno sobre inversión.', d: 'Incorrecto. La votación parlamentaria es una parte del entorno autorizador, pero no lo agota. Los medios, la sociedad civil y la opinión pública también son parte fundamental.' } },
+  5: { correct: 'c', feedback: { c: 'Correcto. Bryson, Sancino y otros críticos señalan que el método de casos de Moore tiende a presentar al gestor público como el actor central y heroico que resuelve los dilemas estratégicos, subestimando el rol de las estructuras organizacionales formales, las rutinas institucionales y los juegos de poder colectivos que son centrales en la teoría organizacional contemporánea.', a: 'Incorrecto. El triángulo no ignora factores contextuales; de hecho, el entorno autorizador los incorpora. Esta no es la crítica identificada.', b: 'Incorrecto. Moore no propone autonomía sin rendición de cuentas; el triángulo incluye explícitamente la legitimidad democrática como condición necesaria.', d: 'Incorrecto. El marco ha sido aplicado ampliamente en Australia, Nueva Zelanda, Reino Unido, América Latina y Asia. Esta no es una crítica sustantiva reconocida en la literatura.' } }
+};
+
+// ── CLASSIFIER DATA ──
+const classifyFeedback = {
+  'valor': 'Este escenario apunta principalmente a un problema de <strong>valor público</strong>: la proposición de valor es cuestionable técnicamente (insostenibilidad fiscal a largo plazo). El consenso no garantiza que la política sea técnicamente correcta ni que produzca valor real.',
+  'legitimidad': 'Este escenario ilustra principalmente una falla de <strong>legitimidad y consenso</strong>: actores clave del entorno autorizador (en este caso, los gobiernos regionales o la ciudadanía) no apoyan la política, bloqueando su implementación aunque técnica y operativamente sea sólida.',
+  'capacidad': 'Este escenario ilustra principalmente una falla de <strong>capacidad operativa</strong>: la organización no cuenta con los recursos humanos, sistemas o capacidades técnicas necesarias para implementar la política de manera efectiva y sostenida.'
+};
+
+// ── STATE ──
+let totalAnswered = 0;
+let totalCorrect = 0;
+const answered = {};
+const classified = {};
+
+function answer(qNum, choice, correctChoice) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+  totalAnswered++;
+
+  const data = answers[qNum];
+  const correct = data.correct;
+  const options = document.querySelectorAll(`#qc-${qNum} .q-option`);
+  const feedback = document.getElementById(`qf-${qNum}`);
+
+  options.forEach((btn, i) => {
+    const letters = ['a','b','c','d'];
+    btn.classList.add('locked');
+    if (letters[i] === correct) btn.classList.add('correct');
+    else if (letters[i] === choice && choice !== correct) btn.classList.add('wrong');
+  });
+
+  const isCorrect = choice === correct;
+  if (isCorrect) totalCorrect++;
+
+  feedback.className = `q-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+  feedback.innerHTML = `<strong>${isCorrect ? '✓ Correcto' : '✗ Incorrecto'}</strong>${data.feedback[choice]}`;
+
+  updateScore();
+}
+
+function classify(itemId, chosen, correct) {
+  if (classified[itemId]) return;
+  classified[itemId] = true;
+  totalAnswered++;
+
+  const btns = document.querySelectorAll(`#${itemId} .ci-btn`);
+  const result = document.getElementById(`cir-${itemId}`);
+
+  btns.forEach(btn => {
+    btn.classList.add('locked');
+    const txt = btn.textContent.toLowerCase();
+    if (txt.includes(correct === 'valor' ? 'valor' : correct === 'legitimidad' ? 'legitimidad' : 'capacidad')) {
+      btn.classList.add('selected-correct');
+    }
+  });
+
+  const isCorrect = chosen === correct;
+  if (isCorrect) totalCorrect++;
+
+  result.className = `ci-result show ${isCorrect ? 'ok' : 'fail'}`;
+  result.innerHTML = `${isCorrect ? '✓ ' : '✗ '}${classifyFeedback[correct]}`;
+
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('score-display').innerHTML =
+    `${totalCorrect} <span>/ ${totalAnswered} respondidas</span>`;
+}
+
+function resetAll() {
+  totalAnswered = 0; totalCorrect = 0;
+  Object.keys(answered).forEach(k => delete answered[k]);
+  Object.keys(classified).forEach(k => delete classified[k]);
+
+  document.querySelectorAll('.q-option').forEach(btn => {
+    btn.classList.remove('correct','wrong','locked');
+  });
+  document.querySelectorAll('.q-feedback').forEach(el => {
+    el.className = 'q-feedback'; el.innerHTML = '';
+  });
+  document.querySelectorAll('.ci-btn').forEach(btn => {
+    btn.classList.remove('selected-correct','selected-wrong','locked');
+  });
+  document.querySelectorAll('.ci-result').forEach(el => {
+    el.className = 'ci-result'; el.innerHTML = '';
+  });
+  updateScore();
+}
+
+// ── CASE TOGGLE ──
+function toggleCase(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+// ── SCROLL FADE ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
