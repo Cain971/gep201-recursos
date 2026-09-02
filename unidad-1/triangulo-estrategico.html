@@ -57,7 +57,16 @@ nav {
   font-family: 'IBM Plex Mono', monospace;
   font-size: .65rem; letter-spacing: .18em;
   color: var(--gold); text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: color .2s;
 }
+.nav-brand:hover { color: var(--gold-light); }
+.nav-brand .back-arrow {
+  font-size: .8rem; letter-spacing: 0;
+  color: var(--text-dim); transition: color .2s;
+}
+.nav-brand:hover .back-arrow { color: var(--gold-light); }
 
 .nav-links {
   display: flex; gap: 1.5rem; list-style: none;
@@ -609,7 +618,7 @@ footer {
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand">GEP201 · Clase 2</div>
+  <a class="nav-brand" href="../index.html"><span class="back-arrow">&larr;</span> GEP201 · Recursos</a>
   <ul class="nav-links">
     <li><a href="#marco">Marco</a></li>
     <li><a href="#vertices">Vértices</a></li>
@@ -1048,7 +1057,8 @@ footer {
 </section>
 
 <footer>
-  GEP201 · Gestión Financiera del Estado · PUCP 2026-1 · Juan Pablo Silva Macher
+  <a href="../index.html" style="color:var(--gold);text-decoration:none;letter-spacing:.12em;">&larr; Volver a recursos de clase</a>
+  <div style="margin-top:.8rem;">GEP201 · Gestión Financiera del Estado · PUCP · Juan Pablo Silva Macher</div>
 </footer>
 
 <script>
