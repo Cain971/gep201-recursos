@@ -15,7 +15,7 @@ Por unidad del sílabo (espeja `clases/` del repo del curso):
 ```
 index.html                              → landing con enlaces a todos los recursos
 unidad-1/
-  triangulo-estrategico.html            → Clase 2 · triángulo estratégico de Moore
+  triangulo-estrategico.html            → Clase 3 · triángulo estratégico de Moore
 unidad-2/ …                             → (por agregar)
 ```
 
