@@ -23,7 +23,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; font-size: 120%; }
 
 body {
   background: var(--navy);
@@ -143,15 +143,11 @@ p.body strong { color: var(--cream); font-weight: 400; }
 .norm-box {
   background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
   border: 1px solid var(--gold);
-  padding: 2rem; border-radius: 2px; margin: 2rem 0;
+  border-left: 3px solid var(--gold);
+  padding: 1.8rem 2rem; border-radius: 2px; margin: 2rem 0;
   position: relative;
 }
-.norm-box::before {
-  content: '\00A7'; position: absolute; top: .4rem; left: 1rem;
-  font-family: 'Playfair Display', serif;
-  font-size: 3.4rem; color: var(--gold); opacity: .15; line-height: 1;
-}
-.norm-box p { font-size: 1.02rem; color: var(--cream); line-height: 1.8; font-style: italic; padding-left: .5rem; }
+.norm-box p { font-size: 1.05rem; color: var(--cream); line-height: 1.8; font-style: italic; }
 .norm-box cite {
   display: block; margin-top: 1rem;
   font-family: 'IBM Plex Mono', monospace;
