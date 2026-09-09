@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Condición de Interés — GEP201</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --navy-light: #1e3050;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f5f0e8;
+  --cream-dim: #e8e0d0;
+  --rust: #c0392b;
+  --sage: #2e7d52;
+  --slate: #5c6b7a;
+  --text-on-dark: #dde4ee;
+  --text-dim: #8a9bb0;
+  --border: rgba(201,168,76,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--text-on-dark);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,27,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: color .2s;
+}
+.nav-brand:hover { color: var(--gold-light); }
+.nav-brand .back-arrow { font-size: .8rem; color: var(--text-dim); transition: color .2s; }
+.nav-brand:hover .back-arrow { color: var(--gold-light); }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* SECTIONS */
+section {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+section + section { padding-top: 2rem; }
+
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: none; padding: 8rem 3rem 4rem;
+}
+.hero-inner { max-width: 820px; margin: 0 auto; }
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
+  font-weight: 900; line-height: 1.1;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--text-dim); max-width: 580px;
+  margin-bottom: 2.5rem; line-height: 1.8;
+}
+.hero-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-meta span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .13em;
+  color: var(--text-dim); text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: .4rem .9rem; border-radius: 2px;
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: .3;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700; color: var(--cream);
+  margin-bottom: 1rem; line-height: 1.2;
+}
+.section-intro {
+  font-size: 1rem; color: var(--text-dim);
+  max-width: 640px; margin-bottom: 3rem; line-height: 1.8;
+}
+
+p.body { font-size: .95rem; color: var(--text-dim); line-height: 1.85; margin-bottom: 1.3rem; }
+p.body strong { color: var(--cream); font-weight: 400; }
+
+/* QUOTE / NORM BOX */
+.norm-box {
+  background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--gold);
+  padding: 2rem; border-radius: 2px; margin: 2rem 0;
+  position: relative;
+}
+.norm-box::before {
+  content: '\00A7'; position: absolute; top: .4rem; left: 1rem;
+  font-family: 'Playfair Display', serif;
+  font-size: 3.4rem; color: var(--gold); opacity: .15; line-height: 1;
+}
+.norm-box p { font-size: 1.02rem; color: var(--cream); line-height: 1.8; font-style: italic; padding-left: .5rem; }
+.norm-box cite {
+  display: block; margin-top: 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); font-style: normal;
+}
+
+/* STEPPER */
+.stepper { display: flex; flex-direction: column; gap: .55rem; margin: 2rem 0; }
+.step {
+  display: flex; align-items: flex-start; gap: 1rem;
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-radius: 2px; padding: 1rem 1.3rem;
+}
+.step.current { border-color: var(--gold); background: rgba(201,168,76,.07); }
+.step-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .72rem; font-weight: 500; color: var(--gold);
+  min-width: 34px; padding-top: .15rem; flex-shrink: 0;
+}
+.step-txt { font-size: .9rem; color: var(--text-dim); }
+.step.current .step-txt { color: var(--cream); }
+.step-txt small {
+  display: block; font-family: 'IBM Plex Mono', monospace;
+  font-size: .58rem; letter-spacing: .1em; color: var(--gold);
+  text-transform: uppercase; margin-top: .3rem;
+}
+
+/* PILLARS */
+.pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2rem 0; }
+.pillar {
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-top: 3px solid var(--gold); border-radius: 2px; padding: 1.4rem;
+}
+.pillar:nth-child(2) { border-top-color: #5bc8a8; }
+.pillar:nth-child(3) { border-top-color: #61afef; }
+.pillar-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .58rem; letter-spacing: .13em; color: var(--text-dim); margin-bottom: .5rem;
+}
+.pillar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; color: var(--cream); margin-bottom: .6rem;
+}
+.pillar-desc { font-size: .84rem; color: var(--text-dim); line-height: 1.65; }
+
+/* ASK CALLOUT */
+.ask {
+  background: rgba(255,255,255,.03);
+  border-left: 2px solid var(--gold);
+  padding: .9rem 1.1rem; border-radius: 0 2px 2px 0;
+  margin: 1.2rem 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .76rem; color: var(--gold-light); line-height: 1.7;
+}
+.ask strong {
+  display: block; font-size: .6rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .4rem;
+}
+
+/* MAGNITUDE ELEMENTS */
+.mag-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; margin: 1.5rem 0; }
+.mag-item {
+  background: rgba(97,175,239,.06); border: 1px solid rgba(97,175,239,.2);
+  border-radius: 2px; padding: 1rem 1.2rem;
+}
+.mag-item h4 {
+  font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--cream); margin-bottom: .3rem;
+}
+.mag-item p { font-size: .8rem; color: var(--text-dim); line-height: 1.55; }
+
+/* TRAPS */
+.trap-grid { display: flex; flex-direction: column; gap: .8rem; }
+.trap {
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-left: 3px solid var(--rust); border-radius: 2px; padding: 1.2rem 1.5rem;
+}
+.trap h4 {
+  font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: .4rem;
+}
+.trap p { font-size: .85rem; color: var(--text-dim); line-height: 1.65; }
+.trap p em { color: var(--gold-light); font-style: italic; }
+
+/* TABLE */
+.tbl-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 2px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .82rem; }
+th, td { text-align: left; padding: .8rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,.05);
+}
+td { color: var(--text-dim); }
+td strong { color: var(--cream); font-weight: 400; }
+tr:last-child td { border-bottom: none; }
+
+/* CLASSIFIER */
+.classifier { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 2rem; margin: 1.5rem 0; }
+.classifier h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--cream); margin-bottom: .5rem; }
+.classifier-intro { font-size: .86rem; color: var(--text-dim); margin-bottom: 1.6rem; line-height: 1.6; }
+.classify-items { display: flex; flex-direction: column; gap: 1rem; }
+.classify-item { background: rgba(255,255,255,.025); border: 1px solid var(--border); border-radius: 2px; padding: 1.2rem 1.4rem; }
+.ci-scenario { font-size: .9rem; color: var(--cream); margin-bottom: 1rem; line-height: 1.6; }
+.ci-buttons { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ci-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: .64rem; letter-spacing: .08em;
+  text-transform: uppercase; padding: .45rem .9rem; border-radius: 2px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.ci-btn:hover:not(.locked) { border-color: var(--gold); color: var(--gold); }
+.ci-btn.pick-correct { background: rgba(46,125,82,.2); border-color: rgba(46,125,82,.6); color: #7dd8a8; }
+.ci-btn.pick-wrong { background: rgba(192,57,43,.15); border-color: rgba(192,57,43,.5); color: #e08080; }
+.ci-btn.locked { cursor: default; }
+.ci-result { margin-top: .9rem; font-size: .82rem; line-height: 1.6; display: none; }
+.ci-result.show { display: block; }
+.ci-result.ok { color: #7dd8a8; }
+.ci-result.fail { color: #e08080; }
+.ci-result strong { color: var(--cream); }
+
+/* CHECKLIST */
+.checklist { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 2rem; }
+.check-progress {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 1.2rem; margin-bottom: 1.4rem; border-bottom: 1px solid var(--border);
+}
+.check-progress .pct { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+.check-progress .pct span { font-size: .8rem; color: var(--text-dim); }
+.check-reset {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; padding: .45rem 1rem; border-radius: 2px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.check-reset:hover { border-color: var(--gold); color: var(--gold); }
+.check-group { margin-bottom: 1.5rem; }
+.check-group > h4 {
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .8rem;
+}
+.check-item { display: flex; align-items: flex-start; gap: .8rem; padding: .55rem 0; cursor: pointer; }
+.check-item input {
+  appearance: none; -webkit-appearance: none;
+  width: 18px; height: 18px; min-width: 18px; margin-top: .15rem;
+  border: 1px solid var(--slate); border-radius: 3px; background: transparent;
+  cursor: pointer; position: relative; transition: all .15s;
+}
+.check-item input:checked { background: var(--gold); border-color: var(--gold); }
+.check-item input:checked::after {
+  content: '\2713'; position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; color: var(--navy); font-weight: 700;
+}
+.check-item span { font-size: .88rem; color: var(--text-dim); line-height: 1.55; }
+.check-item input:checked + span { color: var(--cream-dim); }
+.check-note {
+  margin-top: 1rem; font-size: .76rem; color: var(--text-dim);
+  font-style: italic; line-height: 1.6;
+}
+
+/* REFERENCE BOX */
+.reference-box { background: var(--navy-mid); border: 1px solid var(--border); padding: 1.6rem 2rem; border-radius: 2px; }
+.reference-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: 1rem; }
+.ref-item {
+  font-family: 'IBM Plex Mono', monospace; font-size: .7rem; color: var(--text-dim);
+  line-height: 1.8; border-bottom: 1px solid var(--border);
+  padding-bottom: .8rem; margin-bottom: .8rem;
+}
+.ref-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ref-item strong { color: var(--cream); }
+.ref-item a { color: var(--gold); text-decoration: none; }
+.ref-item a:hover { text-decoration: underline; }
+
+.policy-note {
+  background: rgba(201,168,76,.05); border: 1px solid var(--border);
+  padding: 1.4rem 1.6rem; border-radius: 2px; margin: 1.5rem 0;
+}
+.policy-note p.tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .12em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem;
+}
+.policy-note p { font-size: .86rem; color: var(--text-dim); line-height: 1.7; }
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem; text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 680px) {
+  .pillars { grid-template-columns: 1fr; }
+  .mag-grid { grid-template-columns: 1fr; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  section { padding: 4rem 1.5rem; }
+  nav { padding: .8rem 1.1rem; }
+  .nav-links { gap: .7rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../index.html"><span class="back-arrow">&larr;</span> GEP201 · Recursos</a>
+  <ul class="nav-links">
+    <li><a href="#marco">Marco</a></li>
+    <li><a href="#estructura">Estructura</a></li>
+    <li><a href="#fuentes">Fuentes</a></li>
+    <li><a href="#trampas">Trampas</a></li>
+    <li><a href="#autochequeo">Autochequeo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">GEP201 — Gestión Financiera del Estado</div>
+    <h1>La condición<br><em>de interés</em></h1>
+    <p class="hero-sub">El punto de partida de todo programa presupuestal. Antes de diseñar una intervención, el Estado tiene que definir con precisión —y con evidencia— cuál es el problema.</p>
+    <div class="hero-meta">
+      <span>Directiva N.º 0005-2020-EF/50.01</span>
+      <span>Etapa I de VI</span>
+      <span>Juan Pablo Silva · PUCP</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 MARCO -->
+<section id="marco">
+  <div class="section-label fade-in">01 — Qué es y dónde se ubica</div>
+  <h2 class="section-title fade-in">El problema, antes que la solución</h2>
+  <p class="section-intro fade-in">El error más común y más caro en el diseño de un programa presupuestal es empezar por la intervención —"queremos hacer capacitaciones", "hay que construir infraestructura"— sin haber definido el problema que se busca resolver. La Directiva del MEF obliga a invertir ese orden.</p>
+
+  <div class="norm-box fade-in">
+    <p>La Condición de Interés es una cualidad o atributo intrínseco o extrínseco de las personas, hogares, organizaciones, comunidades, o de su entorno natural y no natural (construcción o modificación del entorno realizado por las personas), sobre la cual se desea incidir por ser de interés al desarrollo sostenible.</p>
+    <cite>— Directiva N.º 0005-2020-EF/50.01, Artículo 9.1</cite>
+  </div>
+
+  <p class="body fade-in">Dos consecuencias prácticas de esa definición: la condición de interés vive <strong>en las personas o en su entorno</strong>, no en el aparato del Estado; y <strong>da nombre al Programa Presupuestal</strong> (Art. 25.1). Si no puedes nombrar el problema con precisión, no puedes nombrar el programa.</p>
+
+  <p class="body fade-in">Definir la condición de interés es la <strong>Etapa I</strong> del proceso de diseño. Todo lo que sigue se construye sobre ella: sin una condición bien delimitada no hay modelo conceptual, ni explicativo, ni productos que financiar.</p>
+
+  <div class="stepper fade-in">
+    <div class="step current">
+      <div class="step-num">I</div>
+      <div class="step-txt">Definición de la Condición de Interés<small>estás aquí</small></div>
+    </div>
+    <div class="step"><div class="step-num">II</div><div class="step-txt">Identificación del Modelo Conceptual</div></div>
+    <div class="step"><div class="step-num">III</div><div class="step-txt">Formulación del Modelo Explicativo</div></div>
+    <div class="step"><div class="step-num">IV</div><div class="step-txt">Formulación del Modelo Prescriptivo</div></div>
+    <div class="step"><div class="step-num">V</div><div class="step-txt">Planteamiento de la Teoría de Cambio</div></div>
+    <div class="step"><div class="step-num">VI</div><div class="step-txt">Selección de Indicadores de Resultados</div></div>
+  </div>
+  <p class="body fade-in" style="font-size:.82rem;">Secuencia según el Art. 18.1 (Programa Presupuestal Institucional orientado a resultados sobre la población — PPIS). Para un Programa Presupuestal orientado a Resultados (PPoR), el Art. 8.2 fusiona las etapas I y II; la lógica es la misma.</p>
+</section>
+
+<!-- 02 CONDICIÓN VS SOLUCIÓN -->
+<section id="condicion-solucion">
+  <div class="section-label fade-in">02 — El error fundacional</div>
+  <h2 class="section-title fade-in">Condición ≠ solución encubierta</h2>
+  <p class="section-intro fade-in">Una "solución encubierta" es una intervención ya elegida, disfrazada de problema. Suena a diagnóstico pero no lo es: cierra el análisis antes de empezarlo y amarra el programa a una respuesta que nunca se sometió a evidencia.</p>
+
+  <div class="ask fade-in">
+    <strong>La prueba</strong>
+    Si el enunciado nombra un programa, una entidad, una actividad o un insumo → es una solución. Si describe un <em>estado</em> de las personas o del entorno → es una condición.
+  </div>
+
+  <div class="classifier fade-in">
+    <h3>¿Condición de interés o solución encubierta?</h3>
+    <p class="classifier-intro">Clasifica cada enunciado. Los ejemplos usan los tres temas del curso 2026-2.</p>
+    <div class="classify-items" id="grp-sol">
+
+      <div class="classify-item" data-id="s1" data-correct="condicion">
+        <div class="ci-scenario">"Alta exposición y vulnerabilidad de la población y sus medios de vida frente a peligros de origen natural (sismos, inundaciones, bajas temperaturas)."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-sol','s1','condicion')">Condición</button>
+          <button class="ci-btn" onclick="pick('grp-sol','s1','solucion')">Solución encubierta</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="s2" data-correct="solucion">
+        <div class="ci-scenario">"Débil acompañamiento pedagógico a los docentes de secundaria en las zonas rurales del país."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-sol','s2','condicion')">Condición</button>
+          <button class="ci-btn" onclick="pick('grp-sol','s2','solucion')">Solución encubierta</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="s3" data-correct="condicion">
+        <div class="ci-scenario">"Bajo nivel de logros de aprendizaje en lectura y matemática en estudiantes de 2.º de secundaria de instituciones educativas rurales."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-sol','s3','condicion')">Condición</button>
+          <button class="ci-btn" onclick="pick('grp-sol','s3','solucion')">Solución encubierta</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="s4" data-correct="solucion">
+        <div class="ci-scenario">"Escasa articulación entre el gobierno nacional, los gobiernos regionales y los gobiernos locales para la gestión del riesgo de desastres."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-sol','s4','condicion')">Condición</button>
+          <button class="ci-btn" onclick="pick('grp-sol','s4','solucion')">Solución encubierta</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="s5" data-correct="condicion">
+        <div class="ci-scenario">"Insuficiente acceso y continuidad del servicio de agua para consumo humano y saneamiento en los centros poblados del ámbito rural."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-sol','s5','condicion')">Condición</button>
+          <button class="ci-btn" onclick="pick('grp-sol','s5','solucion')">Solución encubierta</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 03 ESTRUCTURA -->
+<section id="estructura">
+  <div class="section-label fade-in">03 — Las tres secciones que exige el MEF</div>
+  <h2 class="section-title fade-in">Definición · Relevancia · Magnitud</h2>
+  <p class="section-intro fade-in">El Art. 9.3 remite a las orientaciones metodológicas de la DGPP. Esas pautas ordenan el capítulo de la condición de interés en tres secciones. Cada una responde una pregunta distinta y necesita un tipo de fuente distinto.</p>
+
+  <div class="pillars fade-in">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <div class="pillar-title">Definición</div>
+      <div class="pillar-desc">Qué es la condición, delimitada con literatura y evidencia. El enunciado precisa <strong style="color:var(--cream)">el cambio deseado, en qué, en quiénes y en qué magnitud</strong>. Requiere una definición conceptual (qué es) y una operacional (cómo se mide).</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <div class="pillar-title">Relevancia</div>
+      <div class="pillar-desc">Por qué es un problema público que merece atención del Estado. Se sustenta desde <strong style="color:var(--cream)">múltiples dimensiones</strong> —jurídica, social, económica, ambiental— y con respaldo en evidencia.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <div class="pillar-title">Magnitud</div>
+      <div class="pillar-desc">Cuánto, dónde, desde cuándo. Indicadores cuantitativos que dimensionan el problema. Los indicadores que elijas aquí <strong style="color:var(--cream)">medirán después el desempeño del programa</strong>.</div>
+    </div>
+  </div>
+
+  <div class="ask fade-in">
+    <strong>Pregúntate — Definición</strong>
+    ¿Mi enunciado se puede medir? Si no permite responder "¿cómo mido esto?", todavía es demasiado abstracto para un programa presupuestal.
+  </div>
+  <div class="ask fade-in">
+    <strong>Pregúntate — Relevancia</strong>
+    ¿Estoy justificando la <em>condición</em>, o ya estoy defendiendo una intervención? La relevancia argumenta que el problema importa, no que tu solución es la correcta.
+  </div>
+
+  <p class="body fade-in" style="margin-top:2rem;">Una buena sección de <strong>magnitud</strong> no es un dato suelto. Necesita cuatro elementos, juntos:</p>
+
+  <div class="mag-grid fade-in">
+    <div class="mag-item">
+      <h4>Extensión</h4>
+      <p>¿Cuántos y dónde? Número de afectados, cobertura geográfica, distribución por grupo poblacional.</p>
+    </div>
+    <div class="mag-item">
+      <h4>Intensidad</h4>
+      <p>¿Qué tan grave en quienes lo padecen? No es lo mismo una afectación leve que una severa.</p>
+    </div>
+    <div class="mag-item">
+      <h4>Evolución</h4>
+      <p>¿Mejora, está estancada o empeora? La tendencia en ~5 años define la urgencia.</p>
+    </div>
+    <div class="mag-item">
+      <h4>Brecha</h4>
+      <p>¿A qué distancia de un referente? Una meta nacional, un promedio regional, un estándar. Un dato sin referente es solo una cifra.</p>
+    </div>
+  </div>
+
+  <div class="ask fade-in">
+    <strong>Pregúntate — Magnitud</strong>
+    ¿Esta afirmación me dice <em>cuán grande</em> es el problema, o me dice <em>qué funciona</em> para resolverlo? Lo segundo es evidencia causal: va en el modelo explicativo, no en la magnitud.
+  </div>
+</section>
+
+<!-- 04 FUENTES -->
+<section id="fuentes">
+  <div class="section-label fade-in">04 — De dónde sale cada afirmación</div>
+  <h2 class="section-title fade-in">Tres preguntas antes de buscar</h2>
+  <p class="section-intro fade-in">No todas las afirmaciones de la condición de interés se sostienen con el mismo tipo de fuente. Confundirlas es el error más difícil de detectar una vez cometido.</p>
+
+  <div class="classifier fade-in">
+    <h3>¿Qué tipo de afirmación es?</h3>
+    <p class="classifier-intro">Cada afirmación de la condición de interés es <strong>normativa</strong> (lo que el marco legal manda), <strong>técnico-científica</strong> (lo que la evidencia establece sobre naturaleza, causas o consecuencias) o <strong>estadística</strong> (cuántos, dónde, con qué intensidad, cómo ha evolucionado). Clasifícalas.</p>
+    <div class="classify-items" id="grp-afi">
+
+      <div class="classify-item" data-id="a1" data-correct="normativa">
+        <div class="ci-scenario">"Toda persona tiene derecho a gozar de un ambiente equilibrado y adecuado al desarrollo de su vida."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-afi','a1','normativa')">Normativa</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a1','tecnica')">Técnico-científica</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a1','estadistica')">Estadística</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="a2" data-correct="estadistica">
+        <div class="ci-scenario">"En 2024, el [dato] % de estudiantes rurales de 2.º de secundaria alcanzó el nivel satisfactorio en lectura."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-afi','a2','normativa')">Normativa</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a2','tecnica')">Técnico-científica</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a2','estadistica')">Estadística</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="a3" data-correct="tecnica">
+        <div class="ci-scenario">"La exposición sostenida a agua no segura incrementa la incidencia de enfermedades diarreicas agudas en menores de cinco años."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-afi','a3','normativa')">Normativa</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a3','tecnica')">Técnico-científica</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a3','estadistica')">Estadística</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="a4" data-correct="normativa">
+        <div class="ci-scenario">"El Estado tiene el deber de identificar y reducir los riesgos asociados a peligros, y de responder ante situaciones de desastre."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-afi','a4','normativa')">Normativa</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a4','tecnica')">Técnico-científica</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a4','estadistica')">Estadística</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="a5" data-correct="tecnica">
+        <div class="ci-scenario">"Cada unidad monetaria invertida en prevención de desastres evita varias unidades en respuesta y reconstrucción."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-afi','a5','normativa')">Normativa</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a5','tecnica')">Técnico-científica</button>
+          <button class="ci-btn" onclick="pick('grp-afi','a5','estadistica')">Estadística</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="body fade-in" style="margin-top:2.5rem;">Además del tipo de afirmación, dos preguntas más antes de buscar: <strong>¿quién es la autoridad competente?</strong> (cada condición tiene un organismo rector que produce la definición oficial y los datos) y <strong>¿qué tan reciente necesita ser el dato?</strong> (para condiciones dinámicas, un dato de más de 3–5 años debe explicarse).</p>
+
+  <p class="body fade-in">Punto de partida por tema del curso:</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>Tema</th><th>Rectoría / definición</th><th>Datos de magnitud</th><th>Programa presupuestal afín</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gestión del riesgo de desastres</strong></td>
+          <td>PCM (ente rector del SINAGERD, Ley 29664); CENEPRED (gestión prospectiva y correctiva); INDECI (gestión reactiva)</td>
+          <td>CENEPRED (escenarios de riesgo, SIGRID); INDECI (emergencias, SINPAD); INEI</td>
+          <td>PP 0068 — Reducción de la Vulnerabilidad y Atención de Emergencias por Desastres (PREVAED)</td>
+        </tr>
+        <tr>
+          <td><strong>Logros de aprendizaje en secundaria rural</strong></td>
+          <td>MINEDU; Oficina de Medición de la Calidad de los Aprendizajes (UMC)</td>
+          <td>Evaluación Nacional de Logros de Aprendizaje (ENLA), consulta en SICRECE; estadística de la calidad educativa (ESCALE)</td>
+          <td>PP 0090 — Logros de Aprendizaje de Estudiantes de la Educación Básica Regular (PELA)</td>
+        </tr>
+        <tr>
+          <td><strong>Agua y saneamiento rural</strong></td>
+          <td>MVCS — Programa Nacional de Saneamiento Rural (PNSR); SUNASS (regulador de la calidad del servicio)</td>
+          <td>INEI — ENAPRES, boletín "Formas de Acceso a Agua y Saneamiento Básico"; diagnósticos del MVCS (DATASS)</td>
+          <td>PP 0083 — Programa Nacional de Saneamiento Rural</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="body fade-in" style="font-size:.82rem;">El detalle de portales, rutas de navegación y criterios de calidad de fuentes está en el <strong>Instructivo de búsqueda de fuentes</strong> del curso (PAIDEIA). Este recurso es la primera pasada; el instructivo es la consulta profunda.</p>
+
+  <div class="policy-note fade-in">
+    <p class="tag">Política de fuentes del curso</p>
+    <p>Fuentes académicas: organismos multilaterales (Banco Mundial, FMI, BID, OCDE) y revistas indexadas de primer nivel. Datos nacionales: solo fuentes oficiales peruanas (INEI, BCRP, MEF, ministerios y sus organismos). Las universidades peruanas no son fuente aceptable. Cuando no exista una fuente verificada, se declara explícitamente que la afirmación está "basada en razonamiento". Toda cita requiere identificador verificable (DOI, norma, instrumento y año) y, cuando exista, URL de acceso abierto.</p>
+  </div>
+</section>
+
+<!-- 05 TRAMPAS -->
+<section id="trampas">
+  <div class="section-label fade-in">05 — Trampas frecuentes</div>
+  <h2 class="section-title fade-in">Dónde se cae el diagnóstico</h2>
+  <p class="section-intro fade-in">Seis errores que aparecen una y otra vez. Reconocerlos en cabeza ajena es fácil; el ejercicio es cazarlos en el propio borrador.</p>
+
+  <div class="trap-grid">
+    <div class="trap fade-in">
+      <h4>Solución disfrazada de problema</h4>
+      <p>La condición nombra una intervención ("falta de X programa") en vez de un estado de las personas. <em>Antídoto:</em> ¿esto está en las personas o en el aparato del Estado?</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>Confundir magnitud con causa</h4>
+      <p>Colar afirmaciones causales ("X provoca Y") en la sección de magnitud. <em>Antídoto:</em> hoy solo dimensionas; la causalidad es el modelo explicativo.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>El indicador que mide la intervención</h4>
+      <p>"% de escuelas que recibieron acompañamiento" mide lo que hace el Estado, no el problema en las personas. <em>Antídoto:</em> el indicador de la condición mide el estado, no el gasto ni la actividad.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>El dato sin referente</h4>
+      <p>Una cifra sola no dice si el problema es grave o leve. <em>Antídoto:</em> siempre contra una meta, un promedio o un estándar.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>La fuente secundaria</h4>
+      <p>Citar a quien cita al INEI, en vez del INEI. <em>Antídoto:</em> ir siempre a la fuente que produce el dato.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>La comparación rota</h4>
+      <p>Comparar dos años entre los que cambió la metodología de medición. <em>Antídoto:</em> verificar la ficha técnica antes de armar una serie.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 AUTOCHEQUEO -->
+<section id="autochequeo">
+  <div class="section-label fade-in">06 — Autochequeo de tu borrador</div>
+  <h2 class="section-title fade-in">Antes de entregar</h2>
+  <p class="section-intro fade-in">Marca lo que tu borrador ya cumple. Lo que quede sin marcar es tu lista de pendientes. Se guarda en este navegador.</p>
+
+  <div class="checklist fade-in">
+    <div class="check-progress">
+      <div class="pct" id="ck-pct">0<span>%</span></div>
+      <button class="check-reset" onclick="resetChecks()">↺ Reiniciar</button>
+    </div>
+
+    <div class="check-group">
+      <h4>Definición</h4>
+      <label class="check-item"><input type="checkbox" data-ck="d1"><span>Mi condición describe un estado de las personas, hogares, comunidades o su entorno — no una intervención, un programa ni una entidad.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="d2"><span>El enunciado precisa el cambio deseado, en qué, en quiénes y en qué magnitud.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="d3"><span>Tengo una definición conceptual (qué es) y una operacional (cómo se mide).</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="d4"><span>La definición se apoya en literatura o normativa; no es de elaboración propia.</span></label>
+    </div>
+
+    <div class="check-group">
+      <h4>Relevancia</h4>
+      <label class="check-item"><input type="checkbox" data-ck="r1"><span>Justifico por qué es un problema público desde al menos dos dimensiones (jurídica, social, económica, ambiental).</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="r2"><span>Cito el sustento normativo (Constitución, ley, política nacional) y verifiqué su vigencia.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="r3"><span>Identifico a los actores afectados y de qué manera los afecta.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="r4"><span>Cada afirmación de relevancia tiene una fuente identificable.</span></label>
+    </div>
+
+    <div class="check-group">
+      <h4>Magnitud</h4>
+      <label class="check-item"><input type="checkbox" data-ck="m1"><span>Tengo un indicador principal (uno), con su valor actual y su fuente completa: organismo + instrumento + año.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="m2"><span>Muestro la evolución del indicador en aproximadamente 5 años.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="m3"><span>Comparo contra un referente (meta nacional, promedio regional, estándar) para expresar la brecha.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="m4"><span>No hay afirmaciones causales ("X causa Y") en la sección de magnitud.</span></label>
+    </div>
+
+    <div class="check-group">
+      <h4>Fuentes (transversal)</h4>
+      <label class="check-item"><input type="checkbox" data-ck="f1"><span>Todas mis fuentes son oficiales peruanas o de organismos multilaterales / revistas indexadas.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="f2"><span>Fui a la fuente primaria, no a una nota de prensa ni a una fuente que cita a otra.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="f3"><span>Verifiqué que no haya cambios metodológicos que rompan la comparación entre años.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="f4"><span>Señalo explícitamente lo que está "basado en razonamiento" cuando no tengo fuente.</span></label>
+    </div>
+
+    <p class="check-note">Este autochequeo recoge buenas prácticas de la Directiva del MEF y del instructivo del curso. No es una lista de cotejo de calificación.</p>
+  </div>
+</section>
+
+<!-- 07 QUÉ VIENE -->
+<section id="siguiente">
+  <div class="section-label fade-in">07 — Qué viene después</div>
+  <h2 class="section-title fade-in">Hacia dónde alimenta</h2>
+  <p class="section-intro fade-in">La condición de interés no es un ejercicio aislado: es el cimiento de las cinco etapas siguientes.</p>
+
+  <p class="body fade-in"><strong>Modelo conceptual</strong> (Art. 9.2) — representación de los vínculos causales o asociativos entre los conceptos relacionados con la condición; delimita el ámbito de estudio.</p>
+  <p class="body fade-in"><strong>Modelo explicativo</strong> (Art. 10.1) — representación jerarquizada y priorizada de los factores específicos y sus relaciones de causalidad que, según la mejor evidencia disponible, inciden en la condición. Aquí entra la evidencia causal.</p>
+  <p class="body fade-in"><strong>Modelo prescriptivo → teoría de cambio → indicadores</strong> — de los factores priorizados salen los productos; la teoría de cambio los encadena con el resultado; y los <strong>indicadores de magnitud que definiste hoy se vuelven la línea base</strong> contra la cual se medirán las metas.</p>
+
+  <div class="norm-box fade-in">
+    <p>Cadena de resultados: es una secuencia de cambios (de causa y efecto) en condiciones sobre la población o el entorno que inciden en una condición de interés.</p>
+    <cite>— Directiva N.º 0005-2020-EF/50.01, Anexo I (Glosario)</cite>
+  </div>
+
+  <div class="reference-box fade-in" style="margin-top:2.5rem;">
+    <h3>Referencias</h3>
+    <div class="ref-item">
+      <strong>Ministerio de Economía y Finanzas (2020).</strong> Directiva N.º 0005-2020-EF/50.01, "Directiva para el diseño de los Programas Presupuestales en el marco del Presupuesto por Resultados", aprobada por Resolución Directoral N.º 0030-2020-EF/50.01. Diario Oficial El Peruano, 5 de diciembre de 2020. <a href="https://www.gob.pe/mef" target="_blank" rel="noopener">gob.pe/mef</a>
+    </div>
+    <div class="ref-item">
+      <strong>Dirección General de Presupuesto Público (MEF).</strong> Pautas metodológicas para el desarrollo de programas presupuestales — Condición de Interés. Orientaciones metodológicas a que se refiere el Art. 9.3 de la Directiva.
+    </div>
+    <div class="ref-item">
+      <strong>GEP201 (2026).</strong> Instructivo de búsqueda de fuentes para la elaboración de la condición de interés. Material del curso (PAIDEIA).
+    </div>
+    <div class="ref-item">
+      <strong>Congreso de la República (2011).</strong> Ley N.º 29664, Ley que crea el Sistema Nacional de Gestión del Riesgo de Desastres (SINAGERD).
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="../index.html" style="color:var(--gold);text-decoration:none;letter-spacing:.12em;">&larr; Volver a recursos de clase</a>
+  <div style="margin-top:.8rem;">GEP201 · Gestión Financiera del Estado · PUCP · Juan Pablo Silva Macher</div>
+</footer>
+
+<script>
+// ── CLASSIFIERS ──
+const feedback = {
+  'grp-sol': {
+    s1: { ok: 'Correcto. Describe un estado del entorno y de la población (exposición, vulnerabilidad, medios de vida). No nombra ningún programa ni entidad.',
+          no: 'Es una condición: describe un estado del entorno y de la población, no una intervención.' },
+    s2: { ok: 'Correcto. El acompañamiento pedagógico es una intervención ya elegida. La condición sería el estado que se quiere cambiar: los logros de aprendizaje.',
+          no: 'Es una solución encubierta: "acompañamiento pedagógico" es una intervención, no un estado de las personas.' },
+    s3: { ok: 'Correcto. Describe un estado de los estudiantes (nivel de logro), delimitado por grado y ámbito. Es medible.',
+          no: 'Es una condición: un estado medible de los estudiantes, sin nombrar ninguna intervención.' },
+    s4: { ok: 'Correcto. "Articulación entre niveles de gobierno" es un arreglo institucional —un medio—, no un estado de las personas o el entorno.',
+          no: 'Es una solución/proceso encubierto: describe cómo debería organizarse el Estado, no el problema en la población.' },
+    s5: { ok: 'Correcto. Describe un estado de las personas y hogares del ámbito rural (acceso y continuidad del servicio). Es medible con ENAPRES.',
+          no: 'Es una condición: un estado de acceso de los hogares, no una obra ni un programa.' }
+  },
+  'grp-afi': {
+    a1: { ok: 'Correcto. Es un mandato constitucional (Art. 2, inc. 22). Se respalda con la norma, no con un artículo científico.',
+          no: 'Es normativa: enuncia un derecho / deber del Estado. Se cita la norma (Constitución, Art. 2 inc. 22).' },
+    a2: { ok: 'Correcto. Es una cifra: cuántos, dónde. Requiere una fuente estadística con metodología verificable (ENLA / SICRECE).',
+          no: 'Es estadística: "el X% alcanzó el nivel satisfactorio" es un dato de magnitud. Fuente: ENLA (MINEDU-UMC).' },
+    a3: { ok: 'Correcto. Es una afirmación sobre causas y consecuencias. Requiere literatura: una revisión sistemática, no un dato.',
+          no: 'Es técnico-científica: afirma una relación causa-efecto sobre la naturaleza del problema. Requiere literatura arbitrada.' },
+    a4: { ok: 'Correcto. Es un deber del Estado establecido en la Ley 29664 (SINAGERD). Se cita la norma.',
+          no: 'Es normativa: enuncia una obligación del Estado. Se cita la Ley 29664 (SINAGERD).' },
+    a5: { ok: 'Correcto — y una advertencia: es evidencia de efectividad. Sirve para la relevancia o el modelo prescriptivo, NO para dimensionar el problema. Y exige fuente con metodología.',
+          no: 'Es técnico-científica (evidencia de efectividad). Ojo: NO va en la magnitud —eso dimensiona el problema, no evalúa soluciones— y necesita una fuente con metodología explícita.' }
+  }
+};
+
+function pick(group, id, choice) {
+  const item = document.querySelector(`#${group} .classify-item[data-id="${id}"]`);
+  if (!item || item.dataset.done) return;
+  item.dataset.done = '1';
+  const correct = item.dataset.correct;
+  const isOk = choice === correct;
+  item.querySelectorAll('.ci-btn').forEach(btn => {
+    btn.classList.add('locked');
+    const label = btn.textContent.trim().toLowerCase();
+    const map = { 'condición':'condicion','solución encubierta':'solucion','normativa':'normativa','técnico-científica':'tecnica','estadística':'estadistica' };
+    if (map[label] === correct) btn.classList.add('pick-correct');
+    else if (map[label] === choice) btn.classList.add('pick-wrong');
+  });
+  const res = item.querySelector('.ci-result');
+  res.className = 'ci-result show ' + (isOk ? 'ok' : 'fail');
+  res.innerHTML = (isOk ? '✓ ' : '✗ ') + feedback[group][id][isOk ? 'ok' : 'no'];
+}
+
+// ── CHECKLIST ──
+const CK = 'gep201-ci-checklist';
+const boxes = () => Array.from(document.querySelectorAll('.checklist input[type="checkbox"]'));
+
+function loadChecks() {
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(CK)) || []; } catch (e) { saved = []; }
+  boxes().forEach(b => { if (saved.includes(b.dataset.ck)) b.checked = true; });
+  updatePct();
+}
+function saveChecks() {
+  const on = boxes().filter(b => b.checked).map(b => b.dataset.ck);
+  try { localStorage.setItem(CK, JSON.stringify(on)); } catch (e) {}
+}
+function updatePct() {
+  const all = boxes();
+  const n = all.filter(b => b.checked).length;
+  const pct = all.length ? Math.round(n * 100 / all.length) : 0;
+  document.getElementById('ck-pct').innerHTML = pct + '<span>%</span>';
+}
+function resetChecks() {
+  boxes().forEach(b => b.checked = false);
+  saveChecks(); updatePct();
+}
+document.addEventListener('change', e => {
+  if (e.target.matches('.checklist input[type="checkbox"]')) { saveChecks(); updatePct(); }
+});
+
+// ── SCROLL FADE ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+loadChecks();
+</script>
+</body>
+</html>

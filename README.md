@@ -16,7 +16,8 @@ Por unidad del sílabo (espeja `clases/` del repo del curso):
 index.html                              → landing con enlaces a todos los recursos
 unidad-1/
   triangulo-estrategico.html            → Clase 3 · triángulo estratégico de Moore
-unidad-2/ …                             → (por agregar)
+unidad-2/
+  condicion-de-interes.html             → Clase 4 · condición de interés (Directiva MEF + búsqueda de fuentes)
 ```
 
 ## Convención
