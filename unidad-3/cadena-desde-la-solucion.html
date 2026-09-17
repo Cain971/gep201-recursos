@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riesgos de construir la cadena causal desde la solución — GEP201</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --navy-light: #1e3050;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f5f0e8;
+  --cream-dim: #e8e0d0;
+  --rust: #c0392b;
+  --sage: #2e7d52;
+  --slate: #5c6b7a;
+  --text-on-dark: #dde4ee;
+  --text-dim: #8a9bb0;
+  --border: rgba(201,168,76,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 120%; }
+
+body {
+  background: var(--navy);
+  color: var(--text-on-dark);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,27,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: color .2s;
+}
+.nav-brand:hover { color: var(--gold-light); }
+.nav-brand .back-arrow { font-size: .8rem; color: var(--text-dim); transition: color .2s; }
+.nav-brand:hover .back-arrow { color: var(--gold-light); }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+/* SECTIONS */
+section {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+section + section { padding-top: 2rem; }
+
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: none; padding: 8rem 3rem 4rem;
+}
+.hero-inner { max-width: 820px; margin: 0 auto; }
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 900; line-height: 1.15;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--text-dim); max-width: 600px;
+  margin-bottom: 2.5rem; line-height: 1.8;
+}
+.hero-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-meta span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .13em;
+  color: var(--text-dim); text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: .4rem .9rem; border-radius: 2px;
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: .3;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700; color: var(--cream);
+  margin-bottom: 1rem; line-height: 1.2;
+}
+.section-intro {
+  font-size: 1rem; color: var(--text-dim);
+  max-width: 640px; margin-bottom: 3rem; line-height: 1.8;
+}
+
+p.body { font-size: .95rem; color: var(--text-dim); line-height: 1.85; margin-bottom: 1.3rem; }
+p.body strong { color: var(--cream); font-weight: 400; }
+
+/* NORM / QUOTE BOX */
+.norm-box {
+  background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--gold);
+  border-left: 3px solid var(--gold);
+  padding: 1.8rem 2rem; border-radius: 2px; margin: 2rem 0;
+  position: relative;
+}
+.norm-box p { font-size: 1.05rem; color: var(--cream); line-height: 1.8; font-style: italic; }
+.norm-box cite {
+  display: block; margin-top: 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); font-style: normal;
+}
+
+/* ASK CALLOUT */
+.ask {
+  background: rgba(255,255,255,.03);
+  border-left: 2px solid var(--gold);
+  padding: .9rem 1.1rem; border-radius: 0 2px 2px 0;
+  margin: 1.2rem 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .76rem; color: var(--gold-light); line-height: 1.7;
+}
+.ask strong {
+  display: block; font-size: .6rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .4rem;
+}
+
+/* DIRECTION COMPARE (cadenas) */
+.compare-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin: 2rem 0; }
+.compare-col { display: flex; flex-direction: column; }
+.compare-head {
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .13em;
+  text-transform: uppercase; padding-bottom: .8rem; margin-bottom: 1.2rem;
+  border-bottom: 2px solid var(--border);
+}
+.compare-col.ok .compare-head { color: var(--sage); border-bottom-color: rgba(46,125,82,.4); }
+.compare-col.bad .compare-head { color: var(--rust); border-bottom-color: rgba(192,57,43,.4); }
+.chain-step {
+  font-family: 'IBM Plex Mono', monospace; font-size: .78rem; line-height: 1.6;
+  color: var(--text-dim); padding: .5rem 0;
+}
+.chain-step.final { color: var(--cream); font-weight: 500; }
+.chain-arrow { color: var(--gold); font-size: .9rem; padding-left: .1rem; }
+.compare-col.bad .chain-arrow { color: var(--rust); }
+
+/* PILLARS reused for eslabones legend */
+.pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 2rem 0; }
+.pillar {
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-top: 3px solid var(--gold); border-radius: 2px; padding: 1.4rem;
+}
+.pillar:nth-child(2) { border-top-color: #61afef; }
+.pillar-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .58rem; letter-spacing: .13em; color: var(--text-dim); margin-bottom: .5rem;
+}
+.pillar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; color: var(--cream); margin-bottom: .6rem;
+}
+.pillar-desc { font-size: .84rem; color: var(--text-dim); line-height: 1.65; }
+
+/* CLASSIFIER */
+.classifier { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 2rem; margin: 1.5rem 0; }
+.classifier h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--cream); margin-bottom: .5rem; }
+.classifier-intro { font-size: .86rem; color: var(--text-dim); margin-bottom: 1.6rem; line-height: 1.6; }
+.classify-items { display: flex; flex-direction: column; gap: 1rem; }
+.classify-item { background: rgba(255,255,255,.025); border: 1px solid var(--border); border-radius: 2px; padding: 1.2rem 1.4rem; }
+.ci-scenario { font-size: .9rem; color: var(--cream); margin-bottom: 1rem; line-height: 1.6; }
+.ci-scenario small { display: block; font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .08em; color: var(--text-dim); text-transform: uppercase; margin-top: .5rem; }
+.ci-buttons { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ci-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: .64rem; letter-spacing: .08em;
+  text-transform: uppercase; padding: .45rem .9rem; border-radius: 2px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.ci-btn:hover:not(.locked) { border-color: var(--gold); color: var(--gold); }
+.ci-btn.pick-correct { background: rgba(46,125,82,.2); border-color: rgba(46,125,82,.6); color: #7dd8a8; }
+.ci-btn.pick-wrong { background: rgba(192,57,43,.15); border-color: rgba(192,57,43,.5); color: #e08080; }
+.ci-btn.locked { cursor: default; }
+.ci-result { margin-top: .9rem; font-size: .82rem; line-height: 1.6; display: none; }
+.ci-result.show { display: block; }
+.ci-result.ok { color: #7dd8a8; }
+.ci-result.fail { color: #e08080; }
+.ci-result strong { color: var(--cream); }
+
+/* TRAPS */
+.trap-grid { display: flex; flex-direction: column; gap: .8rem; }
+.trap {
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-left: 3px solid var(--rust); border-radius: 2px; padding: 1.2rem 1.5rem;
+}
+.trap h4 {
+  font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: .4rem;
+}
+.trap p { font-size: .85rem; color: var(--text-dim); line-height: 1.65; }
+.trap p em { color: var(--gold-light); font-style: italic; }
+
+/* TABLE */
+.tbl-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 2px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .8rem; }
+th, td { text-align: left; padding: .8rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th {
+  font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,.05);
+}
+td { color: var(--text-dim); }
+td strong { color: var(--cream); font-weight: 400; }
+tr:last-child td { border-bottom: none; }
+
+/* POLICY / NEUTRALITY NOTE */
+.policy-note {
+  background: rgba(201,168,76,.05); border: 1px solid var(--border);
+  padding: 1.4rem 1.6rem; border-radius: 2px; margin: 1.5rem 0;
+}
+.risk-head {
+  font-family: 'IBM Plex Mono', monospace; font-size: .64rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--gold); margin: 1.8rem 0 .6rem;
+}
+.press-note {
+  background: rgba(255,255,255,.03); border: 1px solid var(--border);
+  border-left: 3px solid var(--slate); padding: 1.6rem 2rem; border-radius: 2px; margin: 1.5rem 0;
+}
+.press-note p.headline { font-size: 1.02rem; color: var(--cream); line-height: 1.7; font-style: italic; }
+.press-note cite {
+  display: block; margin-top: 1rem;
+  font-family: 'IBM Plex Mono', monospace; font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); font-style: normal;
+}
+.policy-note p.tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .12em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem;
+}
+.policy-note p { font-size: .86rem; color: var(--text-dim); line-height: 1.7; }
+
+/* CHECKLIST */
+.checklist { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 2rem; }
+.check-progress {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 1.2rem; margin-bottom: 1.4rem; border-bottom: 1px solid var(--border);
+}
+.check-progress .pct { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+.check-progress .pct span { font-size: .8rem; color: var(--text-dim); }
+.check-reset {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; padding: .45rem 1rem; border-radius: 2px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.check-reset:hover { border-color: var(--gold); color: var(--gold); }
+.check-group { margin-bottom: 1.5rem; }
+.check-group > h4 {
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .8rem;
+}
+.check-item { display: flex; align-items: flex-start; gap: .8rem; padding: .55rem 0; cursor: pointer; }
+.check-item input {
+  appearance: none; -webkit-appearance: none;
+  width: 18px; height: 18px; min-width: 18px; margin-top: .15rem;
+  border: 1px solid var(--slate); border-radius: 3px; background: transparent;
+  cursor: pointer; position: relative; transition: all .15s;
+}
+.check-item input:checked { background: var(--gold); border-color: var(--gold); }
+.check-item input:checked::after {
+  content: '\2713'; position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; color: var(--navy); font-weight: 700;
+}
+.check-item span { font-size: .88rem; color: var(--text-dim); line-height: 1.55; }
+.check-item input:checked + span { color: var(--cream-dim); }
+.check-note {
+  margin-top: 1rem; font-size: .76rem; color: var(--text-dim);
+  font-style: italic; line-height: 1.6;
+}
+
+/* REFERENCE BOX */
+.reference-box { background: var(--navy-mid); border: 1px solid var(--border); padding: 1.6rem 2rem; border-radius: 2px; }
+.reference-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: 1rem; }
+.ref-item {
+  font-family: 'IBM Plex Mono', monospace; font-size: .68rem; color: var(--text-dim);
+  line-height: 1.8; border-bottom: 1px solid var(--border);
+  padding-bottom: .8rem; margin-bottom: .8rem;
+}
+.ref-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ref-item strong { color: var(--cream); }
+.ref-item a { color: var(--gold); text-decoration: none; }
+.ref-item a:hover { text-decoration: underline; }
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem; text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+.divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 680px) {
+  .pillars { grid-template-columns: 1fr; }
+  .compare-wrap { grid-template-columns: 1fr; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  section { padding: 4rem 1.5rem; }
+  nav { padding: .8rem 1.1rem; }
+  .nav-links { gap: .7rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../index.html"><span class="back-arrow">&larr;</span> GEP201 · Recursos</a>
+  <ul class="nav-links">
+    <li><a href="#marco">Marco</a></li>
+    <li><a href="#clasificador">Clasificador</a></li>
+    <li><a href="#casos">Casos</a></li>
+    <li><a href="#trampas">Trampas</a></li>
+    <li><a href="#autochequeo">Autochequeo</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">GEP201 — Gestión Financiera del Estado</div>
+    <h1>Cuando la solución<br><em>elige su propio factor</em></h1>
+    <p class="hero-sub">Dos riesgos de construir la cadena de resultados a partir de una intervención ya decidida: no comparar ese factor contra los demás candidatos, y no exigirle el mismo rigor de evidencia que le exigirías si todavía no supieras qué ibas a hacer.</p>
+    <div class="hero-meta">
+      <span>Unidad II · Modelo explicativo</span>
+      <span>Directiva N.º 0001-2026-EF/50.01, Art. 11</span>
+      <span>Juan Pablo Silva · PUCP</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 MARCO -->
+<section id="marco">
+  <div class="section-label fade-in">01 — Dos riesgos, un mismo origen</div>
+  <h2 class="section-title fade-in">Partir de los factores, o partir de la solución</h2>
+  <p class="section-intro fade-in">La cadena de resultados vincula la condición de interés con la intervención a través de una secuencia de factores causales. El Art. 11 de la Directiva exige que el modelo explicativo se construya "de forma jerarquizada y según la mejor evidencia disponible" — son dos exigencias distintas, no una sola. Partir de una intervención ya decidida rompe las dos, por caminos distintos.</p>
+
+  <div class="pillars fade-in">
+    <div class="pillar">
+      <div class="pillar-num">Riesgo 1</div>
+      <div class="pillar-title">No jerarquizas</div>
+      <div class="pillar-desc">Eliges el factor que tu intervención ya resuelve y nunca lo comparas contra los demás factores plausibles. Puede ser un factor real, con evidencia genuina, y aun así no ser el principal — simplemente nunca lo pusiste a competir con las otras explicaciones.</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">Riesgo 2</div>
+      <div class="pillar-title">Analizas menos</div>
+      <div class="pillar-desc">Si el objetivo real es justificar la solución, no necesitas el análisis más riguroso del factor — necesitas uno que alcance. Eso deja el análisis en una mirada de insumos (cuánto se compró, cuánto se instaló) en vez de examinar el mecanismo completo, incluida la evidencia que podría contradecirlo.</div>
+    </div>
+  </div>
+
+  <div class="norm-box fade-in">
+    <p>El modelo explicativo representa, de forma jerarquizada y según la mejor evidencia disponible, los factores causales que inciden en la condición de interés.</p>
+    <cite>— Directiva N.º 0001-2026-EF/50.01, Art. 11 (paráfrasis de su objeto)</cite>
+  </div>
+
+  <div class="compare-wrap fade-in">
+    <div class="compare-col ok">
+      <div class="compare-head">Partir de los factores</div>
+      <div class="chain-step">Condición de interés<span class="chain-arrow"> ↓</span></div>
+      <div class="chain-step">Factores causales, comparados y jerarquizados por evidencia (Anexo I)<span class="chain-arrow"> ↓</span></div>
+      <div class="chain-step">Modelo prescriptivo: qué factor se puede y conviene intervenir<span class="chain-arrow"> ↓</span></div>
+      <div class="chain-step final">Intervención</div>
+    </div>
+    <div class="compare-col bad">
+      <div class="compare-head">Partir de la solución</div>
+      <div class="chain-step final">Intervención ya decidida</div>
+      <div class="chain-step"><span class="chain-arrow">↑ </span>se elige el factor que esa intervención resuelve <small style="display:block;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.06em;color:var(--rust);text-transform:uppercase;margin-top:.2rem;">Riesgo 1 — sin comparar con otros</small></div>
+      <div class="chain-step"><span class="chain-arrow">↑ </span>se busca un argumento que alcance, no el más riguroso <small style="display:block;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.06em;color:var(--rust);text-transform:uppercase;margin-top:.2rem;">Riesgo 2 — se deja de buscar evidencia contraria</small></div>
+      <div class="chain-step"><span class="chain-arrow">↑ </span>Condición de interés (pretexto, no punto de partida)</div>
+    </div>
+  </div>
+
+  <div class="ask fade-in">
+    <strong>La prueba — dos preguntas, una por riesgo</strong>
+    ¿Comparé este factor contra los demás factores plausibles, o lo elegí porque ya tenía una intervención lista para él? (Riesgo 1) — ¿Busqué evidencia que pudiera contradecir este factor, o me detuve en el primer argumento que lo sostenía? (Riesgo 2)
+  </div>
+
+  <p class="body fade-in">Por qué es difícil de detectar: la cadena construida desde la solución puede tener eslabones reales y hasta con fuente — el problema no es que sean falsos, es que <strong>fueron elegidos porque llevan a la solución</strong>, no porque el análisis de evidencia los haya priorizado, ni analizados con el mismo rigor que exigirías sin una respuesta ya decidida. Es la misma familia de error que "condición ≠ solución encubierta" (Unidad II, sección 02 de <a href="../unidad-2/condicion-de-interes.html" style="color:var(--gold)">La condición de interés</a>), aplicada ahora a los factores de la cadena, no solo al punto de partida.</p>
+</section>
+
+<!-- 02 EJERCICIO INTRODUCTORIO — EXTORSIÓN -->
+<section id="clasificador">
+  <div class="section-label fade-in">02 — Ejercicio introductorio</div>
+  <h2 class="section-title fade-in">Una pista, no un veredicto</h2>
+  <p class="section-intro fade-in">Dos cadenas sobre el mismo problema — el aumento de la extorsión en el Perú. Clasifica cada una antes de leer la explicación; en la sección 03 se profundiza con las normas y cifras oficiales.</p>
+
+  <div class="classifier fade-in">
+    <h3>Cadena A</h3>
+    <div class="classify-items" id="grp-cadena">
+
+      <div class="classify-item" data-id="c1" data-correct="factor">
+        <div class="ci-scenario">
+          Amenazas y cobros de cupo coordinados por llamadas y redes sociales, en buena parte desde el interior de los penales → las víctimas pagan sin que medie contacto físico ni presencia en la calle → <strong>persiste el aumento de la extorsión</strong>.
+          <small>Cadena A</small>
+        </div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-cadena','c1','factor')">Desde el factor</button>
+          <button class="ci-btn" onclick="pick('grp-cadena','c1','solucion')">Desde la solución</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="c2" data-correct="solucion">
+        <div class="ci-scenario">
+          Falta presencia visible de las Fuerzas Armadas y la Policía en las calles → el crimen organizado actúa con libertad en el espacio público → <strong>persiste el aumento de la extorsión</strong>.
+          <small>Cadena B</small>
+        </div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-cadena','c2','factor')">Desde el factor</button>
+          <button class="ci-btn" onclick="pick('grp-cadena','c2','solucion')">Desde la solución</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="body fade-in" style="margin-top:1.5rem;font-size:.85rem;">Ninguna de las dos es inventada — el crimen organizado sí ocupa el espacio público para otros delitos. La diferencia: la Cadena B es la respuesta que ya estaba disponible para el Estado (movilizar tropas) y la más visible, no necesariamente la que atacaba el mecanismo dominante. Según el Ministerio Público (Observatorio de Criminalidad), las denuncias por extorsión pasaron de 11,000 en 2022 a 27,500 en 2025, y ya suman 12,634 en el primer semestre de 2026 — una escalada que no se revirtió durante los mismos años en que se declararon y ampliaron sucesivos estados de emergencia con apoyo de las FF.AA. (ver Caso 2).</p>
+
+  <p class="body fade-in" style="font-size:.85rem;font-style:italic;">Este ejercicio es puramente ilustrativo: sirve para poner a prueba una primera intuición sobre qué se construyó primero, no es un análisis causal de la extorsión ni sugiere que una de las dos cadenas sea la política que falta. Un modelo explicativo real exige comparar muchos más factores, con literatura y evidencia propia de cada uno — eso es lo que hace el Caso 2, más abajo.</p>
+</section>
+
+<!-- 03 CASOS -->
+<section id="casos">
+  <div class="section-label fade-in">03 — Casos aplicados</div>
+  <h2 class="section-title fade-in">De la lectura de una cadena al análisis comparado de varias</h2>
+  <p class="section-intro fade-in">El primer caso muestra el vicio en una sola cadena. El segundo lo escala: varias medidas reales, cada una con su propia norma, aplicadas al mismo problema — y el ejercicio de identificar qué eslabón ataca cada una.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--cream);margin-bottom:.8rem;" class="fade-in">Caso 1 · Anemia y desnutrición infantil</h3>
+  <p class="body fade-in">El mismo caso trabajado en el <a href="../unidad-1/triangulo-estrategico.html" style="color:var(--gold)">triángulo estratégico</a> (Unidad I) y en <a href="../unidad-2/condicion-de-interes.html" style="color:var(--gold)">la condición de interés</a> (Unidad II).</p>
+
+  <div class="press-note fade-in">
+    <p class="headline">"[...] Los productos lácteos y sus derivados son una fuente importante y una vía para poder reducir esa anemia infantil."</p>
+    <cite>— RPP, sección Vital, 6 de junio de 2024 ("¿Cuál es el papel de la leche y sus derivados en la lucha contra la anemia infantil?"). Nota de salud y estilo de vida, no especializada en salud pública.</cite>
+  </div>
+
+  <p class="body fade-in">Esta misma lógica —dar leche para combatir la anemia— sostiene desde 1985 una de las políticas sociales más grandes y duraderas del Perú: el Programa del Vaso de Leche (Ley N.º 24059), vigente en todas las municipalidades del país.</p>
+
+  <div class="risk-head fade-in">Riesgo 1</div>
+  <p class="body fade-in">El marco conceptual de UNICEF (1990, actualizado 2020) y el propio Plan Multisectorial de Lucha contra la Anemia del Perú (D.S. N.º 068-2018-PCM, MIDIS/MINSA) reconocen la alimentación inadecuada y las enfermedades infecciosas (diarreicas, respiratorias) como causas inmediatas que interactúan en un círculo vicioso: la enfermedad reduce el apetito y la absorción de nutrientes, y la mala nutrición aumenta la vulnerabilidad a enfermar. Tratar solo la alimentación como el factor, sin compararla frente a las enfermedades y el acceso a agua segura, deja fuera algo que la propia norma peruana ya reconoce como relevante. El Vaso de Leche es el vicio en estado puro: su presupuesto se mantiene congelado en S/ 363 millones anuales desde 2005 —según un estudio del Banco Mundial— en parte por falta de evidencia que mida sus impactos. Cuatro décadas sosteniendo la misma solución, sin la comparación rigurosa que el Art. 11 exige entre ella y otros factores.</p>
+
+  <div class="risk-head fade-in">Riesgo 2</div>
+  <p class="body fade-in">Incluso cuando sí se interviene sobre la alimentación, "combatir la mala alimentación" —o repartir leche, en el caso del programa— es una etiqueta demasiado amplia para ser un factor del modelo explicativo. No distingue si el problema es la cantidad, la calidad (hierro específicamente) o el acceso, ni para qué población específica. La Contraloría y la Defensoría del Pueblo han documentado filtración y ejecución deficiente en el Vaso de Leche (informe de la Defensoría, agosto de 2024; nueve municipalidades de Lima observadas por la Contraloría en 2025 por no ejecutar su presupuesto) — consistente con una intervención diseñada por insumo (litros repartidos), no por el mecanismo nutricional específico ni por quién realmente lo necesita.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--cream);margin:2.5rem 0 .8rem;" class="fade-in">Caso 2 · Extorsión y sicariato en el Perú (2025-2026)</h3>
+  <p class="body fade-in">Un caso con cuatro intervenciones reales, cada una respaldada por su propia norma vigente, frente al mismo problema declarado: el incremento del accionar criminal (homicidio, sicariato, extorsión). El primer indicio del vicio no está en ninguna medida en particular — está en que sean cuatro normas separadas, cada una con su propio eslabón y su propia justificación, sin evidencia pública de que se hayan comparado entre sí antes de decidirse.</p>
+
+  <div class="policy-note fade-in">
+    <p class="tag">Nota de neutralidad</p>
+    <p>Este caso no evalúa la gestión de ningún gobierno, autoridad o candidato, ni toma posición sobre si alguna medida es correcta o incorrecta en sí misma. Usa únicamente normas oficiales vigentes y cifras de fuentes públicas, para practicar una destreza técnica: identificar el eslabón causal que una norma declara atacar y contrastarlo con la evidencia disponible sobre dónde se concentra el problema.</p>
+  </div>
+
+  <div class="risk-head fade-in">Riesgo 1</div>
+  <p class="body fade-in">Cada norma es internamente coherente — declara con claridad qué eslabón ataca (compruébalo en el clasificador y la tabla de abajo). Pero cuatro respuestas paralelas, decididas y anunciadas por separado a medida que el problema empeoraba, son en sí mismas una señal de que falta un modelo explicativo único que compare los mecanismos entre sí y jerarquice dónde concentrar el esfuerzo — no hay una estrategia integral frente a la extorsión, hay piezas sueltas. Verificamos el texto oficial de la norma más reciente y completa (D.S. N.º 123-2026-PCM): cita como base legal el D.L. N.º 1186, el D.L. N.º 1095, el D.L. N.º 1350, el D.S. N.º 002-2023-MIMP y el sistema de recompensas (D.S. N.º 011-2016-PCM y 097-2025-PCM) — pero no cita el D.S. N.º 046-2025-PCM (motos), ninguna resolución de OSIPTEL, ni el Plan de Modernización del Equipamiento Policial. Tampoco desarrolla un modelo explicativo: su fundamento es solo "perturbación del orden interno" por homicidio, sicariato y extorsión, sin comparar mecanismos.</p>
+
+  <div class="classifier fade-in">
+    <h3>¿A qué eslabón apunta cada medida?</h3>
+    <p class="classifier-intro">Antes de ver la tabla completa: elige el eslabón que cada norma declara atacar, según su propio texto.</p>
+    <div class="classify-items" id="grp-eslabon">
+
+      <div class="classify-item" data-id="e1" data-correct="moto">
+        <div class="ci-scenario">"Restringe la circulación de motocicletas a una sola persona, sin acompañante, y prohíbe elementos que oculten el rostro del conductor."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-eslabon','e1','moto')">Escape en moto</button>
+          <button class="ci-btn" onclick="pick('grp-eslabon','e1','calle')">Control del espacio público</button>
+          <button class="ci-btn" onclick="pick('grp-eslabon','e1','penal')">Coordinación desde penales</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="e2" data-correct="calle">
+        <div class="ci-scenario">"La Policía Nacional mantiene el control del orden interno, con apoyo de las Fuerzas Armadas en zonas estratégicas determinadas por mapas del delito e inteligencia."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-eslabon','e2','moto')">Escape en moto</button>
+          <button class="ci-btn" onclick="pick('grp-eslabon','e2','calle')">Control del espacio público</button>
+          <button class="ci-btn" onclick="pick('grp-eslabon','e2','penal')">Coordinación desde penales</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+      <div class="classify-item" data-id="e3" data-correct="penal">
+        <div class="ci-scenario">"Las operadoras deben implementar monitoreo permanente por geolocalización y cortar el servicio a los equipos que operen sin autorización dentro de un establecimiento penitenciario."</div>
+        <div class="ci-buttons">
+          <button class="ci-btn" onclick="pick('grp-eslabon','e3','moto')">Escape en moto</button>
+          <button class="ci-btn" onclick="pick('grp-eslabon','e3','calle')">Control del espacio público</button>
+          <button class="ci-btn" onclick="pick('grp-eslabon','e3','penal')">Coordinación desde penales</button>
+        </div>
+        <div class="ci-result"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="body fade-in" style="margin-top:1.5rem;font-size:.85rem;">El cuadro completo, con la norma de cada medida:</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>Medida</th><th>Norma / fuente oficial</th><th>Eslabón que declara atacar</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Prohibición de circular 2 personas en moto lineal</strong> (Lima y Callao)</td>
+          <td>D.S. N.º 046-2025-PCM (17-abr-2025)</td>
+          <td>Modalidad de ataque y huida de sicarios en moto</td>
+        </tr>
+        <tr>
+          <td><strong>Estados de emergencia sucesivos con apoyo de las FF.AA.</strong> en control territorial</td>
+          <td>D.S. N.º 027-2026-PCM (27-feb-2026); D.S. N.º 123-2026-PCM (28-ago-2026)</td>
+          <td>Control del orden interno en el espacio público</td>
+        </tr>
+        <tr>
+          <td><strong>Cámaras de videovigilancia con IA</strong> (S/ 9,200 millones, interconectadas al Centro 105)</td>
+          <td>Plan de Modernización del Equipamiento Policial 2025-2030 (MININTER/PNP)</td>
+          <td>Vigilancia y capacidad de respuesta en el espacio público</td>
+        </tr>
+        <tr>
+          <td><strong>Bloqueo geolocalizado de líneas móviles activas en penales</strong></td>
+          <td>Resolución N.º 000139-2025-CD/OSIPTEL (31-dic-2025)</td>
+          <td>Coordinación de extorsiones desde el interior de los penales</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="ask fade-in">
+    <strong>Corolario del Riesgo 1 — la pregunta de proporción</strong>
+    Como se vio en el ejercicio introductorio, las denuncias por extorsión (Ministerio Público — Observatorio de Criminalidad) pasaron de 11,000 en 2022 a 27,500 en 2025, sin revertirse durante los estados de emergencia con FF.AA. ya vigentes. Según el propio INPE, solo 30 de 69 penales cuentan con bloqueadores de señal — ninguno en Challapalca, el de máxima seguridad, y los que funcionan datan de tecnología 2G/3G. Si buena parte de la coordinación extorsiva pasa por los penales, ¿la inversión y la visibilidad de cada medida son proporcionales a ese eslabón, o se concentran donde la intervención es más vistosa? Sin un modelo que compare los cuatro mecanismos, no hay forma de responder esto con rigor — solo con intuición.
+  </div>
+
+  <div class="risk-head fade-in">Riesgo 2</div>
+  <p class="body fade-in">La justificación pública de una medida rara vez precisa el mecanismo exacto que ataca. "Las cámaras reducen el crimen" es un argumento genérico que alcanza para aprobar una compra, pero no distingue si reduce el hurto callejero (que sí ocurre a la vista de una cámara) o la extorsión telefónica coordinada desde un penal (que no). Cuando el argumento que sostiene una medida serviría igual de bien para cualquier delito, es señal de que el análisis se detuvo en el primer argumento que alcanzaba, no en el que correspondía al mecanismo específico declarado — el mismo problema que la trampa "el paraguas único" (sección 04): tratar mecanismos distintos como si fueran un solo problema es más fácil cuando el análisis ya es superficial.</p>
+</section>
+
+<!-- 04 TRAMPAS -->
+<section id="trampas">
+  <div class="section-label fade-in">04 — Trampas frecuentes</div>
+  <h2 class="section-title fade-in">Cómo se disfraza el vicio</h2>
+  <p class="section-intro fade-in">Formas concretas en las que una cadena construida desde la solución logra parecer construida desde los factores. Ninguna de estas ayudas es una garantía por sí sola — son señales de alerta, no una lista de cotejo cerrada.</p>
+
+  <div class="trap-grid">
+    <div class="trap fade-in">
+      <h4>La causa a la medida</h4>
+      <p>Se elige, entre varios factores causales posibles, el único que la intervención ya elegida puede resolver — y se presenta como si fuera el factor prioritario. <em>Ayuda:</em> prioriza los factores por evidencia y magnitud (Anexo I) y compáralos explícitamente entre sí — no basta con que tu factor tenga evidencia, tiene que ganarle a los demás candidatos.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>El eslabón que nadie nombra</h4>
+      <p>El mecanismo que la evidencia señala como más relevante queda fuera de la cadena, sin explicación, porque ninguna intervención en curso lo ataca. <em>Ayuda:</em> lista todos los factores relevantes encontrados en la literatura, no solo los cómodos, y explica por qué descartaste los que no desarrollaste.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>El paraguas único</h4>
+      <p>Tratar mecanismos distintos (p. ej. sicariato callejero y extorsión telefónica) como si fueran "el mismo problema", lo que permite que una intervención dirigida a uno se presente como respuesta a ambos. <em>Ayuda:</em> un modelo explicativo por mecanismo, no una sola cadena genérica para todo el fenómeno — si dos problemas comparten intervención pero no mecanismo, necesitan análisis causales separados.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>La visibilidad como sustituto de evidencia</h4>
+      <p>Una medida vistosa (o costosa) se defiende por su despliegue, no porque la evidencia muestre que interrumpe el eslabón dominante. <em>Ayuda:</em> pregúntate si el argumento que sostiene la medida es específico al mecanismo que declara atacar, o serviría igual para cualquier otro problema.</p>
+    </div>
+    <div class="trap fade-in">
+      <h4>El eslabón sin fuente</h4>
+      <p>Una flecha del diagrama ("X reduce Y") que nadie sustenta con literatura ni dato, sostenida solo porque conecta bien con la solución. <em>Ayuda:</em> cada eslabón declara su categoría de evidencia (Anexo I) o se marca "basado en razonamiento" — y se busca explícitamente evidencia que lo contradiga, no solo la que lo confirma.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 AUTOCHEQUEO -->
+<section id="autochequeo">
+  <div class="section-label fade-in">05 — Autochequeo de tu modelo explicativo</div>
+  <h2 class="section-title fade-in">Antes de entregar</h2>
+  <p class="section-intro fade-in">Aplícalo a la cadena de resultados de tu propio programa presupuestal. Se guarda en este navegador.</p>
+
+  <div class="checklist fade-in">
+    <div class="check-progress">
+      <div class="pct" id="ck-pct">0<span>%</span></div>
+      <button class="check-reset" onclick="resetChecks()">↺ Reiniciar</button>
+    </div>
+
+    <div class="check-group">
+      <h4>Riesgo 1 — jerarquización</h4>
+      <label class="check-item"><input type="checkbox" data-ck="d1"><span>Puedo tapar mi intervención y el factor elegido sigue sosteniéndose solo, con evidencia propia.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="d2"><span>Prioricé los factores causales por evidencia y magnitud (Anexo I), comparándolos explícitamente entre sí — no porque ya tuviera una intervención lista para uno de ellos.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="d3"><span>Consideré explícitamente factores causales que mi intervención actual NO resuelve, y expliqué por qué no los prioricé.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="d4"><span>Si mi problema tiene más de un mecanismo, tengo un factor o cadena por mecanismo, no uno genérico que los mezcla todos (evitar "el paraguas único").</span></label>
+    </div>
+
+    <div class="check-group">
+      <h4>Riesgo 2 — rigor de evidencia</h4>
+      <label class="check-item"><input type="checkbox" data-ck="e1"><span>Cada eslabón de mi cadena tiene una fuente o declara su categoría de evidencia (Anexo I) — ninguna es "porque parece razonable".</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="e2"><span>Busqué evidencia que pudiera contradecir mi factor principal, no solo la que lo confirma.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="e4"><span>El factor que elegí está definido con precisión (qué tipo de problema, para qué población) — no es una etiqueta genérica tipo "mala alimentación" o "inseguridad".</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="e3"><span>Puedo nombrar, en una frase, qué mecanismo específico interrumpe mi intervención — y ese mecanismo es el que domina según la evidencia, no el más visible o el más fácil de intervenir.</span></label>
+    </div>
+
+    <div class="check-group">
+      <h4>Fuentes (transversal)</h4>
+      <label class="check-item"><input type="checkbox" data-ck="f1"><span>Verifiqué cada cifra en la fuente oficial primaria, no en una nota de prensa que la resume.</span></label>
+      <label class="check-item"><input type="checkbox" data-ck="f2"><span>Cuando dos fuentes oficiales discrepan (p. ej. Policía vs. Ministerio Público en cifras de denuncias), lo señalo en vez de elegir en silencio la que más me conviene.</span></label>
+    </div>
+
+    <p class="check-note">Este autochequeo aplica el Art. 11 de la Directiva N.º 0001-2026-EF/50.01 (modelo explicativo) a la construcción de la cadena de resultados. No es una lista de cotejo de calificación.</p>
+  </div>
+</section>
+
+<!-- 06 REFERENCIAS -->
+<section id="siguiente">
+  <div class="section-label fade-in">06 — Referencias</div>
+  <h2 class="section-title fade-in">Fuentes de este recurso</h2>
+
+  <div class="reference-box fade-in">
+    <h3>Normas y política de sustento</h3>
+    <div class="ref-item">
+      <strong>Ministerio de Economía y Finanzas (2026).</strong> Directiva N.º 0001-2026-EF/50.01, Art. 11 (modelo explicativo). Diario Oficial El Peruano, 8 de junio de 2026.
+    </div>
+    <div class="ref-item">
+      <strong>Presidencia del Consejo de Ministros (2025).</strong> Decreto Supremo N.º 046-2025-PCM. El Peruano, 17 de abril de 2025.
+    </div>
+    <div class="ref-item">
+      <strong>Presidencia del Consejo de Ministros (2026).</strong> Decreto Supremo N.º 027-2026-PCM (27 de febrero) y N.º 123-2026-PCM (28 de agosto). El Peruano. <a href="https://busquedas.elperuano.pe/dispositivo/NL/2548481-1" target="_blank" rel="noopener">busquedas.elperuano.pe</a>
+    </div>
+    <div class="ref-item">
+      <strong>Organismo Supervisor de Inversión Privada en Telecomunicaciones — OSIPTEL (2025).</strong> Resolución N.º 000139-2025-CD/OSIPTEL, 31 de diciembre de 2025. <a href="https://www.gob.pe/institucion/osiptel/noticias/1324821" target="_blank" rel="noopener">gob.pe/osiptel</a>
+    </div>
+    <div class="ref-item">
+      <strong>Ministerio Público — Observatorio de Criminalidad (2022-2026).</strong> Denuncias registradas por extorsión: 11,000 (2022), 27,500 (2025), 12,634 en el primer semestre de 2026. Cifras de conocimiento público a partir de los reportes del Observatorio; verificar la serie completa en <a href="https://www.gob.pe/ministeriopublico" target="_blank" rel="noopener">gob.pe/ministeriopublico</a> antes de citarla como dato cerrado.
+    </div>
+    <div class="ref-item">
+      <strong>Instituto Nacional Penitenciario — INPE.</strong> Declaración pública del jefe institucional sobre cobertura de bloqueadores de señal (30 de 69 penales), 28 de octubre de 2025, y Comunicado 10-2025 sobre el sistema de bloqueo contratado. Cifra reportada a partir de declaración oficial, no de un boletín publicado por el INPE; verificar directamente en <a href="https://www.gob.pe/inpe" target="_blank" rel="noopener">gob.pe/inpe</a> antes de citarla como dato cerrado.
+    </div>
+    <div class="ref-item">
+      <strong>RPP (2024).</strong> "¿Cuál es el papel de la leche y sus derivados en la lucha contra la anemia infantil?", sección Vital, 6 de junio de 2024. Citado como ejemplo de encuadre periodístico no especializado, no como fuente técnica.
+    </div>
+    <div class="ref-item">
+      <strong>UNICEF (1990, actualizado 2020).</strong> Marco conceptual de la desnutrición materno-infantil (causas inmediatas, subyacentes y básicas). <a href="https://www.unicef.org/documents/conceptual-framework-nutrition" target="_blank" rel="noopener">unicef.org</a>
+    </div>
+    <div class="ref-item">
+      <strong>Congreso de la República (1985).</strong> Ley N.º 24059, crea el Programa del Vaso de Leche.
+    </div>
+    <div class="ref-item">
+      <strong>Banco Mundial.</strong> Estudio sobre asignación presupuestal del Programa del Vaso de Leche — presupuesto congelado en S/ 363 millones anuales desde 2005, atribuido en parte a la falta de evidencia de impacto.
+    </div>
+    <div class="ref-item">
+      <strong>Defensoría del Pueblo (2024).</strong> Informe de análisis y evaluación de la gestión y ejecución del Programa del Vaso de Leche, 29 de agosto de 2024.
+    </div>
+    <div class="ref-item">
+      <strong>Contraloría General de la República (2025).</strong> Observación a nueve municipalidades de Lima por no ejecutar su presupuesto del Vaso de Leche.
+    </div>
+    <div class="ref-item">
+      <strong>Presidencia del Consejo de Ministros (2018).</strong> Decreto Supremo N.º 068-2018-PCM, Plan Multisectorial de Lucha contra la Anemia (MIDIS/MINSA).
+    </div>
+    <div class="ref-item">
+      <strong>GEP201 / PPR (2026).</strong> Recursos «El triángulo estratégico» y «La condición de interés» (Unidades I y II).
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="../index.html" style="color:var(--gold);text-decoration:none;letter-spacing:.12em;">&larr; Volver a recursos de clase</a>
+  <div style="margin-top:.8rem;">GEP201 · Gestión Financiera del Estado · PUCP · Juan Pablo Silva Macher</div>
+</footer>
+
+<script>
+// ── CLASSIFIERS ──
+const feedback = {
+  'grp-cadena': {
+    c1: { ok: 'Correcto. Describe el mecanismo que las cifras oficiales (Ministerio Público) muestran sostenido en el tiempo — coordinación remota, muchas veces desde penales — sin que ninguna intervención esté puesta encima todavía.',
+          no: 'Es la cadena que parte del factor: describe un mecanismo documentado por el Ministerio Público (coordinación remota, a veces desde penales), sin ninguna intervención de por medio que la haya orientado.' },
+    c2: { ok: 'Correcto — con un matiz: no es necesariamente falsa. Más presencia militar sí puede disuadir otros delitos callejeros. El riesgo es que se presenta como respuesta a "la extorsión" en general — la más visible y la que ya estaba disponible para el Estado — sin que las cifras muestren que el mecanismo que ataca (visibilidad en el espacio público) sea el que domina en este delito específico.',
+          no: 'Es la cadena que parte de la intervención ya disponible: más FF.AA. y PNP en las calles es la respuesta más visible, pero su premisa (falta de presencia en el espacio público) no es el mecanismo que las cifras oficiales asocian con la extorsión, que se coordina sobre todo a distancia.' }
+  },
+  'grp-eslabon': {
+    e1: { ok: 'Correcto — así lo declara la propia norma: la moto es la modalidad de ataque y huida, no el mecanismo de la extorsión telefónica ni de la coordinación penitenciaria.',
+          no: 'El texto de la norma apunta a la modalidad de ataque y huida en moto (sicariato callejero), no al control del espacio público en general ni a los penales.' },
+    e2: { ok: 'Correcto. El fundamento explícito es el control del orden interno y la presencia territorial de la PNP con apoyo de las FF.AA., según mapas del delito — no un mecanismo específico de la moto ni de los penales.',
+          no: 'El fundamento de estos decretos es el control del orden interno en el espacio público (patrullaje, zonas estratégicas), no la modalidad de la moto ni la coordinación desde penales.' },
+    e3: { ok: 'Correcto. La resolución obliga a las operadoras a geolocalizar y cortar el servicio de líneas activas dentro de penales — apunta directamente a la coordinación de extorsiones desde prisión.',
+          no: 'Esta resolución de OSIPTEL apunta específicamente a bloquear la telefonía móvil dentro de los penales, no al espacio público ni a la modalidad de la moto.' }
+  }
+};
+
+function pick(group, id, choice) {
+  const item = document.querySelector(`#${group} .classify-item[data-id="${id}"]`);
+  if (!item || item.dataset.done) return;
+  item.dataset.done = '1';
+  const correct = item.dataset.correct;
+  const isOk = choice === correct;
+  item.querySelectorAll('.ci-btn').forEach(btn => {
+    btn.classList.add('locked');
+    const label = btn.textContent.trim().toLowerCase();
+    const map = {
+      'desde el factor':'factor', 'desde la solución':'solucion',
+      'escape en moto':'moto', 'control del espacio público':'calle', 'coordinación desde penales':'penal'
+    };
+    if (map[label] === correct) btn.classList.add('pick-correct');
+    else if (map[label] === choice) btn.classList.add('pick-wrong');
+  });
+  const res = item.querySelector('.ci-result');
+  res.className = 'ci-result show ' + (isOk ? 'ok' : 'fail');
+  res.innerHTML = (isOk ? '✓ ' : '✗ ') + feedback[group][id][isOk ? 'ok' : 'no'];
+}
+
+// ── CHECKLIST ──
+const CK = 'gep201-cadena-checklist';
+const boxes = () => Array.from(document.querySelectorAll('.checklist input[type="checkbox"]'));
+
+function loadChecks() {
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(CK)) || []; } catch (e) { saved = []; }
+  boxes().forEach(b => { if (saved.includes(b.dataset.ck)) b.checked = true; });
+  updatePct();
+}
+function saveChecks() {
+  const on = boxes().filter(b => b.checked).map(b => b.dataset.ck);
+  try { localStorage.setItem(CK, JSON.stringify(on)); } catch (e) {}
+}
+function updatePct() {
+  const all = boxes();
+  const n = all.filter(b => b.checked).length;
+  const pct = all.length ? Math.round(n * 100 / all.length) : 0;
+  document.getElementById('ck-pct').innerHTML = pct + '<span>%</span>';
+}
+function resetChecks() {
+  boxes().forEach(b => b.checked = false);
+  saveChecks(); updatePct();
+}
+document.addEventListener('change', e => {
+  if (e.target.matches('.checklist input[type="checkbox"]')) { saveChecks(); updatePct(); }
+});
+
+// ── SCROLL FADE ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+loadChecks();
+</script>
+</body>
+</html>
