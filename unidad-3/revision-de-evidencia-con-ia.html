@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Un asistente de evidencia, no un analista — GEP201</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f5f0e8;
+  --cream-dim: #e8e0d0;
+  --rust: #c0392b;
+  --sage: #2e7d52;
+  --slate: #5c6b7a;
+  --text-on-dark: #dde4ee;
+  --text-dim: #8a9bb0;
+  --border: rgba(201,168,76,0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 120%; }
+body {
+  background: var(--navy); color: var(--text-on-dark);
+  font-family: 'Source Serif 4', Georgia, serif; font-weight: 300;
+  line-height: 1.7; overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,27,42,0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border); padding: .9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace; font-size: .65rem; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase; text-decoration: none;
+  display: inline-flex; align-items: center; gap: .5rem; transition: color .2s;
+}
+.nav-brand:hover { color: var(--gold-light); }
+.nav-brand .back-arrow { font-size: .8rem; color: var(--text-dim); transition: color .2s; }
+.nav-brand:hover .back-arrow { color: var(--gold-light); }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace; font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); text-decoration: none; text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+section { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 5rem 2rem; }
+section + section { padding-top: 2rem; }
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+  max-width: none; padding: 8rem 3rem 4rem;
+}
+.hero-inner { max-width: 820px; margin: 0 auto; }
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace; font-size: .65rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-weight: 900; line-height: 1.15; color: var(--cream); margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: 1.05rem; font-weight: 300; color: var(--text-dim); max-width: 620px;
+  margin-bottom: 2.5rem; line-height: 1.8;
+}
+.hero-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-meta span {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .13em;
+  color: var(--text-dim); text-transform: uppercase; border: 1px solid var(--border);
+  padding: .4rem .9rem; border-radius: 2px;
+}
+.section-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%); opacity: .3;
+}
+.section-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+  font-weight: 700; color: var(--cream); margin-bottom: 1rem; line-height: 1.2;
+}
+.section-intro { font-size: 1rem; color: var(--text-dim); max-width: 640px; margin-bottom: 2.5rem; line-height: 1.8; }
+p.body { font-size: .95rem; color: var(--text-dim); line-height: 1.85; margin-bottom: 1.3rem; }
+p.body strong { color: var(--cream); font-weight: 400; }
+
+.stepper { display: flex; flex-direction: column; gap: .55rem; margin: 2rem 0; }
+.step {
+  display: flex; align-items: flex-start; gap: 1rem;
+  background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 1rem 1.3rem;
+}
+.step-num {
+  font-family: 'IBM Plex Mono', monospace; font-size: .72rem; font-weight: 500; color: var(--gold);
+  min-width: 34px; padding-top: .15rem; flex-shrink: 0;
+}
+.step-txt { font-size: .9rem; color: var(--cream); }
+.step-txt small {
+  display: block; font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .08em;
+  color: var(--text-dim); text-transform: uppercase; margin-top: .3rem;
+}
+
+.ask {
+  background: rgba(255,255,255,.03); border-left: 2px solid var(--gold);
+  padding: .9rem 1.1rem; border-radius: 0 2px 2px 0; margin: 1.2rem 0;
+  font-family: 'IBM Plex Mono', monospace; font-size: .76rem; color: var(--gold-light); line-height: 1.7;
+}
+.norm-box {
+  background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--gold); border-left: 3px solid var(--gold);
+  padding: 1.5rem 1.8rem; border-radius: 2px; margin: 1.5rem 0;
+}
+.norm-box p { font-size: .95rem; color: var(--cream); line-height: 1.8; font-style: italic; }
+.norm-box cite {
+  display: block; margin-top: .9rem; font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .1em; color: var(--text-dim); font-style: normal;
+}
+.pico-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; margin: 1.5rem 0; }
+.pico-item { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 1rem 1.2rem; }
+.pico-item .pico-letter {
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem;
+  color: var(--gold); margin-right: .3rem;
+}
+.pico-item p { font-size: .85rem; color: var(--text-dim); line-height: 1.6; display: inline; }
+.pico-item.example { border-top: 2px solid #61afef; }
+.pico-item.example .pico-letter { color: #61afef; }
+.pico-item.example p { color: var(--cream-dim); display: block; margin-top: .3rem; }
+.pico-example-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .12em;
+  color: #61afef; text-transform: uppercase; margin: 1.6rem 0 .6rem;
+}
+.ask strong {
+  display: block; font-size: .6rem; letter-spacing: .15em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: .4rem;
+}
+
+/* CODE / COPYABLE BLOCKS */
+.code-wrap { margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.code-head {
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(201,168,76,.06); padding: .7rem 1.2rem; border-bottom: 1px solid var(--border);
+}
+.code-head span {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--gold);
+}
+.copy-btn {
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .08em;
+  text-transform: uppercase; padding: .4rem .9rem; border-radius: 2px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+.copy-btn.copied { border-color: var(--sage); color: #7dd8a8; }
+pre.code-block {
+  margin: 0; padding: 1.4rem 1.5rem; background: var(--navy-mid);
+  font-family: 'IBM Plex Mono', monospace; font-size: .78rem; line-height: 1.7;
+  color: var(--cream-dim); white-space: pre-wrap; word-wrap: break-word;
+  max-height: 480px; overflow-y: auto;
+}
+
+/* TABLE (reglas) */
+.tbl-wrap { overflow-x: auto; margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 2px; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: .82rem; }
+th, td { text-align: left; padding: .8rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--gold); background: rgba(201,168,76,.05);
+}
+td { color: var(--text-dim); }
+td strong { color: var(--cream); font-weight: 400; }
+tr:last-child td { border-bottom: none; }
+
+/* WORKED EXAMPLE */
+.example-box {
+  background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px;
+  padding: 1.8rem 2rem; margin: 1.5rem 0;
+}
+.example-box .example-tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--rust); margin-bottom: 1rem; display: block;
+}
+.example-box h4 {
+  font-family: 'Playfair Display', serif; font-size: .95rem; color: var(--gold);
+  margin: 1.1rem 0 .4rem;
+}
+.example-box h4:first-of-type { margin-top: 0; }
+.example-box p, .example-box li { font-size: .85rem; color: var(--text-dim); line-height: 1.7; }
+.example-box blockquote {
+  border-left: 2px solid var(--border); padding-left: 1rem; margin: .4rem 0;
+  font-style: italic; color: var(--cream-dim);
+}
+.example-box ul { padding-left: 1.2rem; margin: .3rem 0; }
+.example-box .check-list-mini { list-style: none; padding-left: 0; }
+.example-box .check-list-mini li::before { content: "☐ "; color: var(--text-dim); }
+.example-box .check-list-mini li.on::before { content: "☑ "; color: var(--sage); }
+
+/* CHECKLIST */
+.checklist { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; padding: 2rem; }
+.check-progress {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 1.2rem; margin-bottom: 1.4rem; border-bottom: 1px solid var(--border);
+}
+.check-progress .pct { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); }
+.check-progress .pct span { font-size: .8rem; color: var(--text-dim); }
+.check-reset {
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .1em;
+  text-transform: uppercase; padding: .45rem 1rem; border-radius: 2px;
+  border: 1px solid var(--border); background: transparent; color: var(--text-dim);
+  cursor: pointer; transition: all .2s;
+}
+.check-reset:hover { border-color: var(--gold); color: var(--gold); }
+.check-item { display: flex; align-items: flex-start; gap: .8rem; padding: .55rem 0; cursor: pointer; }
+.check-item input {
+  appearance: none; -webkit-appearance: none; width: 18px; height: 18px; min-width: 18px;
+  margin-top: .15rem; border: 1px solid var(--slate); border-radius: 3px; background: transparent;
+  cursor: pointer; position: relative; transition: all .15s;
+}
+.check-item input:checked { background: var(--gold); border-color: var(--gold); }
+.check-item input:checked::after {
+  content: '\2713'; position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; font-size: .8rem; color: var(--navy); font-weight: 700;
+}
+.check-item span { font-size: .88rem; color: var(--text-dim); line-height: 1.55; }
+.check-item input:checked + span { color: var(--cream-dim); }
+.check-note { margin-top: 1rem; font-size: .76rem; color: var(--text-dim); font-style: italic; line-height: 1.6; }
+
+/* REFLECTION CARDS (accordion) */
+.reflect-list { display: flex; flex-direction: column; gap: .7rem; }
+.reflect-card { background: var(--navy-mid); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.reflect-q {
+  width: 100%; text-align: left; background: transparent; border: none; cursor: pointer;
+  padding: 1.1rem 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  font-family: 'Playfair Display', serif; font-size: .98rem; color: var(--cream);
+}
+.reflect-q .chevron { font-family: 'IBM Plex Mono', monospace; color: var(--gold); font-size: .8rem; transition: transform .2s; flex-shrink: 0; }
+.reflect-card.open .reflect-q .chevron { transform: rotate(45deg); }
+.reflect-a {
+  max-height: 0; overflow: hidden; transition: max-height .3s ease;
+  padding: 0 1.4rem; border-top: 1px solid transparent;
+}
+.reflect-card.open .reflect-a { max-height: 400px; padding: 0 1.4rem 1.3rem; border-top-color: var(--border); }
+.reflect-a p { font-size: .87rem; color: var(--text-dim); line-height: 1.75; padding-top: 1rem; }
+
+/* REFERENCE BOX */
+.reference-box { background: var(--navy-mid); border: 1px solid var(--border); padding: 1.6rem 2rem; border-radius: 2px; }
+.reference-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: 1rem; }
+.ref-item {
+  font-family: 'IBM Plex Mono', monospace; font-size: .68rem; color: var(--text-dim);
+  line-height: 1.8; border-bottom: 1px solid var(--border); padding-bottom: .8rem; margin-bottom: .8rem;
+}
+.ref-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ref-item strong { color: var(--cream); }
+.ref-item a { color: var(--gold); text-decoration: none; }
+.ref-item a:hover { text-decoration: underline; }
+
+footer {
+  position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 2rem; text-align: center;
+  font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .12em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 680px) {
+  .hero { padding: 7rem 1.5rem 3rem; }
+  section { padding: 4rem 1.5rem; }
+  nav { padding: .8rem 1.1rem; }
+  .nav-links { gap: .7rem; }
+  pre.code-block { font-size: .72rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../index.html"><span class="back-arrow">&larr;</span> GEP201 · Recursos</a>
+  <ul class="nav-links">
+    <li><a href="#marco">Marco</a></li>
+    <li><a href="#prompt">Prompt</a></li>
+    <li><a href="#reglas">Reglas</a></li>
+    <li><a href="#metodo">Método</a></li>
+    <li><a href="#autochequeo">Autochequeo</a></li>
+    <li><a href="#reflexion">Reflexión</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">GEP201 — Gestión Financiera del Estado</div>
+    <h1>Un asistente<br><em>de evidencia, no un analista</em></h1>
+    <p class="hero-sub">Un prompt y un método para usar IA en la revisión de evidencia sin que se vuelva una caja negra: la IA busca y clasifica, tú lees primero, contrastas y decides. Complementa al Riesgo 2 del recurso anterior — buscar evidencia que contradiga, no solo la que confirma.</p>
+    <div class="hero-meta">
+      <span>Unidad II · Modelo explicativo</span>
+      <span>Directiva N.º 0001-2026-EF/50.01, Anexo I</span>
+      <span>Juan Pablo Silva · PUCP</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 MARCO -->
+<section id="marco">
+  <div class="section-label fade-in">01 — Por qué esto importa</div>
+  <h2 class="section-title fade-in">Lo que le pidas determina lo que te devuelve</h2>
+  <p class="section-intro fade-in">El comité de IA del MIT (2026) resume el riesgo central en una frase: la IA debe aumentar el pensamiento, no reemplazarlo ("augmentation, not automation"). Aplicado a la revisión de evidencia, augmentar significa que la IA te ahorre la parte más lenta —encontrar y organizar candidatos que cumplan un estándar de calidad— sin tocar la parte que exige que pienses: leer, interpretar, decidir qué pesa y qué no. El mismo informe advierte sobre la "rendición cognitiva" (<em>cognitive surrender</em>): recurrir a la IA ante la primera dificultad, en vez de sostener el esfuerzo. Y advierte sobre un riesgo muy concreto: los modelos de lenguaje pueden inventar citas con apariencia perfecta — verificar cada una no es un paso opcional.</p>
+
+  <p class="body fade-in">El recurso anterior mostró el Riesgo 2: cuando el objetivo real es justificar algo que ya decidiste, no necesitas el análisis más riguroso — necesitas uno que alcance. La diferencia no está en si usas IA. Está en qué le pides y en qué haces con lo que te devuelve.</p>
+
+  <h3 style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--cream);margin:2rem 0 .6rem;" class="fade-in">La pregunta PICO</h3>
+  <p class="body fade-in">No buscas evidencia sobre un factor aislado — buscas una <strong>relación</strong>: ¿este factor, comparado con qué, se asocia con qué cambio en la condición de interés? Esa precisión tiene un nombre en la investigación basada en evidencia: la pregunta PICO — Población, Factor, Comparación, Efecto.</p>
+
+  <p class="body fade-in">No es una invención de este recurso. La Directiva de Programas Presupuestales de 2020 (derogada) la exigía explícitamente para priorizar cadenas causales dentro del modelo explicativo — la vigente ya no la nombra, pero el motivo por el que se usaba sigue intacto:</p>
+
+  <div class="norm-box fade-in">
+    <p>[El modelo explicativo] permite, dependiendo de la evidencia disponible, mostrar el poder o fuerza explicativa de un factor respecto a un efecto... Esto es importante para la priorización de cadenas causales. [...] En función a la evidencia disponible, señala explícitamente cadenas causales con mayor poder explicativo y por lo tanto prioritario para su abordaje.</p>
+    <cite>— Directiva N.º 0005-2020-EF/50.01 (R.D. N.º 0030-2020-EF/50.01), Anexo 2, pp. 14-15 (derogada por la Directiva N.º 0001-2026-EF/50.01)</cite>
+  </div>
+
+  <p class="body fade-in">Es, otra vez, el Riesgo 1: no basta con que un factor tenga evidencia, tiene que ganarle a los demás en poder explicativo.</p>
+
+  <div class="pico-grid fade-in">
+    <div class="pico-item"><span class="pico-letter">P</span><p>Población — el grupo en el que se estudia la relación, generalmente el mismo que ya definiste en tu condición de interés (Unidad II). Ancla la búsqueda a quienes importan para tu programa.</p></div>
+    <div class="pico-item"><span class="pico-letter">F</span><p>Factor — el candidato que quieres poner a prueba, el mismo que comparas contra otros en el Riesgo 1.</p></div>
+    <div class="pico-item"><span class="pico-letter">C</span><p>Comparación — el contrafactual: la ausencia de ese factor (o un nivel distinto de él). "Si esta población no tuviera este factor, ¿qué esperarías?"</p></div>
+    <div class="pico-item"><span class="pico-letter">E</span><p>Efecto — el resultado esperado: el cambio en la condición de interés (o en el siguiente factor de la cadena) que le atribuyes al factor.</p></div>
+  </div>
+
+  <div class="pico-example-label fade-in">Ejemplo — de la propia Directiva 2020</div>
+
+  <div class="pico-grid fade-in">
+    <div class="pico-item example"><span class="pico-letter">P</span><p>Menores de 24 meses.</p></div>
+    <div class="pico-item example"><span class="pico-letter">F</span><p>Episodios de diarrea aguda.</p></div>
+    <div class="pico-item example"><span class="pico-letter">C</span><p>En comparación con no padecerla.</p></div>
+    <div class="pico-item example"><span class="pico-letter">E</span><p>Riesgo de desnutrición crónica antes de los 60 meses de edad.</p></div>
+  </div>
+
+  <p class="body fade-in" style="font-size:.85rem;">En niños y niñas que presentaron episodios de diarrea antes de los 24 meses, en comparación con no padecerla, ¿cuál es el riesgo de desarrollar desnutrición crónica antes de los 60 meses de edad? — el mismo factor de "enfermedades infecciosas" que ya viste en el Caso 1 del recurso anterior. Formulada así, el prompt busca evidencia de una relación, no menciones sueltas del factor.</p>
+
+  <p class="body fade-in" style="margin-top:2rem;">Con la pregunta ya formulada, el flujo:</p>
+
+  <div class="stepper fade-in">
+    <div class="step"><div class="step-num">1</div><div class="step-txt">Formula tu pregunta PICO y corre el prompt<small>te da una lista inicial de candidatos que cumplen el estándar — amplíala o ajústala si hace falta</small></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-txt">Lee cada fuente tú mismo<small>directo si es de acceso abierto, por la biblioteca si no — nunca te quedes solo con el resumen de la IA</small></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-txt">Contrasta tu lectura con lo que reportó la IA<small>dónde coincide o discrepa, y por qué</small></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-txt">Decide<small>usas, matizas o descartas la fuente — tú, no la IA</small></div></div>
+  </div>
+</section>
+
+<!-- 02 PROMPT -->
+<section id="prompt">
+  <div class="section-label fade-in">02 — El prompt</div>
+  <h2 class="section-title fade-in">Cópialo tal cual, pégalo en tu IA de preferencia</h2>
+  <p class="section-intro fade-in">Uno por cada pregunta PICO que formules. Te devuelve una lista inicial de fuentes que cumplen el estándar — no es un catálogo cerrado, amplíala o ajústala con tu propia búsqueda si hace falta. No lo edites para pedir una conclusión — la sección 03 explica por qué.</p>
+
+  <div class="code-wrap fade-in">
+    <div class="code-head">
+      <span>Prompt · revisión de evidencia</span>
+      <button class="copy-btn" id="copy-prompt-btn" onclick="copyBlock('prompt-text','copy-prompt-btn')">Copiar</button>
+    </div>
+    <pre class="code-block" id="prompt-text">Actúa como asistente de revisión de evidencia, no como analista. Tu única
+tarea es buscar y clasificar evidencia sobre la siguiente relación, formulada
+como pregunta PICO: [PEGAR AQUÍ tu pregunta — población/condición, factor,
+comparación, efecto esperado].
+
+Para cada fuente que encuentres, entrégame una tabla con estas columnas:
+
+1. Cita completa (autor, año, título) + DOI o URL de acceso abierto
+   verificable. Si no puedes verificar un DOI o URL real, no incluyas la
+   fuente — no inventes referencias.
+2. Tipo de afirmación: causal / de magnitud / basada en razonamiento sin
+   fuente.
+3. Categoría de evidencia según el Anexo I de la Directiva N.º
+   0001-2026-EF/50.01: (1) meta-análisis o experimental, (2)
+   cuasi-experimental, (3) observacional. Justifica en una frase por qué la
+   fuente cae en esa categoría.
+4. ¿Apoya o contradice la relación planteada? — busca activamente evidencia
+   que la contradiga o la matice, no solo la que la confirma. Si no
+   encuentras evidencia contraria, dilo explícitamente en vez de omitirlo.
+5. Un fragmento textual breve (máximo 2 líneas) de la fuente que sustente tu
+   clasificación — la cita literal, no un resumen tuyo.
+
+Reglas:
+- No redactes una conclusión, recomendación, párrafo de síntesis, ni un
+  texto final. Esa parte la hago yo.
+- No completes ni "arregles" mi afirmación — repórtala tal cual la escribí.
+- Si no encuentras al menos una fuente de categoría 1 o 2, dilo — no bajes
+  el estándar completando con fuentes de categoría 3 sin advertirlo.
+- Prioriza organismos multilaterales (Banco Mundial, FMI, BID, OCDE),
+  revistas indexadas de primer nivel, o fuentes oficiales peruanas (INEI,
+  BCRP, MEF, ministerios). Nunca universidades peruanas ni blogs.</pre>
+  </div>
+</section>
+
+<!-- 03 REGLAS -->
+<section id="reglas">
+  <div class="section-label fade-in">03 — Qué previene cada regla</div>
+  <h2 class="section-title fade-in">Ninguna línea es decorativa</h2>
+  <p class="section-intro fade-in">Cada exigencia del prompt existe para cerrar un vicio específico — varios de ellos, los mismos del recurso anterior.</p>
+
+  <div class="tbl-wrap fade-in">
+    <table>
+      <thead>
+        <tr><th>Regla del prompt</th><th>Vicio que previene</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>DOI o URL verificable; si no existe, no incluir la fuente</strong></td>
+          <td>Alucinación de referencias — una IA puede generar citas con formato perfecto que no existen.</td>
+        </tr>
+        <tr>
+          <td><strong>Categoría de evidencia (Anexo I), justificada en una frase</strong></td>
+          <td>Tratar toda evidencia como si pesara igual — el Riesgo 1 del recurso anterior, aplicado a cada fuente individual.</td>
+        </tr>
+        <tr>
+          <td><strong>Buscar evidencia que contradiga; decirlo si no la encuentra</strong></td>
+          <td>Razonamiento motivado — quedarte con el primer argumento que confirma lo que ya creías (Riesgo 2).</td>
+        </tr>
+        <tr>
+          <td><strong>Fragmento textual literal, no resumen de la IA</strong></td>
+          <td>La caja negra — aceptar una etiqueta sin poder auditar de dónde sale.</td>
+        </tr>
+        <tr>
+          <td><strong>No redactar conclusión, recomendación ni texto final</strong></td>
+          <td>Que la síntesis —lo único que exige pensar de verdad— la haga la IA en tu lugar.</td>
+        </tr>
+        <tr>
+          <td><strong>Solo multilaterales, indexadas u oficiales; nunca universidades peruanas ni blogs</strong></td>
+          <td>Bajar el estándar de fuentes de la Política de fuentes del curso por conveniencia o rapidez.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- 04 METODO -->
+<section id="metodo">
+  <div class="section-label fade-in">04 — Cómo organizar tu revisión</div>
+  <h2 class="section-title fade-in">Tu lectura de la fuente, antes que la de la IA</h2>
+  <p class="section-intro fade-in">El prompt ya hizo lo difícil: te dio la lista de candidatos. No descarga ningún documento — te da la referencia y, cuando existe, el enlace de acceso abierto. Si el DOI apunta a una fuente abierta, ábrela directo. Si está detrás de un muro de pago, búscala por título o DOI en las bases de datos de la biblioteca PUCP — nunca en fuentes piratas. Lo que sigue es tuyo: si aceptas la fila que la IA armó sobre una fuente sin haber leído tú mismo la fuente original, ya no hay forma de saber si tu lectura coincide con la suya o simplemente la repites. Por eso el orden de esta plantilla no es negociable: lee el original y escribe tu lectura antes de mirar de nuevo lo que dijo la IA sobre esa fuente.</p>
+
+  <div class="code-wrap fade-in">
+    <div class="code-head">
+      <span>Plantilla · por cada fuente</span>
+      <button class="copy-btn" id="copy-template-btn" onclick="copyBlock('template-text','copy-template-btn')">Copiar</button>
+    </div>
+    <pre class="code-block" id="template-text">Fuente: [cita corta, tomada de la fila que te dio el prompt o de tu propia búsqueda]
+Fecha: [cuándo la revisaste]
+
+1. Mi lectura (leyendo la fuente original)
+   > [tu propia interpretación de por qué esta fuente es relevante, en tus
+   > palabras — escríbela leyendo el original en su DOI o URL, antes de
+   > volver a mirar la fila que te dio la IA sobre esta fuente]
+
+2. Lo que devolvió la IA
+   [pega aquí la fila de la tabla que te dio, sin editar]
+
+3. Contraste
+   - Coincide en: ...
+   - Discrepa en: ... ¿por qué? (tu propia explicación, no la que da la IA)
+
+4. Decisión de uso
+   [ ] La uso tal cual
+   [ ] La uso con matices — ¿cuáles?
+   [ ] La descarto — ¿por qué?</pre>
+  </div>
+
+  <p class="body fade-in" style="margin-top:2rem;">Así se ve resuelta, con un ejemplo <strong>ilustrativo</strong> (la fuente y el DOI son ficticios — no los cites, sirven solo para mostrar el formato):</p>
+
+  <div class="example-box fade-in">
+    <span class="example-tag">Ejemplo simulado — no es una fuente real</span>
+
+    <p><strong>Fuente:</strong> Huamán, R. et al. (ejemplo ficticio). "Efectividad de la suplementación con hierro y adherencia al tratamiento en anemia infantil."<br><strong>Fecha:</strong> 15 de setiembre de 2026</p>
+
+    <h4>1. Mi lectura (leyendo la fuente original)</h4>
+    <blockquote>Creo que esta fuente muestra que la suplementación reduce la anemia, pero sospecho que el efecto depende de la adherencia — en la práctica muchas familias abandonan el tratamiento antes de completarlo.</blockquote>
+
+    <h4>2. Lo que devolvió la IA</h4>
+    <p>Tipo: causal. Categoría: 2 (cuasi-experimental, diseño pre-post sin grupo de control aleatorizado). Apoya la afirmación, con matiz: el efecto es significativo solo en niños con adherencia mayor a 80%. Fragmento citado: "la reducción de anemia fue considerablemente mayor en el grupo con alta adherencia, sin efecto significativo en el grupo con baja adherencia."</p>
+
+    <h4>3. Contraste</h4>
+    <ul>
+      <li><strong>Coincide en:</strong> el matiz de adherencia que yo sospechaba aparece explícito en el estudio.</li>
+      <li><strong>Discrepa en:</strong> yo pensaba que el problema era específicamente "efectos secundarios"; el estudio no explora por qué baja la adherencia, solo mide el efecto de tenerla o no. Sigo sin saber la causa de fondo.</li>
+    </ul>
+
+    <h4>4. Decisión de uso</h4>
+    <ul class="check-list-mini">
+      <li>La uso tal cual</li>
+      <li class="on">La uso con matices — mi cadena debe incluir "adherencia" como factor intermedio, no asumir que repartir hierro basta.</li>
+      <li>La descarto</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 05 AUTOCHEQUEO -->
+<section id="autochequeo">
+  <div class="section-label fade-in">05 — Autochequeo</div>
+  <h2 class="section-title fade-in">Antes de dar por cerrada una fuente</h2>
+  <p class="section-intro fade-in">Aplícalo a cada fuente que revises con IA. Se guarda en este navegador.</p>
+
+  <div class="checklist fade-in">
+    <div class="check-progress">
+      <div class="pct" id="ck-pct">0<span>%</span></div>
+      <button class="check-reset" onclick="resetChecks()">↺ Reiniciar</button>
+    </div>
+
+    <label class="check-item"><input type="checkbox" data-ck="a1"><span>Escribí mi propia lectura de cada fuente en el original (DOI o URL), antes de volver a mirar la fila que le dio la IA.</span></label>
+    <label class="check-item"><input type="checkbox" data-ck="a2"><span>Verifiqué al menos una fuente citada por la IA directamente en su DOI o URL, sin asumir que existe.</span></label>
+    <label class="check-item"><input type="checkbox" data-ck="a3"><span>Para cada fuente sé qué categoría de evidencia (Anexo I) le corresponde y por qué — no solo la etiqueta que puso la IA.</span></label>
+    <label class="check-item"><input type="checkbox" data-ck="a4"><span>Le pedí explícitamente evidencia que contradijera mi afirmación, y registré si no la encontró.</span></label>
+    <label class="check-item"><input type="checkbox" data-ck="a5"><span>La conclusión, la síntesis y la decisión de uso de cada fuente las escribí yo, no la IA.</span></label>
+    <label class="check-item"><input type="checkbox" data-ck="a6"><span>Puedo explicar, en mis palabras, por qué acepté o descarté cada fuente — sin citar a la IA como la razón.</span></label>
+
+    <p class="check-note">Este autochequeo no reemplaza al de "Riesgos de construir la cadena causal desde la solución" — lo complementa en el paso de revisión de evidencia.</p>
+  </div>
+</section>
+
+<!-- 06 REFLEXION -->
+<section id="reflexion">
+  <div class="section-label fade-in">06 — Para seguir pensando</div>
+  <h2 class="section-title fade-in">Preguntas sin respuesta obvia</h2>
+  <p class="section-intro fade-in">Haz clic en cada una. No son preguntas con trampa — son las que de verdad se discuten hoy sobre el uso de IA en el trabajo académico.</p>
+
+  <div class="reflect-list fade-in">
+    <div class="reflect-card">
+      <button class="reflect-q" onclick="toggleReflect(this)">¿Usar IA para encontrar fuentes es lo mismo que usarla para escribir mi análisis? <span class="chevron">+</span></button>
+      <div class="reflect-a"><p>No, y la diferencia es exactamente la que separa "aumentar" de "automatizar" (MIT, 2026). Encontrar y organizar candidatos es trabajo logístico — tedioso, pero no es lo que te hace aprender. Leer la fuente, decidir si el argumento sostiene tu factor, y priorizarlo frente a otros factores sí lo es. El prompt de este recurso está diseñado para detenerse justo en el límite: nunca redacta conclusión ni síntesis (ver sección 03) — esa parte, la que exige pensar, queda intacta para ti.</p></div>
+    </div>
+    <div class="reflect-card">
+      <button class="reflect-q" onclick="toggleReflect(this)">Verificar cada DOI a mano, ¿no es desconfiar de la IA sin razón? <span class="chevron">+</span></button>
+      <div class="reflect-a"><p>No es desconfianza gratuita — es la respuesta a un riesgo documentado, no hipotético. Los modelos de lenguaje pueden generar citas con formato perfecto (autor, año, título, hasta un DOI con apariencia válida) que simplemente no existen. El propio informe del MIT lo nombra como una de las habilidades que hay que enseñar explícitamente: "verify an output, and know when a model is likely to hallucinate." Verificar no es un gesto de desconfianza hacia la herramienta — es la condición para poder usarla en un trabajo académico.</p></div>
+    </div>
+    <div class="reflect-card">
+      <button class="reflect-q" onclick="toggleReflect(this)">¿Está mal pedirle a la IA que me resuma un paper que no tengo tiempo de leer? <span class="chevron">+</span></button>
+      <div class="reflect-a"><p>Depende de qué reemplaza. Pedir un resumen para decidir si vale la pena leer el paper completo es logística — como leer el abstract. Pedir el resumen y usarlo como si fuera tu lectura, para un factor que va a sostener tu cadena de resultados, es distinto: le estás pidiendo a la IA que haga la parte que la plantilla de bitácora (sección 04) protege a propósito. La pregunta útil no es "¿usé IA para esto?", es "¿de quién es la interpretación que terminé usando?"</p></div>
+    </div>
+    <div class="reflect-card">
+      <button class="reflect-q" onclick="toggleReflect(this)">¿El costo ambiental de usar IA debería importarme para una tarea de curso? <span class="chevron">+</span></button>
+      <div class="reflect-a"><p>El informe del MIT dedica una sección entera a pedir transparencia sobre el costo computacional y ambiental de las consultas de IA, y a desalentar el uso que no es necesario. No hace falta volverse experto en el tema para que te sirva de guía práctica: una consulta bien acotada por factor —como pide este prompt— no es solo mejor práctica de rigor académico, también es una consulta menos desperdiciada. "Minimizar el más uso" no es solo una regla pedagógica.</p></div>
+    </div>
+    <div class="reflect-card">
+      <button class="reflect-q" onclick="toggleReflect(this)">¿Un modelo gratuito es igual de confiable que uno de pago para esto? <span class="chevron">+</span></button>
+      <div class="reflect-a"><p>No necesariamente, y esa brecha es real: el informe del MIT documenta que el acceso a modelos de pago genera ventajas de desempeño medibles entre estudiantes de una misma universidad. Los modelos menos capaces tienden a alucinar con más frecuencia, no con menos. Esto no invalida usar una versión gratuita — pero sí significa que la verificación manual del DOI y la lectura de la fuente original (secciones 02 y 04) importan todavía más si ese es tu caso, no menos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 REFERENCIAS -->
+<section id="siguiente">
+  <div class="section-label fade-in">07 — Referencias</div>
+  <h2 class="section-title fade-in">Fuentes de este recurso</h2>
+
+  <div class="reference-box fade-in">
+    <h3>Normas y método</h3>
+    <div class="ref-item">
+      <strong>Ministerio de Economía y Finanzas (2026).</strong> Directiva N.º 0001-2026-EF/50.01, Anexo I (categorías de evidencia). Diario Oficial El Peruano, 8 de junio de 2026.
+    </div>
+    <div class="ref-item">
+      <strong>Klopfer, E. & Madden, S. (co-chairs) et al. (2026).</strong> Report of MIT's Ad Hoc Committee on AI Use in Teaching, Learning, and Research Training. Massachusetts Institute of Technology, 13 de agosto de 2026.
+    </div>
+    <div class="ref-item">
+      <strong>Ministerio de Economía y Finanzas (2020).</strong> Directiva N.º 0005-2020-EF/50.01, aprobada por Resolución Directoral N.º 0030-2020-EF/50.01, Anexo 2 (pp. 14-15) — formato de pregunta PICO. Diario Oficial El Peruano, 5 de diciembre de 2020. Derogada por la Directiva N.º 0001-2026-EF/50.01; citada aquí como referencia metodológica, no como norma vigente.
+    </div>
+    <div class="ref-item">
+      <strong>GEP201 / PPR (2026).</strong> Recurso «Riesgos de construir la cadena causal desde la solución» (Unidad II) — este recurso desarrolla en detalle el Riesgo 1 y el Riesgo 2 que aquí se aplican a la revisión de fuentes.
+    </div>
+    <div class="ref-item">
+      <strong>Método de bitácora.</strong> Estructura (lectura propia → contraste → decisión) inspirada en el método de trabajo de Juan Pablo Silva Macher para sus propios proyectos de investigación — adaptada para este curso, no reproducida literalmente.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="../index.html" style="color:var(--gold);text-decoration:none;letter-spacing:.12em;">&larr; Volver a recursos de clase</a>
+  <div style="margin-top:.8rem;">GEP201 · Gestión Financiera del Estado · PUCP · Juan Pablo Silva Macher</div>
+</footer>
+
+<script>
+function toggleReflect(btn) {
+  const card = btn.closest('.reflect-card');
+  card.classList.toggle('open');
+}
+
+function copyBlock(id, btnId) {
+  const text = document.getElementById(id).textContent;
+  const btn = document.getElementById(btnId);
+  const done = () => {
+    const original = btn.textContent;
+    btn.textContent = '¡Copiado!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = original; btn.classList.remove('copied'); }, 1500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); } catch (e) {}
+  document.body.removeChild(ta);
+  cb();
+}
+
+// CHECKLIST
+const CK = 'gep201-ia-checklist';
+const boxes = () => Array.from(document.querySelectorAll('.checklist input[type="checkbox"]'));
+function loadChecks() {
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem(CK)) || []; } catch (e) { saved = []; }
+  boxes().forEach(b => { if (saved.includes(b.dataset.ck)) b.checked = true; });
+  updatePct();
+}
+function saveChecks() {
+  const on = boxes().filter(b => b.checked).map(b => b.dataset.ck);
+  try { localStorage.setItem(CK, JSON.stringify(on)); } catch (e) {}
+}
+function updatePct() {
+  const all = boxes();
+  const n = all.filter(b => b.checked).length;
+  const pct = all.length ? Math.round(n * 100 / all.length) : 0;
+  document.getElementById('ck-pct').innerHTML = pct + '<span>%</span>';
+}
+function resetChecks() { boxes().forEach(b => b.checked = false); saveChecks(); updatePct(); }
+document.addEventListener('change', e => {
+  if (e.target.matches('.checklist input[type="checkbox"]')) { saveChecks(); updatePct(); }
+});
+
+// SCROLL FADE
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+loadChecks();
+</script>
+</body>
+</html>
