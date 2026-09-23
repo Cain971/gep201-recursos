@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1990 y las reglas fiscales — GEP201</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --navy-light: #1e3050;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f5f0e8;
+  --cream-dim: #e8e0d0;
+  --rust: #c0392b;
+  --sage: #2e7d52;
+  --slate: #5c6b7a;
+  --text-on-dark: #dde4ee;
+  --text-dim: #8a9bb0;
+  --border: rgba(201,168,76,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 120%; }
+
+body {
+  background: var(--navy);
+  color: var(--text-on-dark);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,27,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: color .2s;
+}
+.nav-brand:hover { color: var(--gold-light); }
+.nav-brand .back-arrow { font-size: .8rem; color: var(--text-dim); transition: color .2s; }
+.nav-brand:hover .back-arrow { color: var(--gold-light); }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+section {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+section + section { padding-top: 2rem; }
+
+.hero {
+  min-height: 90vh;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: none; padding: 8rem 3rem 4rem;
+}
+.hero-inner { max-width: 820px; margin: 0 auto; }
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 900; line-height: 1.1;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--text-dim); max-width: 580px;
+  margin-bottom: 2.5rem; line-height: 1.8;
+}
+.hero-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-meta span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .13em;
+  color: var(--text-dim); text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: .4rem .9rem; border-radius: 2px;
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: .3;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700; color: var(--cream);
+  margin-bottom: 1rem; line-height: 1.2;
+}
+.section-intro {
+  font-size: 1rem; color: var(--text-dim);
+  max-width: 640px; margin-bottom: 3rem; line-height: 1.8;
+}
+
+p.body { font-size: .95rem; color: var(--text-dim); line-height: 1.85; margin-bottom: 1.3rem; }
+p.body strong { color: var(--cream); font-weight: 400; }
+
+.norm-box {
+  background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--gold);
+  border-left: 3px solid var(--gold);
+  padding: 1.8rem 2rem; border-radius: 2px; margin: 2rem 0;
+  position: relative;
+}
+.norm-box p { font-size: 1.05rem; color: var(--cream); line-height: 1.8; font-style: italic; }
+.norm-box cite {
+  display: block; margin-top: 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); font-style: normal;
+}
+
+.price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; margin: 2rem 0; }
+.price-item {
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-top: 3px solid var(--rust); border-radius: 2px; padding: 1.3rem 1rem; text-align: center;
+}
+.price-item .p-name { font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .1em; color: var(--text-dim); text-transform: uppercase; margin-bottom: .6rem; }
+.price-item .p-num { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+.price-item .p-desc { font-size: .74rem; color: var(--text-dim); margin-top: .5rem; }
+
+.mechs { display: flex; flex-direction: column; gap: 1rem; margin: 2rem 0; }
+.mech {
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-left: 3px solid var(--gold); border-radius: 2px; padding: 1.3rem 1.6rem;
+}
+.mech h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--cream); margin-bottom: .4rem; }
+.mech p { font-size: .87rem; color: var(--text-dim); line-height: 1.65; }
+
+.stat-callout {
+  background: rgba(192,57,43,.08); border: 1px solid rgba(192,57,43,.3);
+  border-radius: 2px; padding: 1.6rem 1.9rem; margin: 1.8rem 0;
+  display: flex; align-items: baseline; gap: 1.2rem; flex-wrap: wrap;
+}
+.stat-callout .big-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: #e08080; line-height: 1; }
+.stat-callout p { font-size: .88rem; color: var(--text-dim); line-height: 1.6; margin: 0; flex: 1; min-width: 240px; }
+
+.exercise-box {
+  background: var(--navy-mid); border: 1px solid var(--gold); border-radius: 2px;
+  padding: 2rem; margin: 1.5rem 0;
+}
+.exercise-box .tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: .62rem; letter-spacing: .15em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 1rem; display: block;
+}
+.exercise-box p { font-size: .95rem; color: var(--cream-dim); line-height: 1.8; margin-bottom: 1rem; }
+.exercise-box ul { margin: 1rem 0 0 1.2rem; }
+.exercise-box li { font-size: .88rem; color: var(--text-dim); line-height: 1.7; margin-bottom: .5rem; }
+
+.reference-box { background: var(--navy-mid); border: 1px solid var(--border); padding: 1.6rem 2rem; border-radius: 2px; }
+.reference-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: 1rem; }
+.ref-item {
+  font-family: 'IBM Plex Mono', monospace; font-size: .7rem; color: var(--text-dim);
+  line-height: 1.8; border-bottom: 1px solid var(--border);
+  padding-bottom: .8rem; margin-bottom: .8rem;
+}
+.ref-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ref-item strong { color: var(--cream); }
+.ref-item a { color: var(--gold); text-decoration: none; }
+.ref-item a:hover { text-decoration: underline; }
+
+.policy-note {
+  background: rgba(201,168,76,.05); border: 1px solid var(--border);
+  padding: 1.4rem 1.6rem; border-radius: 2px; margin: 1.5rem 0;
+}
+.policy-note p.tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .12em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem;
+}
+.policy-note p { font-size: .86rem; color: var(--text-dim); line-height: 1.7; }
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem; text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+
+.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 680px) {
+  .price-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  section { padding: 4rem 1.5rem; }
+  nav { padding: .8rem 1.1rem; }
+  .nav-links { gap: .7rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../index.html"><span class="back-arrow">&larr;</span> GEP201 · Recursos</a>
+  <ul class="nav-links">
+    <li><a href="#fujishock">Fujishock</a></li>
+    <li><a href="#deuda">Deuda y déficit</a></li>
+    <li><a href="#ejercicio">Ejercicio</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">GEP201 — Gestión Financiera del Estado</div>
+    <h1>1990 y las <em>reglas fiscales</em></h1>
+    <p class="hero-sub">En clase vimos la cifra (7 650% de inflación anual) y por qué el Banco Central es autónomo. Aquí está el detalle que no entra en la sesión en vivo: un día concreto de 1990, y el argumento técnico completo de por qué el déficit y la deuda importan.</p>
+    <div class="hero-meta">
+      <span>Unidad III · Sistema de presupuesto</span>
+      <span>Juan Pablo Silva · PUCP</span>
+    </div>
+  </div>
+</section>
+
+<section id="fujishock">
+  <div class="section-label fade-in">01 — El Fujishock</div>
+  <h2 class="section-title fade-in">Un día, un producto, un precio distinto</h2>
+  <p class="section-intro fade-in">El 8 de agosto de 1990, al liberar los precios que hasta entonces estaban subsidiados, el alza no fue gradual — fue de un día para otro. Esto es lo que le pasó a una canasta cotidiana esa semana.</p>
+
+  <div class="price-grid fade-in">
+    <div class="price-item">
+      <div class="p-name">Pan</div>
+      <div class="p-num">+200%</div>
+      <div class="p-desc">Casi se triplicó</div>
+    </div>
+    <div class="price-item">
+      <div class="p-name">Gasolina</div>
+      <div class="p-num">×30</div>
+      <div class="p-desc">Treinta veces su precio</div>
+    </div>
+    <div class="price-item">
+      <div class="p-name">Leche</div>
+      <div class="p-num">×2</div>
+      <div class="p-desc">Se duplicó</div>
+    </div>
+    <div class="price-item">
+      <div class="p-name">Azúcar</div>
+      <div class="p-num">×2</div>
+      <div class="p-desc">Se duplicó</div>
+    </div>
+  </div>
+
+  <p class="body fade-in">Fue, en palabras de la época, "un alza de los precios de más de 50% durante, al menos, 30 días seguidos" — la peor de la región hasta entonces. El pan es el producto más útil para dimensionarlo hoy: a diferencia de la gasolina (no todos manejan) o de un cálculo abstracto de poder adquisitivo, es algo que cualquier estudiante sigue comprando literalmente todos los días.</p>
+
+  <div class="policy-note fade-in">
+    <p class="tag">Nota sobre la fuente</p>
+    <p>Estas cifras vienen de Gestión, "El shock o el día en que ya nadie sabía cuánto costaba vivir" — <strong style="color:var(--cream)">prensa especializada, no fuente oficial</strong>. Ni el INEI ni el BCRP tienen, de forma accesible, una tabla con el detalle por producto de esa semana exacta. Cítala como prensa, no como si fuera BCRP o INEI directo.</p>
+  </div>
+</section>
+
+<section id="deuda">
+  <div class="section-label fade-in">02 — Por qué importan el déficit y la deuda</div>
+  <h2 class="section-title fade-in">El argumento no es Alan García — es el modelo</h2>
+  <p class="section-intro fade-in">1990 es el canal más extremo de un problema general: cuando el déficit y la deuda pública se salen de control, hay tres mecanismos técnicos por los que eso termina pagándose — más allá de si el resultado es una hiperinflación o algo más silencioso.</p>
+
+  <div class="mechs fade-in">
+    <div class="mech">
+      <h4>1 · Dinámica r − g ("efecto bola de nieve")</h4>
+      <p>Si la tasa de interés real que paga el Estado por su deuda (r) supera la tasa de crecimiento de la economía (g), la deuda crece sola, sin que el gobierno tenga que gastar de más — el servicio de la deuda se come una porción creciente del presupuesto cada año.</p>
+    </div>
+    <div class="mech">
+      <h4>2 · Espacio fiscal</h4>
+      <p>Más deuda hoy es menos margen para responder a la próxima crisis — una pandemia, un desastre natural, una recesión. Un país con poco espacio fiscal llega a la próxima emergencia sin capacidad de endeudarse más para enfrentarla.</p>
+    </div>
+    <div class="mech">
+      <h4>3 · Desplazamiento del crédito privado (<em style="color:var(--gold-light)">crowding out</em>)</h4>
+      <p>Más deuda pública compite por el mismo crédito disponible en la economía — sube el costo del financiamiento para las empresas privadas, que terminan invirtiendo menos.</p>
+    </div>
+  </div>
+
+  <div class="stat-callout fade-in">
+    <div class="big-num">~8 pp</div>
+    <p>Un hallazgo del FMI: llevar la deuda pública de 60% a 120% del PBI puede reducir el PBI de largo plazo en aproximadamente 8 puntos porcentuales, de forma permanente — no es un costo temporal que se revierte solo.</p>
+  </div>
+
+  <p class="body fade-in">1990 combinó los tres mecanismos a la vez, en su forma más violenta: sin límite institucional al déficit y sin un Banco Central que pudiera decir "no" al financiamiento monetario. Las reglas fiscales de hoy (déficit, deuda, gasto) existen para que ningún gobierno vuelva a poner los tres a la vez.</p>
+
+  <div class="reference-box fade-in">
+    <h3>Fuentes</h3>
+    <div class="ref-item"><strong>FMI</strong> — investigación sobre sostenibilidad de deuda pública y dinámica r-g (hallazgo del 60%→120%→~8pp).</div>
+    <div class="ref-item"><strong>Constitución Política del Perú, 1993, Art. 84</strong> — autonomía del BCRP y prohibición de financiar al Tesoro salvo en el mercado secundario.</div>
+  </div>
+</section>
+
+<section id="ejercicio">
+  <div class="section-label fade-in">03 — Ejercicio</div>
+  <h2 class="section-title fade-in">El Consejo Fiscal en acción</h2>
+  <p class="section-intro fade-in">El mismo ejercicio que se hacía en clase, para trabajar por su cuenta o en grupo.</p>
+
+  <div class="exercise-box fade-in">
+    <span class="tag">A mano · sin laptop</span>
+    <p>En grupos: redacten, en 3 frases y con la cifra exacta, un comunicado estilo Consejo Fiscal sobre la medida de su tarjeta (una ley o norma con impacto fiscal, real o hipotética).</p>
+    <ul>
+      <li>¿Qué regla fiscal se pone en riesgo — déficit, deuda o gasto?</li>
+      <li>¿Por qué es distinta de un gasto de un solo año? (piensen en compromisos permanentes vs. transitorios)</li>
+    </ul>
+  </div>
+</section>
+
+<footer>GEP201 · PUCP · Juan Pablo Silva Macher</footer>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), {threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

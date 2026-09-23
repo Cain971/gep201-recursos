@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qué es y de dónde viene el PPR — GEP201</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1b2a;
+  --navy-mid: #162236;
+  --navy-light: #1e3050;
+  --gold: #c9a84c;
+  --gold-light: #e8c96a;
+  --cream: #f5f0e8;
+  --cream-dim: #e8e0d0;
+  --rust: #c0392b;
+  --sage: #2e7d52;
+  --slate: #5c6b7a;
+  --text-on-dark: #dde4ee;
+  --text-dim: #8a9bb0;
+  --border: rgba(201,168,76,0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 120%; }
+
+body {
+  background: var(--navy);
+  color: var(--text-on-dark);
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,27,42,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: .9rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .18em;
+  color: var(--gold); text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: .5rem;
+  transition: color .2s;
+}
+.nav-brand:hover { color: var(--gold-light); }
+.nav-brand .back-arrow { font-size: .8rem; color: var(--text-dim); transition: color .2s; }
+.nav-brand:hover .back-arrow { color: var(--gold-light); }
+.nav-links { display: flex; gap: 1.4rem; list-style: none; }
+.nav-links a {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); text-decoration: none;
+  text-transform: uppercase; transition: color .2s;
+}
+.nav-links a:hover { color: var(--gold); }
+
+section {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: 5rem 2rem;
+}
+section + section { padding-top: 2rem; }
+
+.hero {
+  min-height: 90vh;
+  display: flex; flex-direction: column; justify-content: center;
+  max-width: none; padding: 8rem 3rem 4rem;
+}
+.hero-inner { max-width: 820px; margin: 0 auto; }
+.eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .65rem; letter-spacing: .22em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex; align-items: center; gap: .8rem;
+}
+.eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 900; line-height: 1.1;
+  color: var(--cream); margin-bottom: 1.5rem;
+}
+.hero h1 em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: 1.1rem; font-weight: 300;
+  color: var(--text-dim); max-width: 580px;
+  margin-bottom: 2.5rem; line-height: 1.8;
+}
+.hero-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-meta span {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .13em;
+  color: var(--text-dim); text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: .4rem .9rem; border-radius: 2px;
+}
+
+.section-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .2em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: .8rem;
+  display: flex; align-items: center; gap: .7rem;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, var(--gold) 0%, transparent 100%);
+  opacity: .3;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700; color: var(--cream);
+  margin-bottom: 1rem; line-height: 1.2;
+}
+.section-intro {
+  font-size: 1rem; color: var(--text-dim);
+  max-width: 640px; margin-bottom: 3rem; line-height: 1.8;
+}
+
+p.body { font-size: .95rem; color: var(--text-dim); line-height: 1.85; margin-bottom: 1.3rem; }
+p.body strong { color: var(--cream); font-weight: 400; }
+
+.norm-box {
+  background: linear-gradient(135deg, rgba(201,168,76,.08) 0%, rgba(201,168,76,.03) 100%);
+  border: 1px solid var(--gold);
+  border-left: 3px solid var(--gold);
+  padding: 1.8rem 2rem; border-radius: 2px; margin: 2rem 0;
+  position: relative;
+}
+.norm-box p { font-size: 1.05rem; color: var(--cream); line-height: 1.8; font-style: italic; }
+.norm-box cite {
+  display: block; margin-top: 1rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .64rem; letter-spacing: .1em;
+  color: var(--text-dim); font-style: normal;
+}
+
+/* finalidad — 7 puntos numerados */
+.finality { display: flex; flex-direction: column; gap: .55rem; margin: 2rem 0; }
+.fin-item {
+  display: flex; align-items: flex-start; gap: 1rem;
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-radius: 2px; padding: 1rem 1.3rem;
+}
+.fin-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .72rem; font-weight: 500; color: var(--gold);
+  min-width: 24px; padding-top: .15rem; flex-shrink: 0;
+}
+.fin-txt { font-size: .9rem; color: var(--text-dim); line-height: 1.6; }
+.fin-txt strong { color: var(--cream); font-weight: 400; }
+
+/* timeline */
+.timeline { display: flex; flex-direction: column; gap: 0; margin: 2rem 0; }
+.tl-item { display: flex; gap: 1.5rem; padding: 1.4rem 0; border-top: 1px solid var(--border); }
+.tl-item:first-child { border-top: none; }
+.tl-year {
+  font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900;
+  color: var(--gold-light); min-width: 90px; flex-shrink: 0;
+}
+.tl-body p { font-size: .88rem; color: var(--text-dim); line-height: 1.7; }
+.tl-body p strong { color: var(--cream); font-weight: 400; }
+
+.stat-row { display: flex; gap: 1rem; margin: 2rem 0; flex-wrap: wrap; }
+.stat-box {
+  flex: 1; min-width: 160px;
+  background: var(--navy-mid); border: 1px solid var(--border);
+  border-top: 3px solid var(--gold); border-radius: 2px; padding: 1.4rem;
+}
+.stat-box .s-label { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; letter-spacing: .1em; color: var(--text-dim); text-transform: uppercase; margin-bottom: .5rem; }
+.stat-box .s-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold-light); line-height: 1; }
+.stat-box .s-desc { font-size: .76rem; color: var(--text-dim); margin-top: .5rem; }
+
+.reference-box { background: var(--navy-mid); border: 1px solid var(--border); padding: 1.6rem 2rem; border-radius: 2px; }
+.reference-box h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--cream); margin-bottom: 1rem; }
+.ref-item {
+  font-family: 'IBM Plex Mono', monospace; font-size: .7rem; color: var(--text-dim);
+  line-height: 1.8; border-bottom: 1px solid var(--border);
+  padding-bottom: .8rem; margin-bottom: .8rem;
+}
+.ref-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.ref-item strong { color: var(--cream); }
+
+.policy-note {
+  background: rgba(201,168,76,.05); border: 1px solid var(--border);
+  padding: 1.4rem 1.6rem; border-radius: 2px; margin: 1.5rem 0;
+}
+.policy-note p.tag {
+  font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .12em;
+  color: var(--gold); text-transform: uppercase; margin-bottom: .8rem;
+}
+.policy-note p { font-size: .86rem; color: var(--text-dim); line-height: 1.7; }
+
+footer {
+  position: relative; z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 2rem; text-align: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .6rem; letter-spacing: .12em;
+  color: var(--text-dim); text-transform: uppercase;
+}
+
+.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 680px) {
+  .stat-row { flex-direction: column; }
+  .tl-item { flex-direction: column; gap: .5rem; }
+  .hero { padding: 7rem 1.5rem 3rem; }
+  section { padding: 4rem 1.5rem; }
+  nav { padding: .8rem 1.1rem; }
+  .nav-links { gap: .7rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="../index.html"><span class="back-arrow">&larr;</span> GEP201 · Recursos</a>
+  <ul class="nav-links">
+    <li><a href="#finalidad">Finalidad</a></li>
+    <li><a href="#historia">Historia en el Perú</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">GEP201 — Gestión Financiera del Estado</div>
+    <h1>Qué es y de dónde <em>viene el PPR</em></h1>
+    <p class="hero-sub">En clase vimos una versión resumida de la finalidad del Presupuesto por Resultados. Aquí está completa — y la historia de cómo el Perú lo adoptó, para quien quiera el contexto que no entra en la sesión en vivo.</p>
+    <div class="hero-meta">
+      <span>Unidad III · Introducción al PPR</span>
+      <span>Juan Pablo Silva · PUCP</span>
+    </div>
+  </div>
+</section>
+
+<section id="finalidad">
+  <div class="section-label fade-in">01 — La finalidad completa del PPR</div>
+  <h2 class="section-title fade-in">Los 7 puntos, sin recortar</h2>
+  <p class="section-intro fade-in">En clase vimos 4 de estos 7 puntos — los que más ayudan a entender por qué existe el PPR. Aquí está la lista completa, tal como la define el ente rector.</p>
+
+  <div class="finality fade-in">
+    <div class="fin-item"><span class="fin-num">1</span><span class="fin-txt"><strong>Definir resultados</strong> vinculados a cambios que permitan solucionar problemas que afectan a la población, y generar el compromiso para alcanzarlos.</span></div>
+    <div class="fin-item"><span class="fin-num">2</span><span class="fin-txt"><strong>Presupuestar productos</strong> — bienes y servicios — que inciden en el logro de los resultados.</span></div>
+    <div class="fin-item"><span class="fin-num">3</span><span class="fin-txt"><strong>Determinar responsables</strong> en el logro de los resultados, en la implementación de los instrumentos del PPR y en la rendición de cuentas del gasto público.</span></div>
+    <div class="fin-item"><span class="fin-num">4</span><span class="fin-txt"><strong>Establecer mecanismos</strong> para generar información sobre los productos, los resultados y la gestión realizada para su logro.</span></div>
+    <div class="fin-item"><span class="fin-num">5</span><span class="fin-txt"><strong>Evaluar</strong> si se están logrando los resultados a favor de la población.</span></div>
+    <div class="fin-item"><span class="fin-num">6</span><span class="fin-txt"><strong>Usar la información</strong> para decidir en qué y cómo se va a gastar los recursos públicos, así como para la rendición de cuentas.</span></div>
+    <div class="fin-item"><span class="fin-num">7</span><span class="fin-txt"><strong>Introducir incentivos</strong> para promover que las entidades públicas se esfuercen hacia el logro de resultados.</span></div>
+  </div>
+
+  <p class="body fade-in">Los puntos 1 y 2 son el diseño (qué resultado busco, qué producto lo produce). Los puntos 3 y 4 son la gestión (quién responde, con qué información). Los puntos 5, 6 y 7 son el ciclo de mejora — evaluar, decidir con eso, e incentivar a que se repita. Sin los tres bloques juntos, el PPR se queda en un ejercicio de diseño que nunca cambia cómo se gasta.</p>
+
+  <div class="reference-box fade-in">
+    <h3>Fuente</h3>
+    <div class="ref-item"><strong>Dirección General de Presupuesto Público (DGPP) — MEF.</strong> Finalidad del Presupuesto por Resultados.</div>
+  </div>
+</section>
+
+<section id="historia">
+  <div class="section-label fade-in">02 — El inicio de la reforma en el Perú</div>
+  <h2 class="section-title fade-in">De 9 programas a 89, en poco más de una década</h2>
+  <p class="section-intro fade-in">El PPR no es un concepto que llegó de golpe: se adoptó formalmente en 2008 y se fue expandiendo por etapas, con cambios de enfoque en el camino.</p>
+
+  <div class="norm-box fade-in">
+    <p>En la formulación presupuestal 2008 el Perú decidió adoptar el enfoque de Presupuesto por Resultados que venía difundiéndose a nivel mundial. La Ley de Presupuesto del Sector Público de ese año dispuso la implementación progresiva del PPR.</p>
+    <cite>— Ley de Presupuesto del Sector Público, Año Fiscal 2008</cite>
+  </div>
+
+  <div class="timeline fade-in">
+    <div class="tl-item">
+      <div class="tl-year">2008</div>
+      <div class="tl-body"><p><strong>Programas estratégicos.</strong> Enfoque multisectorial, implementación gradual — el punto de partida.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2012</div>
+      <div class="tl-body"><p><strong>Programas presupuestales.</strong> Enfoque sectorial-institucional; incremento del número de programas.</p></div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-year">2018</div>
+      <div class="tl-body"><p>Se distinguen dos tipos: <strong>PPoR</strong> (Programa Presupuestal orientado a Resultados) con enfoque multisectorial, que responde a prioridades de política pública; y <strong>PPI</strong> (Programa Presupuestal Institucional) con enfoque sectorial o institucional.</p></div>
+    </div>
+  </div>
+
+  <div class="stat-row fade-in">
+    <div class="stat-box">
+      <div class="s-label">2009</div>
+      <div class="s-num">5%</div>
+      <div class="s-desc">del PIA asignado a PPR — 9 programas</div>
+    </div>
+    <div class="stat-box">
+      <div class="s-label">2017 (pico)</div>
+      <div class="s-num">50%</div>
+      <div class="s-desc">del PIA asignado a PPR</div>
+    </div>
+    <div class="stat-box">
+      <div class="s-label">2020</div>
+      <div class="s-num">47%</div>
+      <div class="s-desc">del PIA asignado a PPR — 89 programas</div>
+    </div>
+  </div>
+
+  <p class="body fade-in">En poco más de una década, el PPR pasó de cubrir una porción marginal del presupuesto a casi la mitad. Eso no significa que la mitad del gasto público esté bien priorizado — significa que la mitad ya está, al menos formalmente, organizada bajo esta lógica. El resto de la clase de hoy es sobre qué necesita esa lógica para funcionar de verdad.</p>
+
+  <div class="reference-box fade-in">
+    <h3>Fuente</h3>
+    <div class="ref-item"><strong>DGPP — MEF.</strong> Evolución del presupuesto asignado al PPR, 2009-2020. Cifras de años intermedios (2010-2016, 2018-2019) leídas del gráfico oficial — si necesitas el valor exacto de un año puntual, confírmalo directo con el MEF.</div>
+  </div>
+
+  <div class="policy-note fade-in">
+    <p class="tag">Sobre este recurso</p>
+    <p>Este material complementa la clase en vivo, no la reemplaza — la clase es para pensar el modelo básico y los principios; este recurso es la referencia que puedes releer cuando la necesites.</p>
+  </div>
+</section>
+
+<footer>GEP201 · PUCP · Juan Pablo Silva Macher</footer>
+
+<script>
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && e.target.classList.add('visible')), {threshold:.1});
+document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
