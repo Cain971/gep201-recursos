@@ -1,0 +1,311 @@
+<title>Introducción al PPR — Grilla modular</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#F7F5F0; --surface:#FFFFFF; --ink:#211E19; --ink-dim:#726A5C; --line:#E4DFD2; --chrome-accent:#5B6472; --mono:'IBM Plex Mono',ui-monospace,monospace; }
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',system-ui,sans-serif; padding-inline:16px; padding-block:28px;}
+  .deck-head{max-width:1280px; margin:0 auto 22px; display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:14px;}
+  .deck-head h1{font-family:'Archivo',sans-serif; font-weight:800; font-size:1.2rem; margin:0;}
+  .deck-head p{margin:0; color:var(--ink-dim); font-size:.85rem; font-family:var(--mono);}
+  .present-btn{font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:#fff; background:#0A0A08; border:1px solid #0A0A08; padding:.55em 1.3em; cursor:pointer; white-space:nowrap;}
+  .present-btn:hover{background:#C0281C; border-color:#C0281C;}
+  .present-hint{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:.72rem; color:#ddd; background:rgba(0,0,0,.7); padding:.4em 1.1em; pointer-events:none; opacity:0; transition:opacity .4s; z-index:10;}
+  .present-hint.show{opacity:1;}
+  .deck{max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:20px;}
+  .section-tag{font-family:var(--mono); font-size:11px; color:var(--chrome-accent); text-transform:uppercase; letter-spacing:.06em; margin:8px 4px -6px;}
+
+  .slide{
+    --sink:#0A0A08; --sdim:#5A574E; --sbg:#FAFAF8; --sline:#D8D5C9; --sred:#C0281C; --sgreen:#12805F;
+    container-type:inline-size; position:relative; background:var(--sbg); color:var(--sink);
+    border:1px solid var(--sink); aspect-ratio:16/9; width:100%; overflow:hidden;
+    display:flex; flex-direction:column; font-family:'Archivo',system-ui,sans-serif;
+  }
+  /* Por defecto, generoso — "que se vea aire". .dense se usa solo donde el contenido lo exige. */
+  .pad{flex:1; display:flex; flex-direction:column; justify-content:center; padding:9cqw 10cqw; min-height:0;}
+  .pad.top{justify-content:flex-start;}
+  .pad.dense{padding:6.5cqw 7.5cqw; justify-content:flex-start;}
+  .kicker{font-family:var(--mono); font-size:2cqw; letter-spacing:.05em; text-transform:uppercase; color:var(--sdim);}
+  .kicker .sub{color:var(--sred);}
+  .foot{position:absolute; right:2.2cqw; bottom:1.6cqw; font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:1.6cqw; color:var(--sred); letter-spacing:.04em;}
+  h2.t{font-family:'Archivo',sans-serif; font-weight:800; font-size:3.6cqw; margin:1cqw 0 0;}
+  h1.big{font-family:'Archivo',sans-serif; font-weight:900; font-size:5.2cqw; line-height:1.14; margin:1.2cqw 0 0;}
+  p.body{font-size:2.5cqw; line-height:1.48; margin:1.4cqw 0 0; max-width:66ch;}
+
+  /* Cita/fuente estandarizada — SIEMPRE mono, SIEMPRE no-itálica, un solo tamaño en todo el deck */
+  .src{font-family:var(--mono); font-size:1.55cqw; color:var(--sdim); margin-top:auto; padding-top:1.6cqw; line-height:1.4; max-width:85ch; letter-spacing:.01em;}
+
+  /* portada / cierre */
+  .cover .pad{display:grid; grid-template-columns:15cqw 1fr; padding:0; justify-content:initial;}
+  .cover .col{border-right:1px solid var(--sline); padding:6cqw 3cqw; display:flex; flex-direction:column; justify-content:space-between;}
+  .cover .main{padding:6cqw; display:flex; flex-direction:column; justify-content:flex-end; gap:2cqw;}
+  .cover .byline{font-family:var(--mono); font-size:2cqw; border-top:1px solid var(--sline); padding-top:1.4cqw; color:var(--sdim); width:fit-content;}
+
+  /* agenda — bloque compacto, no estirado; el espacio libre queda debajo */
+  .agenda .rows{display:flex; flex-direction:column; gap:2.2cqw; margin-top:4cqw;}
+  .agenda .row{display:flex; align-items:baseline; gap:2.6cqw;}
+  .agenda .n{font-family:var(--mono); font-size:1.5cqw; color:var(--sred); flex:none; width:4.4cqw;}
+  .agenda b{font-weight:600; font-size:2.3cqw;}
+
+  /* tres objetivos — lista numerada en columna */
+  .causes{display:flex; flex-direction:column; gap:1.8cqw; margin-top:2.6cqw; max-width:88%;}
+  .causes .c{display:flex; gap:2.2cqw; border-top:1px solid var(--sline); padding-top:1.8cqw;}
+  .causes .c:first-child{border-top:none; padding-top:0;}
+  .causes .n{font-weight:800; font-size:2.6cqw; color:var(--sred); flex:none; width:3.6cqw;}
+  .causes b{display:block; font-weight:700; font-size:2.3cqw;}
+  .causes span{font-size:2.1cqw; color:var(--sdim); line-height:1.38;}
+  .causes .tag{font-family:var(--mono); font-size:1.4cqw; color:var(--sdim); font-weight:400;}
+
+  /* concepts (2 definiciones) */
+  .defs2{display:grid; grid-template-columns:1fr 1fr; gap:3cqw; margin-top:2.4cqw; max-width:90%;}
+  .defs2 h4{font-weight:700; font-size:2.3cqw; margin:0 0 .6cqw; color:var(--sred);}
+  .defs2 p{font-size:2.05cqw; line-height:1.42; margin:0; color:var(--sdim);}
+
+  /* citas — blockquote estandarizado */
+  blockquote{margin:1.6cqw 0 0; border-left:.45cqw solid var(--sred); padding-left:3cqw; font-weight:500; font-style:normal; font-size:2.6cqw; line-height:1.46; max-width:82ch;}
+  .cite{font-family:var(--mono); font-size:1.6cqw; color:var(--sdim); margin-top:1.6cqw; display:block;}
+
+  /* hero — número + nota lateral */
+  .hero{display:flex; align-items:center; gap:5cqw;}
+  .hero .num{font-weight:900; font-size:9cqw; color:var(--sred); line-height:.9; font-variant-numeric:tabular-nums;}
+  .hero .side{flex:1; display:flex; flex-direction:column; gap:1.2cqw;}
+  .hero .side p{font-size:2.15cqw; line-height:1.42; margin:0;}
+
+  /* verdict 2-col */
+  .verdict{display:grid; grid-template-columns:1fr 1fr; gap:2.2cqw; margin-top:2.4cqw;}
+  .verdict .v{border:1px solid var(--sline); padding:2cqw 2.2cqw; display:flex; flex-direction:column; gap:.8cqw;}
+  .verdict .v.good{border-color:var(--sgreen);}
+  .verdict .v.bad{border-color:var(--sred);}
+  .verdict .tag{font-family:var(--mono); font-size:1.5cqw; text-transform:uppercase; font-weight:600;}
+  .verdict .v.good .tag{color:var(--sgreen);}
+  .verdict .v.bad .tag{color:var(--sred);}
+  .verdict .big{font-weight:800; font-size:2.9cqw;}
+  .verdict .d{font-size:1.85cqw; color:var(--sdim); line-height:1.4;}
+
+  /* lista de puntos */
+  .pts{list-style:none; margin:2.2cqw 0 0; padding:0; display:flex; flex-direction:column; gap:1.2cqw; max-width:92%;}
+  .pts li{font-size:1.95cqw; line-height:1.42; padding-left:1.6cqw; position:relative;}
+  .pts li::before{content:"–"; position:absolute; left:0; color:var(--sred); font-weight:700;}
+  .pts li b{font-weight:700;}
+
+  @media (max-width:720px){ .slide{aspect-ratio:auto; min-height:520px;} .defs2{grid-template-columns:1fr;} .verdict{grid-template-columns:1fr;} .present-btn{display:none;} }
+
+  @media print{
+    body{padding:0; background:#fff;}
+    .deck-head,.present-hint,.section-tag{display:none;}
+    .deck{gap:0; max-width:none;}
+    .slide{border:none; border-left:5px solid #0A0A08; break-after:page; aspect-ratio:16/9; width:100%; height:auto;}
+    @page{ size:13.333in 7.5in; margin:0; }
+  }
+  body.presenting{background:#000; overflow:hidden;}
+  body.presenting .deck-head,body.presenting .section-tag{display:none;}
+  body.presenting .deck{max-width:none; margin:0; gap:0;}
+  body.presenting .slide{display:none;}
+  body.presenting .slide.active{ display:flex; position:fixed; top:50%; left:50%; width:1280px; height:720px; margin:0; transform-origin:center center; transform:translate(-50%,-50%) scale(var(--present-scale,1)); }
+</style>
+
+<div class="deck-head">
+  <h1>Introducción al Presupuesto por Resultados</h1>
+  <p>GEP201 · Unidad III · próxima sesión</p>
+  <button id="present-btn" class="present-btn" type="button">▶ Presentar</button>
+</div>
+<div id="present-hint" class="present-hint">← → para avanzar · Esc para salir</div>
+
+<div class="deck">
+
+<section class="slide cover"><div class="pad">
+  <div class="col"><span class="kicker">A.01</span><span class="kicker">PPR</span></div>
+  <div class="main"><h1 class="big">Introducción al Presupuesto por Resultados</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad III</div></div>
+</div><span class="foot">01/17</span></section>
+
+<section class="slide agenda"><div class="pad top">
+  <span class="kicker">Sesión de hoy</span>
+  <h2 class="t">Introducción al Presupuesto por Resultados</h2>
+  <div class="rows">
+    <div class="row"><span class="n">01</span><b>Por qué no basta con presupuestar más</b></div>
+    <div class="row"><span class="n">02</span><b>Qué es el Presupuesto por Resultados</b></div>
+    <div class="row"><span class="n">03</span><b>El modelo básico del PPR</b></div>
+    <div class="row"><span class="n">04</span><b>Los principios del PPR</b></div>
+  </div>
+</div><span class="foot">02/17</span></section>
+
+<p class="section-tag">Bloque 1 · Por qué no basta con presupuestar más</p>
+<section class="slide"><div class="pad top">
+  <span class="kicker">Antes de empezar</span>
+  <h2 class="t">Más presupuesto no garantiza mejores resultados</h2>
+  <p class="body">Ya lo vimos: el gasto corriente sube, la inversión cae, y el presupuesto total sigue creciendo. La pregunta de hoy es otra — ¿cómo logramos que el gasto sí produzca resultados?</p>
+</div><span class="foot">03/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Objetivos del presupuesto</span>
+  <h2 class="t">3 objetivos, uno ya cubierto</h2>
+  <div class="causes">
+    <div class="c"><span class="n">1</span><span><b>Resultados macrofiscales sólidos <span class="tag">— ya lo vimos</span></b><span>Control eficiente del déficit y la deuda.</span></span></div>
+    <div class="c"><span class="n">2</span><span><b>Priorización apropiada del gasto</b><span>Los recursos van donde están las principales necesidades de la población.</span></span></div>
+    <div class="c"><span class="n">3</span><span><b>Efectividad y eficiencia en los servicios</b><span>Que se entreguen bien, y que sí generen el beneficio esperado.</span></span></div>
+  </div>
+  <p class="src">Los objetivos 2 y 3 son el territorio del Presupuesto por Resultados — lo que vemos hoy. DGPP-MEF.</p>
+</div><span class="foot">04/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Conceptos clave</span>
+  <h2 class="t">Efectividad y eficiencia</h2>
+  <div class="defs2">
+    <div><h4>Efectividad</h4><p>En qué medida un servicio entrega los beneficios que se supone debe entregar a la sociedad — si el programa logra los resultados esperados.</p></div>
+    <div><h4>Eficiencia</h4><p>Entregar los servicios al menor costo posible, sin sacrificar calidad.</p></div>
+  </div>
+</div><span class="foot">05/17</span></section>
+
+<section class="slide"><div class="pad top">
+  <span class="kicker">Marco conceptual</span>
+  <blockquote>"La presupuestación basada en resultados busca mejorar la efectividad y eficiencia del gasto público, vinculando la financiación de las organizaciones del sector público con los resultados que entregan."</blockquote>
+  <span class="cite">Marc Robinson</span>
+</div><span class="foot">06/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El eslabón roto</span>
+  <h2 class="t">El presupuesto sube. ¿Los resultados también?</h2>
+  <div class="hero">
+    <div class="num">+33%</div>
+    <div class="side"><p>El Presupuesto Institucional Modificado (PIM) pasó de S/ 158 282 M (2016) a S/ 287 596 M (21-set-2026) — +82% nominal, +33% en términos reales. ¿Los resultados que demanda la población tuvieron el mismo comportamiento?</p></div>
+  </div>
+  <ul class="pts" style="margin-top:1.8cqw;">
+    <li>Lo que reconecta asignación con resultados: <b>información de desempeño</b> — indicadores, evaluaciones, costeo.</li>
+  </ul>
+  <p class="src">PIM 2016 y 2026 (21-set-2026) — MEF, Consulta Amigable. Deflactado con inflación anual BCRP 2017-2025 más 2% anual (punto medio del rango meta) prorrateado a ene-set 2026.</p>
+</div><span class="foot">07/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">¿Por qué persiste la brecha?</span>
+  <h2 class="t">Dos maneras de asignar el gasto</h2>
+  <div class="verdict">
+    <div class="v bad"><span class="tag">Cómo se asigna hoy</span><span class="big">Inercia presupuestal</span><span class="d">Recorte presupuestal ciego cuando hace falta — las necesidades de la institución definen las prioridades.</span></div>
+    <div class="v good"><span class="tag">Cómo lo propone el PPR</span><span class="big">Asignación selectiva</span><span class="d">El punto de partida son las personas — sostenibilidad fiscal e inclusión social.</span></div>
+  </div>
+</div><span class="foot">08/17</span></section>
+
+<p class="section-tag">Bloque 2 · Qué es el Presupuesto por Resultados</p>
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Finalidad del PPR <span class="sub">· DGPP-MEF</span></span>
+  <h2 class="t">Para qué sirve</h2>
+  <ul class="pts">
+    <li>Definir resultados vinculados a problemas reales de la población, y generar el compromiso para alcanzarlos.</li>
+    <li>Presupuestar productos — bienes y servicios — que inciden en esos resultados.</li>
+    <li>Generar información sobre productos, resultados y gestión, para decidir y rendir cuentas.</li>
+    <li>Evaluar si se están logrando los resultados a favor de la población.</li>
+  </ul>
+  <p class="src">Lista completa: 7 puntos, en recursos. DGPP-MEF.</p>
+</div><span class="foot">09/17</span></section>
+
+<section class="slide"><div class="pad top">
+  <span class="kicker">Un concepto más amplio</span>
+  <h2 class="t">El PPR es la aplicación presupuestal de la Gestión por Resultados</h2>
+  <p class="body">Antes de seguir, vale la pena ver de dónde viene la idea.</p>
+</div><span class="foot">10/17</span></section>
+
+<section class="slide"><div class="pad top">
+  <span class="kicker">Marco conceptual</span>
+  <blockquote>"La gestión por resultados es una estrategia de gestión mediante la cual todos los actores que contribuyen al logro de un conjunto de resultados se aseguran de que sus procesos, productos y servicios favorecen la consecución de los resultados finales deseados."</blockquote>
+  <span class="cite">Results-based Management Handbook, United Nations Development Group</span>
+</div><span class="foot">11/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Gestión por Resultados</span>
+  <h2 class="t">El uso formal de la información de desempeño</h2>
+  <ul class="pts">
+    <li>Claridad sobre los resultados prioritarios.</li>
+    <li>Conocimiento objetivo de la relación entre recursos, actividades, productos y resultados esperados.</li>
+    <li>Un buen planeamiento estratégico.</li>
+    <li>Gestión estratégica de los recursos humanos y de las instituciones — incentivos.</li>
+  </ul>
+</div><span class="foot">12/17</span></section>
+
+<p class="section-tag">Bloque 3 · El modelo básico del PPR</p>
+<section class="slide"><div class="pad top">
+  <span class="kicker">El modelo básico <span class="sub">· Definición</span></span>
+  <blockquote>"En su forma más elemental, la presupuestación por resultados pretende garantizar que, al elaborar el presupuesto del gobierno, las personas encargadas de tomar las decisiones clave tengan en cuenta sistemáticamente los resultados a los que apunta el gasto."</blockquote>
+  <span class="cite">M. Robinson &amp; D. Last (2009)</span>
+</div><span class="foot">13/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El modelo básico <span class="sub">· Requisitos</span></span>
+  <h2 class="t">Qué necesita un sistema de PPR</h2>
+  <ul class="pts">
+    <li>Contar con información sobre los objetivos y resultados del gasto.</li>
+    <li>Un proceso de elaboración presupuestal que facilite el uso de esa información en la asignación.</li>
+    <li>Clasificación del gasto por programas — es decir, por objetivos.</li>
+  </ul>
+</div><span class="foot">14/17</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El modelo básico <span class="sub">· Usos</span></span>
+  <h2 class="t">Para qué se usa en la práctica</h2>
+  <ul class="pts">
+    <li>Mejorar la priorización del gasto.</li>
+    <li>Promover la eficiencia y eficacia en el gasto de los pliegos presupuestales.</li>
+    <li>Mejorar la disciplina fiscal global — el espacio fiscal que crea la priorización.</li>
+    <li>Contribuir a una formulación presupuestal multianual.</li>
+  </ul>
+</div><span class="foot">15/17</span></section>
+
+<p class="section-tag">Bloque 4 · Los principios del PPR</p>
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Los principios del PPR</span>
+  <h2 class="t">3 principios que sostienen el diseño de un programa</h2>
+  <ul class="pts">
+    <li><b>Ciudadanos</b>: el sujeto sobre el cual se establecen y priorizan condiciones de interés clave para su desarrollo — a quien el Estado rinde cuentas.</li>
+    <li><b>Causalidad</b>: las condiciones del ciudadano y su entorno interactúan a través de una cadena de causas y efectos.</li>
+    <li><b>Evidencia</b>: las relaciones causales entre la intervención pública y esas condiciones se determinan con evidencia.</li>
+  </ul>
+  <p class="src">Van a volver a estos 3 principios cuando diseñemos un programa presupuestal.</p>
+</div><span class="foot">16/17</span></section>
+
+<section class="slide cover"><div class="pad">
+  <div class="col"><span class="kicker">A.17</span><span class="kicker">PPR</span></div>
+  <div class="main"><h1 class="big">Introducción al Presupuesto por Resultados</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad III</div></div>
+</div><span class="foot">17/17</span></section>
+
+</div>
+
+<script>
+(function(){
+  var deck=document.querySelector('.deck');
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var btn=document.getElementById('present-btn');
+  var hint=document.getElementById('present-hint');
+  var idx=0, hintTimer=null;
+
+  function fitScale(){
+    var s=Math.min(window.innerWidth/1280, window.innerHeight/720);
+    document.documentElement.style.setProperty('--present-scale', s);
+  }
+  function showHint(){
+    hint.classList.add('show');
+    clearTimeout(hintTimer);
+    hintTimer=setTimeout(function(){hint.classList.remove('show');},2200);
+  }
+  function render(){ slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); }); }
+  function enter(){ document.body.classList.add('presenting'); fitScale(); render(); showHint(); }
+  function exit(){ document.body.classList.remove('presenting'); }
+  function next(){ if(idx<slides.length-1){ idx++; render(); } }
+  function prev(){ if(idx>0){ idx--; render(); } }
+
+  btn.addEventListener('click', function(){ try{ enter(); }catch(e){} });
+  window.addEventListener('resize', function(){ if(document.body.classList.contains('presenting')) fitScale(); });
+  document.addEventListener('keydown', function(e){
+    if(!document.body.classList.contains('presenting')) return;
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){ next(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ prev(); }
+    else if(e.key==='Home'){ idx=0; render(); }
+    else if(e.key==='End'){ idx=slides.length-1; render(); }
+    else if(e.key==='Escape'){ exit(); }
+  });
+  deck.addEventListener('click', function(e){
+    if(!document.body.classList.contains('presenting')) return;
+    var x=e.clientX, third=window.innerWidth/3;
+    if(x<third){ prev(); } else { next(); }
+  });
+})();
+</script>

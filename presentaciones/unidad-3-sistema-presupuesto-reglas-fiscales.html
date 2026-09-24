@@ -1,0 +1,500 @@
+<title>Sistema de presupuesto — Grilla modular</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#F7F5F0; --surface:#FFFFFF; --ink:#211E19; --ink-dim:#726A5C; --line:#E4DFD2; --chrome-accent:#5B6472; --mono:'IBM Plex Mono',ui-monospace,monospace; }
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',system-ui,sans-serif; padding-inline:16px; padding-block:28px;}
+  .deck-head{max-width:1280px; margin:0 auto 22px; display:flex; flex-wrap:wrap; gap:8px 24px; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); padding-bottom:14px;}
+  .deck-head h1{font-family:'Archivo',sans-serif; font-weight:800; font-size:1.2rem; margin:0;}
+  .deck-head p{margin:0; color:var(--ink-dim); font-size:.85rem; font-family:var(--mono);}
+  .present-btn{font-family:var(--mono); font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:#fff; background:#0A0A08; border:1px solid #0A0A08; padding:.55em 1.3em; cursor:pointer; white-space:nowrap;}
+  .present-btn:hover{background:#C0281C; border-color:#C0281C;}
+  .present-hint{position:fixed; bottom:16px; left:50%; transform:translateX(-50%); font-family:var(--mono); font-size:.72rem; color:#ddd; background:rgba(0,0,0,.7); padding:.4em 1.1em; pointer-events:none; opacity:0; transition:opacity .4s; z-index:10;}
+  .present-hint.show{opacity:1;}
+  .deck{max-width:1280px; margin:0 auto; display:flex; flex-direction:column; gap:20px;}
+  .section-tag{font-family:var(--mono); font-size:11px; color:var(--chrome-accent); text-transform:uppercase; letter-spacing:.06em; margin:8px 4px -6px;}
+
+  .slide{
+    --sink:#0A0A08; --sdim:#5A574E; --sbg:#FAFAF8; --sline:#D8D5C9; --sred:#C0281C; --sgreen:#12805F;
+    container-type:inline-size; position:relative; background:var(--sbg); color:var(--sink);
+    border:1px solid var(--sink); aspect-ratio:16/9; width:100%; overflow:hidden;
+    display:flex; flex-direction:column; font-family:'Archivo',system-ui,sans-serif;
+  }
+  /* Por defecto, generoso — "que se vea aire". .dense se usa solo donde el contenido lo exige. */
+  .pad{flex:1; display:flex; flex-direction:column; justify-content:center; padding:9cqw 10cqw; min-height:0;}
+  .pad.top{justify-content:flex-start;}
+  .pad.dense{padding:6.5cqw 7.5cqw; justify-content:flex-start;}
+  .kicker{font-family:var(--mono); font-size:2cqw; letter-spacing:.05em; text-transform:uppercase; color:var(--sdim);}
+  .kicker .sub{color:var(--sred);}
+  .foot{position:absolute; right:2.2cqw; bottom:1.6cqw; font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:1.6cqw; color:var(--sred); letter-spacing:.04em;}
+  h2.t{font-family:'Archivo',sans-serif; font-weight:800; font-size:3.6cqw; margin:1cqw 0 0;}
+  h1.big{font-family:'Archivo',sans-serif; font-weight:900; font-size:5.2cqw; line-height:1.14; margin:1.2cqw 0 0;}
+  p.body{font-size:2.5cqw; line-height:1.48; margin:1.4cqw 0 0; max-width:66ch;}
+
+  /* Cita/fuente estandarizada — SIEMPRE mono, SIEMPRE no-itálica, un solo tamaño en todo el deck */
+  .src{font-family:var(--mono); font-size:1.55cqw; color:var(--sdim); margin-top:auto; padding-top:1.6cqw; line-height:1.4; max-width:85ch; letter-spacing:.01em;}
+
+  /* portada / cierre */
+  .cover .pad{display:grid; grid-template-columns:15cqw 1fr; padding:0; justify-content:initial;}
+  .cover .col{border-right:1px solid var(--sline); padding:6cqw 3cqw; display:flex; flex-direction:column; justify-content:space-between;}
+  .cover .main{padding:6cqw; display:flex; flex-direction:column; justify-content:flex-end; gap:2cqw;}
+  .cover .byline{font-family:var(--mono); font-size:2cqw; border-top:1px solid var(--sline); padding-top:1.4cqw; color:var(--sdim); width:fit-content;}
+
+  /* agenda — bloque compacto, no estirado; el espacio libre queda debajo */
+  .agenda .rows{display:flex; flex-direction:column; gap:2.2cqw; margin-top:4cqw;}
+  .agenda .row{display:flex; align-items:baseline; gap:2.6cqw;}
+  .agenda .n{font-family:var(--mono); font-size:1.5cqw; color:var(--sred); flex:none; width:4.4cqw;}
+  .agenda b{font-weight:600; font-size:2.3cqw;}
+
+  /* predicción — muy poco contenido, alineado arriba para dejar aire debajo */
+  .predict h2.t{font-weight:600; font-size:4.2cqw; line-height:1.3; max-width:88%; text-transform:none;}
+  .predict .qmark{color:var(--sred); font-weight:900; margin-left:.12em; display:inline-block;}
+  .predict .hint{font-family:var(--mono); font-size:1.7cqw; color:var(--sdim); margin-top:2cqw;}
+
+  /* stat grid (4 tiles) */
+  .statgrid{display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--sink); margin-top:2.6cqw;}
+  .statgrid .tile{padding:2.2cqw 1.8cqw 0; border-right:1px solid var(--sline);}
+  .statgrid .tile:last-child{border-right:none;}
+  .statgrid .sector{font-family:var(--mono); font-size:1.4cqw; text-transform:uppercase; color:var(--sdim); line-height:1.3; display:block;}
+  .statgrid .num{font-weight:800; font-size:4.2cqw; color:var(--sred); font-variant-numeric:tabular-nums; display:block; margin-top:.6cqw;}
+
+  /* hero — número + nota lateral (S21 puente) */
+  .hero{display:flex; align-items:center; gap:5cqw;}
+  .hero .num{font-weight:900; font-size:11cqw; color:var(--sred); line-height:.9; font-variant-numeric:tabular-nums;}
+  .hero .side{flex:1; display:flex; flex-direction:column; gap:1.2cqw;}
+  .hero .side p{font-size:2.2cqw; line-height:1.42; margin:0;}
+
+  /* hero apilado — número arriba, a todo el ancho (S06 7650%) */
+  .hero.stacked{display:flex; flex-direction:column; gap:0; align-items:flex-start; margin-top:2.2cqw;}
+  .hero.stacked .num{font-weight:900; font-size:8.5cqw; color:var(--sred); line-height:.9; font-variant-numeric:tabular-nums;}
+  .hero.stacked .lead{font-size:2.2cqw; line-height:1.4; margin:1.4cqw 0 0; max-width:70ch;}
+
+  /* dos causas — en columnas cuando hay ancho completo debajo */
+  .causes{display:flex; flex-direction:column; gap:1.8cqw; margin-top:2.6cqw; max-width:80%;}
+  .causes .c{display:flex; gap:2.2cqw; border-top:1px solid var(--sline); padding-top:1.8cqw;}
+  .causes .c:first-child{border-top:none; padding-top:0;}
+  .causes .n{font-weight:800; font-size:2.6cqw; color:var(--sred); flex:none; width:3.6cqw;}
+  .causes b{display:block; font-weight:700; font-size:2.3cqw;}
+  .causes span{font-size:2.1cqw; color:var(--sdim); line-height:1.38;}
+  .causes.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2.4cqw; max-width:100%;}
+  .causes.grid2 .c{border-top:1px solid var(--sline); padding-top:1.8cqw;}
+
+  /* citas — blockquote estandarizado */
+  blockquote{margin:1.6cqw 0 0; border-left:.45cqw solid var(--sred); padding-left:3cqw; font-weight:500; font-style:normal; font-size:2.6cqw; line-height:1.46; max-width:82ch;}
+
+  /* tabla genérica */
+  table.rules{width:100%; border-collapse:collapse; margin-top:2cqw;}
+  table.rules th, table.rules td{text-align:left; padding:.9cqw 1.2cqw .9cqw 0; border-bottom:1px solid var(--sline); font-size:2cqw;}
+  table.rules th{font-family:var(--mono); text-transform:uppercase; font-size:1.4cqw; color:var(--sdim); font-weight:500;}
+  table.rules td.num{font-family:var(--mono); font-variant-numeric:tabular-nums;}
+
+  /* verdict 2-col */
+  .verdict{display:grid; grid-template-columns:1fr 1fr; gap:2.2cqw; margin-top:2.2cqw;}
+  .verdict .v{border:1px solid var(--sline); padding:2cqw 2.2cqw; display:flex; flex-direction:column; gap:.8cqw;}
+  .verdict .v.good{border-color:var(--sgreen);}
+  .verdict .v.bad{border-color:var(--sred);}
+  .verdict .tag{font-family:var(--mono); font-size:1.5cqw; text-transform:uppercase; font-weight:600;}
+  .verdict .v.good .tag{color:var(--sgreen);}
+  .verdict .v.bad .tag{color:var(--sred);}
+  .verdict .big{font-weight:800; font-size:3.2cqw;}
+  .verdict .d{font-size:1.85cqw; color:var(--sdim); line-height:1.4;}
+
+  /* concepts (2 definiciones) */
+  .defs2{display:grid; grid-template-columns:1fr 1fr; gap:3cqw; margin-top:2.4cqw; max-width:90%;}
+  .defs2 h4{font-weight:700; font-size:2.3cqw; margin:0 0 .6cqw; color:var(--sred);}
+  .defs2 p{font-size:2.05cqw; line-height:1.42; margin:0; color:var(--sdim);}
+  .defs2.compact{gap:2.6cqw; margin-top:1.8cqw; max-width:100%;}
+  .defs2.compact h4{font-size:1.85cqw; margin-bottom:.4cqw;}
+  .defs2.compact p{font-size:1.7cqw;}
+
+  /* bar chart (SVG) */
+  .barchart{margin-top:2.4cqw; flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center;}
+  .barchart svg{width:100%; height:auto; max-height:100%; overflow:visible;}
+  .bar-label{font-family:var(--mono); font-size:9px; fill:var(--sdim);}
+  .bar-value{font-family:'Archivo',sans-serif; font-weight:800; font-size:15px; fill:var(--sink);}
+  .bar-value.hi{fill:var(--sred);}
+
+  /* jerarquía en cascada — 3 cajas conectadas (ámbito institucional) */
+  .hierarchy{display:flex; align-items:stretch; gap:0; margin-top:2.8cqw;}
+  .hierarchy .box{flex:1; border:1px solid var(--sink); padding:2.4cqw 2cqw; display:flex; flex-direction:column; gap:1cqw;}
+  .hierarchy .arrow{display:flex; align-items:center; justify-content:center; width:3.6cqw; font-size:2.4cqw; color:var(--sred); flex:none;}
+  .hierarchy .name{font-weight:800; font-size:2.6cqw; line-height:1.15; min-height:2.3em;}
+  .hierarchy .role{font-size:1.8cqw; color:var(--sdim); line-height:1.42;}
+  .hierarchy .norm{font-family:var(--mono); font-size:1.4cqw; color:var(--sred); margin-top:auto; padding-top:.8cqw;}
+
+  /* ciclo — 5 cajas + retroalimentación (reemplaza el mermaid que no rendía bien) */
+  .cycle{display:flex; align-items:stretch; gap:0; margin-top:3cqw;}
+  .cycle .box{flex:1; border:1px solid var(--sink); padding:2cqw 1.4cqw; text-align:center; display:flex; flex-direction:column; gap:.7cqw;}
+  .cycle .box.yr2{background:rgba(90,87,78,.08);}
+  .cycle .n{font-family:var(--mono); font-size:1.5cqw; color:var(--sred);}
+  .cycle .lbl{font-weight:700; font-size:1.85cqw; line-height:1.25;}
+  .cycle .dt{font-family:var(--mono); font-size:1.25cqw; color:var(--sdim);}
+  .cycle .arrow{display:flex; align-items:center; justify-content:center; font-size:2cqw; color:var(--sdim); flex:none; width:2.4cqw;}
+  .cycle .arrow.yr-gap{width:5cqw;}
+  .cycle-loop{display:flex; align-items:center; gap:.9cqw; margin-top:1.6cqw; font-family:var(--mono); font-size:1.5cqw; color:var(--sred);}
+
+  /* organigrama SNPP — conectores rectos en 90°, listas de instituciones sin caja */
+  .orgchart{margin-top:2.4cqw; display:flex; flex-direction:column; align-items:center;}
+  .orgchart .root{border:1px solid var(--sink); padding:1cqw 2.4cqw; font-weight:700; font-size:1.85cqw; text-align:center;}
+  .orgchart .trunk{width:1px; height:1.6cqw; background:var(--sline);}
+  .orgchart .trunk-line{width:66.667%; height:1px; background:var(--sline);}
+  .orgchart .branches{display:flex; width:100%; align-items:flex-start;}
+  .orgchart .branch{flex:1; display:flex; flex-direction:column; align-items:center; padding:0 1.8cqw;}
+  .orgchart .stem{width:1px; height:1.4cqw; background:var(--sline);}
+  .orgchart .label{font-weight:700; font-size:1.85cqw; border:1px solid var(--sink); padding:.7cqw 1.6cqw;}
+  .orgchart .members{list-style:none; margin:1.2cqw 0 0; padding:0; width:100%;}
+  .orgchart .members li{font-size:1.4cqw; color:var(--sdim); line-height:1.4; padding:.4cqw 0 .4cqw .9cqw; position:relative;}
+  .orgchart .members li::before{content:"–"; position:absolute; left:0; color:var(--sred);}
+
+  /* lista de puntos — detalle de una fase */
+  .pts{list-style:none; margin:2cqw 0 0; padding:0; display:flex; flex-direction:column; gap:1.15cqw; max-width:92%;}
+  .pts li{font-size:1.85cqw; line-height:1.4; padding-left:1.6cqw; position:relative;}
+  .pts li::before{content:"–"; position:absolute; left:0; color:var(--sred); font-weight:700;}
+  .pts li b{font-weight:700;}
+  .pts li .mono{font-family:var(--mono); font-size:.88em; color:var(--sdim);}
+
+  @media (max-width:720px){ .slide{aspect-ratio:auto; min-height:520px;} .statgrid{grid-template-columns:repeat(2,1fr);} .defs2{grid-template-columns:1fr;} .verdict{grid-template-columns:1fr;} .causes.grid2{grid-template-columns:1fr;} .hierarchy{flex-direction:column;} .hierarchy .arrow{width:auto; padding:.4cqw 0;} .cycle{flex-direction:column;} .cycle .arrow{width:auto; padding:.3cqw 0;} .orgchart .trunk-line{display:none;} .orgchart .branches{flex-direction:column;} .orgchart .branch{padding:0; border-top:1px solid var(--sline); padding-top:1cqw; margin-top:1cqw;} .present-btn{display:none;} }
+
+  @media print{
+    body{padding:0; background:#fff;}
+    .deck-head,.present-hint,.section-tag{display:none;}
+    .deck{gap:0; max-width:none;}
+    .slide{border:none; border-left:5px solid #0A0A08; break-after:page; aspect-ratio:16/9; width:100%; height:auto;}
+    @page{ size:13.333in 7.5in; margin:0; }
+  }
+  body.presenting{background:#000; overflow:hidden;}
+  body.presenting .deck-head,body.presenting .section-tag{display:none;}
+  body.presenting .deck{max-width:none; margin:0; gap:0;}
+  body.presenting .slide{display:none;}
+  body.presenting .slide.active{ display:flex; position:fixed; top:50%; left:50%; width:1280px; height:720px; margin:0; transform-origin:center center; transform:translate(-50%,-50%) scale(var(--present-scale,1)); }
+</style>
+
+<div class="deck-head">
+  <h1>Sistema de presupuesto público y reglas fiscales</h1>
+  <p>GEP201 · Unidad III · miércoles 23-sep-2026</p>
+  <button id="present-btn" class="present-btn" type="button">▶ Presentar</button>
+</div>
+<div id="present-hint" class="present-hint">← → para avanzar · Esc para salir</div>
+
+<div class="deck">
+
+<section class="slide cover"><div class="pad">
+  <div class="col"><span class="kicker">A.01</span><span class="kicker">SNPP</span></div>
+  <div class="main"><h1 class="big">Sistema de presupuesto y reglas fiscales</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad III</div></div>
+</div><span class="foot">01/23</span></section>
+
+<section class="slide agenda"><div class="pad top">
+  <span class="kicker">Sesión de hoy</span>
+  <h2 class="t">Sistema de presupuesto público y reglas fiscales</h2>
+  <div class="rows">
+    <div class="row"><span class="n">01</span><b>El problema de fondo</b></div>
+    <div class="row"><span class="n">02</span><b>Las reglas fiscales de hoy</b></div>
+    <div class="row"><span class="n">03</span><b>Cómo funciona el sistema (SNPP)</b></div>
+  </div>
+</div><span class="foot">02/23</span></section>
+
+<p class="section-tag">Bloque 1 · El problema de fondo</p>
+<section class="slide predict"><div class="pad top">
+  <span class="kicker">Problema de fondo</span>
+  <h2 class="t">¿Qué % creen que hay en cada uno?</h2>
+  <div class="statgrid">
+    <div class="tile"><span class="sector">Pobreza · zona rural</span><span class="num">?</span></div>
+    <div class="tile"><span class="sector">Anemia infantil · zona rural</span><span class="num">?</span></div>
+    <div class="tile"><span class="sector">Nivel Satisfactorio en Lectura</span><span class="num">?</span></div>
+    <div class="tile"><span class="sector">Percepción de victimización</span><span class="num">?</span></div>
+  </div>
+</div><span class="foot">03/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Problema de fondo</span>
+  <h2 class="t">Pese al gasto, persisten las brechas</h2>
+  <div class="statgrid">
+    <div class="tile"><span class="sector">Pobreza · zona rural</span><span class="num">35,5%</span></div>
+    <div class="tile"><span class="sector">Anemia infantil · zona rural</span><span class="num">43,2%</span></div>
+    <div class="tile"><span class="sector">Nivel Satisfactorio en Lectura</span><span class="num">32,8%</span></div>
+    <div class="tile"><span class="sector">Percepción de victimización</span><span class="num">86,1%</span></div>
+  </div>
+  <p class="src">INEI (2025) · INEI-ENDES (2025) · MINEDU-UMC, ENLA 2024 · INEI, semestre ene-jun 2024, vía El Peruano. El presupuesto sigue creciendo — estas brechas no cierran al mismo ritmo.</p>
+</div><span class="foot">04/23</span></section>
+
+<section class="slide predict"><div class="pad top">
+  <span class="kicker">Problema de fondo</span>
+  <h2 class="t">¿Qué tan alta creen que fue la inflación anual en <i>1990</i><span class="qmark">?</span></h2>
+  <p class="body" style="color:var(--sdim)">Bajo el primer gobierno de Alan García, el déficit fiscal se financió emitiendo dinero.</p>
+</div><span class="foot">05/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Problema <span class="sub">· Equilibrio</span></span>
+  <div class="hero stacked">
+    <div class="num">7 650%</div>
+    <p class="lead"><b>Inflación anual, 1990.</b> Dos fallas juntas, no una:</p>
+    <div class="causes grid2">
+      <div class="c"><span class="n">1</span><span><b>Gasto fiscal indisciplinado</b><span>El déficit no tenía límite institucional.</span></span></div>
+      <div class="c"><span class="n">2</span><span><b>Sin independencia fiscal-monetaria</b><span>El Ejecutivo controlaba al BCRP — nadie decía "no" al financiamiento monetario.</span></span></div>
+    </div>
+  </div>
+  <p class="src">BCRP, Memoria Anual 1990 — verificado contra el documento primario.</p>
+</div><span class="foot">06/23</span></section>
+
+<section class="slide"><div class="pad">
+  <span class="kicker">Problema <span class="sub">· En juego</span></span>
+  <h2 class="t">No fue solo un número de inflación</h2>
+  <div class="verdict">
+    <div class="v bad"><span class="tag">Contracción del PBI</span><span class="big">~25%</span><span class="d">En los 3 años previos a la estabilización de inicios de los 90.</span></div>
+    <div class="v bad"><span class="tag">Pobreza</span><span class="big">&gt;60%</span><span class="d">De la población, a inicios de los 90.</span></div>
+  </div>
+  <p class="body" style="margin-top:2cqw; font-size:2.1cqw;">Y en lo cotidiano: si hoy tu dinero alcanza para 10 kg de arroz, en un año alcanza para <b style="color:var(--sred);">~130 gramos</b> — casi media taza.</p>
+  <p class="src">FMI, "El camino de Perú hacia el éxito económico" (2015) — cita textual verificada. Traducción de la tasa anual (BCRP, 7 650%); el producto es intercambiable.</p>
+</div><span class="foot">07/23</span></section>
+
+<section class="slide"><div class="pad top">
+  <span class="kicker">Problema <span class="sub">· 1.a respuesta</span></span>
+  <h2 class="t" style="font-size:2.6cqw; font-weight:600; color:var(--sink)">Por eso el Banco Central es autónomo</h2>
+  <blockquote style="margin-top:2.4cqw;">"El Banco Central está prohibido de conceder financiamiento al erario, salvo la compra, en el mercado secundario, de valores emitidos por el Tesoro Público, dentro del límite que señala su Ley Orgánica."</blockquote>
+  <p class="src">Constitución Política del Perú, 1993, Art. 84.</p>
+</div><span class="foot">08/23</span></section>
+
+<p class="section-tag">Bloque 2 · Las reglas fiscales de hoy</p>
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Reglas fiscales</span>
+  <h2 class="t">Límites sobre el déficit y la deuda</h2>
+  <table class="rules"><thead><tr><th></th><th>2025</th><th>2026</th><th>2027</th><th>2028-30</th></tr></thead>
+  <tbody>
+    <tr><td>Déficit fiscal (% PBI)</td><td class="num">2,2</td><td class="num">1,8</td><td class="num">1,4</td><td class="num">→ 1,0</td></tr>
+    <tr><td>Deuda pública (% PBI)</td><td class="num">31*</td><td class="num">29,3</td><td class="num">29,3</td><td class="num">→ 27,7</td></tr>
+  </tbody></table>
+  <div class="defs2 compact">
+    <div><h4>Déficit fiscal</h4><p>Gasto del Estado en un año, por encima de sus ingresos de ese mismo año. Se financia con deuda.</p></div>
+    <div><h4>Deuda pública</h4><p>El acumulado de todos los déficits financiados en el tiempo — lo que el Estado debe hoy, no solo este año.</p></div>
+  </div>
+  <p class="src">*2025 preliminar (Consejo Fiscal, 3er trim.) · límite legal de deuda: 38% del PBI. Senda vigente: Decreto Legislativo 1621 (jul-2024). Reglas de gasto ligadas al crecimiento del PBI, DL 1276.</p>
+</div><span class="foot">09/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Reglas fiscales <span class="sub">· ¿Cumplen?</span></span>
+  <h2 class="t">Tres años seguidos sin precedente</h2>
+  <div class="verdict">
+    <div class="v good"><span class="tag">Déficit fiscal 2025</span><span class="big">2,2% del PBI</span><span class="d">Cumplido — por ingresos extraordinarios de commodities, probablemente no se repitan.</span></div>
+    <div class="v bad"><span class="tag">Reglas de gasto 2025</span><span class="big">No cumplidas</span><span class="d">Gasto no financiero: +S/ 6 600 M sobre el límite. Gasto corriente: +S/ 4 100 M sobre el límite.</span></div>
+  </div>
+  <blockquote style="margin-top:1.6cqw; font-size:2.1cqw;">"No se habían registrado tres años consecutivos de incumplimiento conjunto de las reglas fiscales (2023, 2024 y 2025) — hecho sin precedentes desde inicios de la década del 2000."</blockquote>
+  <p class="src">Consejo Fiscal del Perú, Comunicado N. 01-2026-CF.</p>
+</div><span class="foot">10/23</span></section>
+
+<section class="slide predict"><div class="pad top">
+  <span class="kicker">Reglas fiscales <span class="sub">· Congreso</span></span>
+  <h2 class="t">¿Cuántas leyes con impacto fiscal adverso creen que aprobó el Congreso actual, comparado con el promedio de los tres periodos anteriores<span class="qmark">?</span></h2>
+  <p class="hint">Pista: entre 2006 y 2021 (3 periodos), el promedio fue ~68 leyes por periodo.</p>
+</div><span class="foot">11/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Reglas fiscales <span class="sub">· Congreso</span></span>
+  <h2 class="t">229 leyes — 3× el promedio histórico</h2>
+  <div class="barchart">
+    <svg viewBox="0 0 680 220" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Leyes con impacto fiscal por periodo parlamentario: 88, 47, 70, 229">
+      <line x1="10" y1="180" x2="670" y2="180" stroke="#D8D5C9" stroke-width="1"/>
+      <rect x="40" y="145" width="90" height="35" fill="#5A574E"/>
+      <text x="85" y="138" text-anchor="middle" class="bar-value">88</text>
+      <text x="85" y="198" text-anchor="middle" class="bar-label">2006-2011</text>
+      <rect x="200" y="160" width="90" height="20" fill="#5A574E"/>
+      <text x="245" y="153" text-anchor="middle" class="bar-value">47</text>
+      <text x="245" y="198" text-anchor="middle" class="bar-label">2011-2016</text>
+      <rect x="360" y="150" width="90" height="30" fill="#5A574E"/>
+      <text x="405" y="143" text-anchor="middle" class="bar-value">70</text>
+      <text x="405" y="198" text-anchor="middle" class="bar-label">2016-2021</text>
+      <rect x="520" y="20" width="90" height="160" fill="#C0281C"/>
+      <text x="565" y="13" text-anchor="middle" class="bar-value hi">229</text>
+      <text x="565" y="198" text-anchor="middle" class="bar-label">2021-2026</text>
+    </svg>
+  </div>
+  <p class="src">De las 229, 101 fueron promulgadas por insistencia: su costo fiscal conjunto es S/ 35 795 M anuales — 65 veces lo que sumaron los tres quinquenios previos. De 181 leyes de gasto, el Ejecutivo solo presentó 3 acciones de inconstitucionalidad. Consejo Fiscal, Nota de Discusión N. 01-2025.</p>
+</div><span class="foot">12/23</span></section>
+
+<section class="slide predict"><div class="pad top">
+  <span class="kicker">Reglas fiscales <span class="sub">· Costos</span></span>
+  <h2 class="t">En 2022, las leyes de remuneraciones y pensiones ya aprobadas costaban S/ 3 000 millones al año. ¿Cuánto creen que costarán en 2027<span class="qmark">?</span></h2>
+</div><span class="foot">13/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Reglas fiscales <span class="sub">· Costos</span></span>
+  <h2 class="t">16× en 5 años</h2>
+  <div class="hero" style="margin-top:1.6cqw;">
+    <div class="num" style="font-size:9cqw;">S/ 50 000 M</div>
+    <div class="side"><p>Pasó de 0,3% del PBI en 2022 a 3,5% en 2027.</p></div>
+  </div>
+  <p class="src">Leyes principales: <b>Ley 31495</b> (bonificación docente, 2022, S/ 40 561 M transitorio) · <b>Ley 32448</b> (gestión fiscal RRHH, 2025, S/ 12 110 M permanente) · <b>Ley 31729</b> (bono ONP, 2023, S/ 6 380 M transitorio). Compromisos permanentes que se acumulan cada año fiscal. MEF, Exposición de Motivos — Ley de Presupuesto 2027; Consejo Fiscal, Nota de Discusión N. 01-2025.</p>
+</div><span class="foot">14/23</span></section>
+
+<p class="section-tag">Bloque 3 · Cómo funciona el sistema (SNPP)</p>
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Art. 3</span></span>
+  <h2 class="t">Dónde actúa el SNPP</h2>
+  <div class="orgchart">
+    <div class="root">Sistema Nacional de Presupuesto Público</div>
+    <div class="trunk"></div>
+    <div class="trunk-line"></div>
+    <div class="branches">
+      <div class="branch">
+        <div class="stem"></div>
+        <div class="label">Gobierno Nacional</div>
+        <ul class="members">
+          <li>Poder Legislativo, Poder Ejecutivo, Poder Judicial, Ministerio Público, JNE, ONPE, RENIEC, CGR, JNJ, Defensoría del Pueblo, Tribunal Constitucional, universidades públicas</li>
+        </ul>
+      </div>
+      <div class="branch">
+        <div class="stem"></div>
+        <div class="label">Gobierno Regional</div>
+        <ul class="members">
+          <li>Gobiernos regionales, sus organismos públicos</li>
+        </ul>
+      </div>
+      <div class="branch">
+        <div class="stem"></div>
+        <div class="label">Gobierno Local</div>
+        <ul class="members">
+          <li>Gobiernos locales, sus organismos públicos</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="src">Art. 3, DL 1440.</p>
+</div><span class="foot">15/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Art. 5, 7, 9</span></span>
+  <h2 class="t">Quién hace qué</h2>
+  <div class="hierarchy">
+    <div class="box"><span class="name">DGPP</span><span class="role">Ente rector — un solo nivel, para todo el país. Norma y dirige el proceso presupuestario nacional.</span><span class="norm">Art. 5, DL 1440</span></div>
+    <span class="arrow">→</span>
+    <div class="box"><span class="name">Titular de la entidad</span><span class="role">Uno por entidad pública. Responde por la gestión presupuestaria de su entidad, dentro de las reglas de la DGPP.</span><span class="norm">Art. 7, DL 1440</span></div>
+    <span class="arrow">→</span>
+    <div class="box"><span class="name">Unidad Ejecutora</span><span class="role">Nivel operativo, dentro de cada entidad. Ejecuta el día a día — administra ingresos y gastos ya autorizados.</span><span class="norm">Art. 9, DL 1440</span></div>
+  </div>
+</div><span class="foot">16/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Art. 22-28</span></span>
+  <h2 class="t">El ciclo presupuestal</h2>
+  <div class="cycle">
+    <div class="box"><span class="n">1</span><span class="lbl">Programación</span><span class="dt">hasta 31-may</span></div>
+    <span class="arrow">→</span>
+    <div class="box"><span class="n">2</span><span class="lbl">Formulación</span><span class="dt">hasta 30-ago</span></div>
+    <span class="arrow">→</span>
+    <div class="box"><span class="n">3</span><span class="lbl">Aprobación</span><span class="dt">30-nov</span></div>
+    <span class="arrow yr-gap">→</span>
+    <div class="box yr2"><span class="n">4</span><span class="lbl">Ejecución</span><span class="dt">ene-dic</span></div>
+    <span class="arrow">→</span>
+    <div class="box yr2"><span class="n">5</span><span class="lbl">Evaluación</span><span class="dt">continua</span></div>
+  </div>
+  <div class="cycle-loop">↺ La evaluación retroalimenta la programación del año siguiente</div>
+  <p class="src">Ejecución del gasto (Art. 40): Certificación → Compromiso → Devengado → Pago. Análogo al ciclo de presupuesto anual de una empresa: proyección → aprobación del directorio → ejecución con control de caja → auditoría de cierre.</p>
+</div><span class="foot">17/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Fase 1/5</span></span>
+  <h2 class="t">Programación Multianual</h2>
+  <ul class="pts">
+    <li>Se proyecta el gasto a <b>3 años</b>: el primer año es vinculante, el 2.º y 3.º son indicativos.</li>
+    <li>La <b>Asignación Presupuestaria Multianual (APM)</b> es el límite máximo de crédito por Pliego — no implica un compromiso definitivo de gasto.</li>
+    <li>El MEF la estima considerando ingresos proyectados, reglas fiscales vigentes, prioridades de política y metas de cobertura de servicios.</li>
+    <li>El MEF la aprueba y comunica a los Pliegos <b>hasta el 31 de mayo</b>.</li>
+  </ul>
+  <p class="src">Art. 23-26, DL 1440 — texto original, El Peruano, 16-set-2018.</p>
+</div><span class="foot">18/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Fase 2/5</span></span>
+  <h2 class="t">Formulación Presupuestaria</h2>
+  <ul class="pts">
+    <li>Cada Pliego desagrega el primer año de su APM en <b>todos los clasificadores</b> de ingresos y gastos.</li>
+    <li>Se articula con el SINAPLAN: prioridades de política nacional y prioridades institucionales del Pliego.</li>
+    <li>Prioriza la continuidad: personal ya comprometido, mantenimiento de infraestructura, e inversiones ya en ejecución.</li>
+    <li>Resultado: el <b>Anteproyecto de Ley de Presupuesto</b>, listo para pasar a Aprobación.</li>
+  </ul>
+  <p class="src">Art. 27, DL 1440 — texto original, El Peruano, 16-set-2018.</p>
+</div><span class="foot">19/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Fase 3/5</span></span>
+  <h2 class="t">Aprobación Presupuestaria</h2>
+  <ul class="pts">
+    <li>El Ejecutivo presenta el proyecto de Ley de Presupuesto al Congreso <b>hasta el 31 de agosto</b> (Art. 77, Constitución).</li>
+    <li>El Congreso lo aprueba <b>hasta el 30 de noviembre</b>; se publica en El Peruano antes del inicio del año fiscal.</li>
+    <li>Aprobada la Ley, el MEF remite a cada Pliego su <b>Presupuesto Institucional de Apertura (PIA)</b> desagregado.</li>
+  </ul>
+  <p class="src">Art. 28-32, DL 1440 — texto original, El Peruano, 16-set-2018.</p>
+</div><span class="foot">20/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Fase 4/5</span></span>
+  <h2 class="t">Ejecución Presupuestaria</h2>
+  <ul class="pts">
+    <li>Corre del <b>1 de enero al 31 de diciembre</b> de cada año fiscal: se perciben los ingresos y se atienden los gastos autorizados.</li>
+    <li>El crédito presupuestario es <b>limitativo</b> — no se puede comprometer, devengar ni pagar por encima de lo aprobado.</li>
+    <li>El gasto avanza en 4 pasos: <b>Certificación</b> (reserva el crédito) → <b>Compromiso</b> (tras el trámite legal) → <b>Devengado</b> (se verifica la prestación) → <b>Pago</b> (se extingue la obligación).</li>
+  </ul>
+  <p class="src">Art. 33-44, DL 1440 — texto original, El Peruano, 16-set-2018.</p>
+</div><span class="foot">21/23</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">El sistema <span class="sub">· Fase 5/5</span></span>
+  <h2 class="t">Evaluación Presupuestaria</h2>
+  <ul class="pts">
+    <li>Comprende dos partes: <b>Seguimiento</b> (continuo, durante el año) y <b>Evaluación</b> (al cierre).</li>
+    <li>Seguimiento: indicadores de desempeño sobre la relación insumo-producto-resultado, para decisiones oportunas.</li>
+    <li>Evaluación: analiza la efectividad frente al resultado esperado y la eficiencia — asignativa, de provisión de servicios y de procesos de soporte.</li>
+    <li>Los resultados son públicos: se difunden en el portal del MEF y de cada Pliego evaluado.</li>
+  </ul>
+  <p class="src">Art. 55-59, DL 1440 — texto original, El Peruano, 16-set-2018.</p>
+</div><span class="foot">22/23</span></section>
+
+<section class="slide cover"><div class="pad">
+  <div class="col"><span class="kicker">A.23</span><span class="kicker">SNPP</span></div>
+  <div class="main"><h1 class="big">Sistema de presupuesto y reglas fiscales</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad III</div></div>
+</div><span class="foot">23/23</span></section>
+
+</div>
+
+<script>
+(function(){
+  var deck=document.querySelector('.deck');
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var btn=document.getElementById('present-btn');
+  var hint=document.getElementById('present-hint');
+  var idx=0, hintTimer=null;
+
+  function fitScale(){
+    var s=Math.min(window.innerWidth/1280, window.innerHeight/720);
+    document.documentElement.style.setProperty('--present-scale', s);
+  }
+  function showHint(){
+    hint.classList.add('show');
+    clearTimeout(hintTimer);
+    hintTimer=setTimeout(function(){hint.classList.remove('show');},2200);
+  }
+  function render(){ slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); }); }
+  function enter(){ document.body.classList.add('presenting'); fitScale(); render(); showHint(); }
+  function exit(){ document.body.classList.remove('presenting'); }
+  function next(){ if(idx<slides.length-1){ idx++; render(); } }
+  function prev(){ if(idx>0){ idx--; render(); } }
+
+  btn.addEventListener('click', function(){ try{ enter(); }catch(e){} });
+  window.addEventListener('resize', function(){ if(document.body.classList.contains('presenting')) fitScale(); });
+  document.addEventListener('keydown', function(e){
+    if(!document.body.classList.contains('presenting')) return;
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){ next(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ prev(); }
+    else if(e.key==='Home'){ idx=0; render(); }
+    else if(e.key==='End'){ idx=slides.length-1; render(); }
+    else if(e.key==='Escape'){ exit(); }
+  });
+  deck.addEventListener('click', function(e){
+    if(!document.body.classList.contains('presenting')) return;
+    var x=e.clientX, third=window.innerWidth/3;
+    if(x<third){ prev(); } else { next(); }
+  });
+})();
+</script>
