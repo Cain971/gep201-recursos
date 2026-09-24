@@ -324,11 +324,14 @@ section + section { padding-top: 2rem; }
 }
 .case-item.open .case-arrow { transform: rotate(180deg); }
 
+/* 0fr → 1fr: abre a la altura real del contenido, sin tope fijo */
 .case-body {
-  max-height: 0; overflow: hidden;
-  transition: max-height .4s ease;
+  display: grid; grid-template-rows: 0fr; overflow: hidden;
+  transition: grid-template-rows .4s ease;
 }
-.case-item.open .case-body { max-height: 900px; }
+.case-body > .case-content { min-height: 0; }
+.case-item:not(.open) .case-content { padding-bottom: 0; border-top-width: 0; }
+.case-item.open .case-body { grid-template-rows: 1fr; }
 
 .case-content {
   padding: 0 1.6rem 1.6rem;
@@ -612,6 +615,18 @@ footer {
   transition: opacity .6s ease, transform .6s ease;
 }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── los anclajes del menú quedan debajo de la barra fija ── */
+html { scroll-padding-top: 80px; }
+
+/* ── NAV EN CELULAR: marca arriba, secciones en una fila desplazable ── */
+@media (max-width: 680px) {
+  html { scroll-padding-top: 115px; }
+  nav { flex-wrap: wrap; row-gap: .45rem; }
+  .nav-brand { white-space: nowrap; }
+  .nav-links { width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .nav-links::-webkit-scrollbar { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1116,14 +1131,13 @@ function classify(itemId, chosen, correct) {
   totalAnswered++;
 
   const btns = document.querySelectorAll(`#${itemId} .ci-btn`);
-  const result = document.getElementById(`cir-${itemId}`);
+  const result = document.getElementById(`cir-${itemId.replace('ci-', '')}`);
 
   btns.forEach(btn => {
     btn.classList.add('locked');
     const txt = btn.textContent.toLowerCase();
-    if (txt.includes(correct === 'valor' ? 'valor' : correct === 'legitimidad' ? 'legitimidad' : 'capacidad')) {
-      btn.classList.add('selected-correct');
-    }
+    if (txt.includes(correct)) btn.classList.add('selected-correct');
+    else if (txt.includes(chosen)) btn.classList.add('selected-wrong');
   });
 
   const isCorrect = chosen === correct;

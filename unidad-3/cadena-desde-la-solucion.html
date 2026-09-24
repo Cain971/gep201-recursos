@@ -352,6 +352,18 @@ footer {
   nav { padding: .8rem 1.1rem; }
   .nav-links { gap: .7rem; }
 }
+
+/* ── los anclajes del menú quedan debajo de la barra fija ── */
+html { scroll-padding-top: 80px; }
+
+/* ── NAV EN CELULAR: marca arriba, secciones en una fila desplazable ── */
+@media (max-width: 680px) {
+  html { scroll-padding-top: 115px; }
+  nav { flex-wrap: wrap; row-gap: .45rem; }
+  .nav-brand { white-space: nowrap; }
+  .nav-links { width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .nav-links::-webkit-scrollbar { display: none; }
+}
 </style>
 </head>
 <body>
