@@ -641,6 +641,48 @@ button.case-header:focus-visible { outline: 2px solid currentColor; outline-offs
 
 /* Accesibilidad (auditoría de base-visual, 2026-09-30: contraste: colores ajustados a 4,5:1; enlaces subrayados) */
 main a:not([class]), footer a:not([class]) { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular): texto de 12 px como mínimo y objetivos de 44 px */
+@media (max-width: 640px) {
+  .nav-brand,
+  .nav-links a,
+  .eyebrow,
+  .hero-meta span,
+  .section-label,
+  .author-card .role,
+  .vertex-num,
+  .vertex-question,
+  .alignment-box cite,
+  .case-tag,
+  .score-pill .pill-label,
+  .q-num,
+  .opt-letter,
+  .ci-btn,
+  .score-bar .label,
+  .reset-btn,
+  .ref-item,
+  footer { font-size: 12px; }
+  nav { padding-top: 0; padding-bottom: 0; }
+  .nav-brand, .nav-links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .ci-btn, .check-reset, .copy-btn, .reset-btn, .q-option, .present-btn, a.link { min-height: 44px; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (2)): tamaños escritos en línea */
+@media (max-width: 640px) {
+  .bv-min12 { font-size: 12px !important; }
+  .reset-btn { max-width: 100%; white-space: normal; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (3)): tamaños relativos */
+@media (max-width: 640px) {
+  .score-bar { flex-wrap: wrap; }
+  .case-label-wrap { flex-wrap: wrap; row-gap: .3rem; min-width: 0; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (4)): referencias con URL largas */
+@media (max-width: 640px) {
+  .ref-item, .ref-item a { overflow-wrap: anywhere; }
+}
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
@@ -755,7 +797,7 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
   </div>
 
   <div style="background: rgba(201,168,76,.05); border: 1px solid var(--border); padding: 1.4rem 1.6rem; border-radius: 2px;" class="fade-in">
-    <p style="font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.12em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">⚠ Advertencia crítica</p>
+    <p class="bv-min12" style="font-family:'IBM Plex Mono',monospace; font-size:.7rem; letter-spacing:.12em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">⚠ Advertencia crítica</p>
     <p style="font-size:.88rem; color:var(--text-dim); line-height:1.7;">El triángulo <strong style="color:var(--cream)">no es un checklist</strong>. No basta con que cada vértice exista por separado: la pregunta relevante es cuán <em>robusta y mutuamente reforzada</em> es la alineación entre los tres. Investigación empírica (Suecia, 2021) muestra que la alineación es particularmente vulnerable a: (1) exceso de métricas de desempeño a corto plazo, (2) estandarización rígida de procedimientos, y (3) interferencia político-electoral en las decisiones técnicas.</p>
   </div>
 </section>
@@ -781,7 +823,7 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
         <div class="case-content">
           <p class="case-situation">Una bibliotecaria de pueblo enfrenta una situación inesperada: cada día, entre las 3:00 y las 5:00 p.m., decenas de niños invaden la biblioteca. Una encuesta informal revela que están siendo usados como "niños llave" (<em>latchkey children</em>): sus padres trabajan y los dejan solos. La biblioteca se convierte de facto en guardería. Los libros se deterioran, el personal trabaja horas extra, y la limpieza aumenta. ¿Qué debe hacer la bibliotecaria?</p>
 
-          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo — Solución adoptada</p>
+          <p class="bv-min12" style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo — Solución adoptada</p>
 
           <div class="triangle-scores">
             <div class="score-pill alto">
@@ -821,7 +863,7 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
         <div class="case-content">
           <p class="case-situation">En 2019, el gobierno peruano lanzó el Operativo Mercurio en La Pampa, Madre de Dios: 1 200 policías (16 unidades especializadas) y ~300 militares, en un Estado de Emergencia de 60 días, tras ~11 000 hectáreas devastadas por minería ilegal. En los primeros 5 meses la deforestación cayó 92% frente al año pico (2018). Pero el estado de emergencia que habilitaba a las Fuerzas Armadas no se prorrogó desde diciembre de 2022, y para 2023 los indicadores de minería ilegal en la zona (dragas detectadas, hectáreas de pozas activas) habían crecido más de 300% respecto a 2021.</p>
 
-          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo</p>
+          <p class="bv-min12" style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo</p>
 
           <div class="triangle-scores">
             <div class="score-pill medio">
@@ -861,7 +903,7 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
         <div class="case-content">
           <p class="case-situation">En 1976, el director de los CDC, David Sencer, impulsó una campaña masiva de vacunación contra la gripe porcina tras detectar un brote en Fort Dix. La pandemia nunca llegó. La vacuna causó casos de síndrome de Guillain-Barré. La campaña fue suspendida y Sencer fue removido del cargo. Fue técnicamente ambiciosa, operativamente ejecutada a escala masiva, pero políticamente insostenible cuando los efectos secundarios afectaron la percepción pública.</p>
 
-          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo</p>
+          <p class="bv-min12" style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo</p>
 
           <div class="triangle-scores">
             <div class="score-pill medio">
@@ -901,7 +943,7 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
         <div class="case-content">
           <p class="case-situation">A pesar de años de intervención pública, Perú mantiene una anemia infantil de 34,9% a nivel nacional (43,2% en zona rural) en menores de 36 meses (INEI-ENDES 2025). El Estado ha desplegado programas de suplementación con hierro, transferencias condicionadas y capacitación a madres. Sin embargo, los resultados son insuficientes dado el nivel de inversión realizado. El diagnóstico es complejo: las causas van desde la calidad del agua hasta la prevalencia de infecciones intestinales y prácticas de alimentación.</p>
 
-          <p style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo — Tensión persistente</p>
+          <p class="bv-min12" style="font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.15em; color:var(--gold); text-transform:uppercase; margin-bottom:.8rem;">Análisis del triángulo — Tensión persistente</p>
 
           <div class="triangle-scores">
             <div class="score-pill alto">

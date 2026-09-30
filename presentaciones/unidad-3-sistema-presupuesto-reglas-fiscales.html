@@ -183,6 +183,26 @@
 }
 
 /* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular): texto de 12 px como mínimo y objetivos de 44 px */
+@media (max-width: 720px) {
+  .present-btn,
+  .present-hint,
+  .section-tag,
+  .bar-label { font-size: 12px; }
+  .ci-btn, .check-reset, .copy-btn, .reset-btn, .q-option, .present-btn, a.link { min-height: 44px; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (2)): tamaños escritos en línea */
+@media (max-width: 720px) {
+  .bv-min12 { font-size: 12px !important; }
+  .reset-btn { max-width: 100%; white-space: normal; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (3)): tamaños relativos */
+@media (max-width: 720px) {
+  .pts li .mono { font-size: max(12px, .88em); }
+}
 </style>
 </head>
 <body>

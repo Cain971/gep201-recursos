@@ -251,6 +251,35 @@ html { scroll-padding-top: 80px; }
 
 /* Accesibilidad (auditoría de base-visual, 2026-09-30: contraste: colores ajustados a 4,5:1; enlaces subrayados) */
 main a:not([class]), footer a:not([class]) { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular): texto de 12 px como mínimo y objetivos de 44 px */
+@media (max-width: 640px) {
+  .nav-brand,
+  .nav-links a,
+  .eyebrow,
+  .hero-meta span,
+  .section-label,
+  .norm-box cite,
+  .fin-num,
+  .stat-box .s-label,
+  .ref-item,
+  .policy-note p.tag,
+  footer { font-size: 12px; }
+  nav { padding-top: 0; padding-bottom: 0; }
+  .nav-brand, .nav-links a { display: inline-flex; align-items: center; min-height: 44px; }
+  .ci-btn, .check-reset, .copy-btn, .reset-btn, .q-option, .present-btn, a.link { min-height: 44px; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (2)): tamaños escritos en línea */
+@media (max-width: 640px) {
+  .bv-min12 { font-size: 12px !important; }
+  .reset-btn { max-width: 100%; white-space: normal; }
+}
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: celular (4)): referencias con URL largas */
+@media (max-width: 640px) {
+  .ref-item, .ref-item a { overflow-wrap: anywhere; }
+}
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
