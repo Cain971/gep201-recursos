@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Introducción al PPR — Grilla modular</title>
+<title>Presupuesto por Resultados: qué es y cómo se aplica — GEP201</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,6 +110,50 @@
   body.presenting .slide{display:none;}
   body.presenting .slide.active{ display:flex; position:fixed; top:50%; left:50%; width:1280px; height:720px; margin:0; transform-origin:center center; transform:translate(-50%,-50%) scale(var(--present-scale,1)); }
 
+  /* ── Sesión 7 (2026-09-30): componentes nuevos del deck fusionado ── */
+  h2.t.xl{font-size:5cqw; line-height:1.12; max-width:88%;}
+  .divider .pad{justify-content:flex-end; border-left:1.2cqw solid var(--sred);}
+  /* 4 mecanismos */
+  .mech4{display:grid; grid-template-columns:1fr 1fr; gap:2cqw 3cqw; margin-top:3cqw; max-width:92%;}
+  .mech4 .m{border-top:.35cqw solid var(--sink); padding-top:1.4cqw; display:flex; gap:1.8cqw;}
+  .mech4 .n{font-weight:900; font-size:3.4cqw; color:var(--sred); line-height:1; flex:none;}
+  .mech4 b{display:block; font-weight:700; font-size:2.4cqw; line-height:1.25;}
+  .mech4 .en{display:block; font-family:var(--mono); font-size:1.5cqw; color:var(--sdim); margin-top:.6cqw;}
+  /* tarjetas de casos (3 por diapositiva) y de instrumentos (2) */
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:2cqw; margin-top:2.4cqw;}
+  .cards.two{grid-template-columns:1fr 1fr; gap:2.6cqw;}
+  .cards .k{border:1px solid var(--sline); border-top:.35cqw solid var(--sink); padding:1.8cqw 2cqw; display:flex; flex-direction:column; gap:1cqw;}
+  .cards .k .h{font-weight:800; font-size:1.9cqw; line-height:1.22;}
+  .cards .k .h .n{color:var(--sred); font-family:var(--mono); font-weight:600; font-size:1.6cqw; display:block; margin-bottom:.4cqw;}
+  .cards .k p{margin:0; font-size:1.6cqw; line-height:1.38;}
+  .cards .k .s{font-family:var(--mono); font-size:1.4cqw; color:var(--sdim); margin-top:auto; padding-top:.8cqw;}
+  /* opciones de predicción */
+  .opts{display:grid; grid-template-columns:repeat(3,1fr); gap:2.4cqw; margin-top:3.2cqw; max-width:80%;}
+  .opts .o{border:1px solid var(--sink); padding:2.2cqw; text-align:center;}
+  .opts .o b{display:block; font-family:var(--mono); font-size:1.6cqw; color:var(--sred); font-weight:600;}
+  .opts .o span{display:block; font-weight:900; font-size:5cqw; font-variant-numeric:tabular-nums;}
+  /* tablas de resolución y síntesis */
+  table.rt{border-collapse:collapse; width:100%; margin-top:1.6cqw; font-size:1.6cqw; line-height:1.3;}
+  table.rt th{font-family:var(--mono); font-weight:600; font-size:1.4cqw; text-transform:uppercase; letter-spacing:.04em; color:var(--sdim); text-align:left; border-bottom:.3cqw solid var(--sink); padding:.8cqw 1.2cqw .8cqw 0;}
+  table.rt td{border-bottom:1px solid var(--sline); padding:.75cqw 1.2cqw .75cqw 0; vertical-align:top;}
+  table.rt td:first-child{font-weight:700;}
+  table.rt .no{color:var(--sred); font-weight:700;}
+  /* pasos numerados de una consigna */
+  .steps{list-style:none; counter-reset:paso; margin:2.6cqw 0 0; padding:0; display:flex; flex-direction:column; gap:1.8cqw; max-width:90%;}
+  .steps li{counter-increment:paso; display:flex; gap:2cqw; font-size:2.2cqw; line-height:1.4; border-top:1px solid var(--sline); padding-top:1.6cqw;}
+  .steps li:first-child{border-top:none; padding-top:0;}
+  .steps li::before{content:counter(paso); font-weight:900; color:var(--sred); font-size:2.6cqw; flex:none; width:3cqw;}
+  .hl{background:linear-gradient(transparent 58%, #F3D9D5 58%);}
+  .chips{display:flex; flex-wrap:wrap; gap:1.2cqw; margin-top:2cqw;}
+  .chips span{font-family:var(--mono); font-size:1.6cqw; border:1px solid var(--sink); padding:.5cqw 1.2cqw;}
+  /* cierre con QR */
+  .qrwrap{display:grid; grid-template-columns:1fr auto; gap:5cqw; align-items:center; margin-top:2cqw;}
+  .qrwrap svg.qr{width:24cqw; height:24cqw; color:var(--sink); display:block;}
+  .qrwrap .u{font-family:var(--mono); font-size:1.7cqw; color:var(--sdim); margin-top:1.4cqw; display:block;}
+  /* revelado paso a paso: solo en modo presentación; sin JS o al imprimir se ve todo */
+  body.presenting .slide.active .step:not(.shown){visibility:hidden;}
+  @media (max-width:720px){ .mech4,.cards,.cards.two,.opts,.qrwrap{grid-template-columns:1fr;} table.rt{font-size:13px;} }
+
 /* Accesibilidad (auditoría de base-visual, 2026-09-30): respetar "movimiento reducido" */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
@@ -137,8 +181,8 @@
 <main id="contenido">
 
 <div class="deck-head">
-  <h1>Introducción al Presupuesto por Resultados</h1>
-  <p>GEP201 · Unidad III · próxima sesión</p>
+  <h1>Presupuesto por Resultados: qué es y cómo se aplica</h1>
+  <p>GEP201 · Unidad IV · Sesión 7 (30-set-2026)</p>
   <button id="present-btn" class="present-btn" type="button">▶ Presentar</button>
 </div>
 <div id="present-hint" class="present-hint">← → para avanzar · Esc para salir</div>
@@ -147,52 +191,58 @@
 
 <section class="slide cover"><div class="pad">
   <div class="col"><span class="kicker">A.01</span><span class="kicker">PPR</span></div>
-  <div class="main"><h1 class="big">Introducción al Presupuesto por Resultados</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad III</div></div>
-</div><span class="foot">01/17</span></section>
+  <div class="main"><h1 class="big">Presupuesto por Resultados: qué es y cómo se aplica</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad IV · Sesión 7</div></div>
+</div><span class="foot">01/34</span></section>
 
 <section class="slide agenda"><div class="pad top">
   <span class="kicker">Sesión de hoy</span>
-  <h2 class="t">Introducción al Presupuesto por Resultados</h2>
+  <h2 class="t">Presupuesto por Resultados: qué es y cómo se aplica</h2>
   <div class="rows">
     <div class="row"><span class="n">01</span><b>Por qué no basta con presupuestar más</b></div>
     <div class="row"><span class="n">02</span><b>Qué es el Presupuesto por Resultados</b></div>
     <div class="row"><span class="n">03</span><b>El modelo básico del PPR</b></div>
-    <div class="row"><span class="n">04</span><b>Los principios del PPR</b></div>
+    <div class="row"><span class="n">04</span><b>Cuatro formas de vincular presupuesto y resultados</b></div>
+    <div class="row"><span class="n">05</span><b>Qué hicieron otros países</b></div>
+    <div class="row"><span class="n">06</span><b>¿Y el Perú?</b></div>
+    <div class="row"><span class="n">07</span><b>Los principios del PPR</b></div>
   </div>
-</div><span class="foot">02/17</span></section>
+</div><span class="foot">02/34</span></section>
 
 <p class="section-tag">Bloque 1 · Por qué no basta con presupuestar más</p>
 <section class="slide"><div class="pad top">
   <span class="kicker">Antes de empezar</span>
   <h2 class="t">Más presupuesto no garantiza mejores resultados</h2>
   <p class="body">Ya lo vimos: el gasto corriente sube, la inversión cae, y el presupuesto total sigue creciendo. La pregunta de hoy es otra — ¿cómo logramos que el gasto sí produzca resultados?</p>
-</div><span class="foot">03/17</span></section>
+</div><span class="foot">03/34</span></section>
 
 <section class="slide"><div class="pad top dense">
   <span class="kicker">Objetivos del presupuesto</span>
-  <h2 class="t">3 objetivos, uno ya cubierto</h2>
+  <h2 class="t">3 objetivos del presupuesto; el PPR se ocupa de dos</h2>
   <div class="causes">
     <div class="c"><span class="n">1</span><span><b>Resultados macrofiscales sólidos <span class="tag">— ya lo vimos</span></b><span>Control eficiente del déficit y la deuda.</span></span></div>
     <div class="c"><span class="n">2</span><span><b>Priorización apropiada del gasto</b><span>Los recursos van donde están las principales necesidades de la población.</span></span></div>
-    <div class="c"><span class="n">3</span><span><b>Efectividad y eficiencia en los servicios</b><span>Que se entreguen bien, y que sí generen el beneficio esperado.</span></span></div>
+    <div class="c"><span class="n">3</span><span><b>Efectividad y eficiencia en los servicios</b><span><b style="display:inline;font-weight:700;">Efectividad:</b> si el servicio entrega los beneficios que se supone debe entregar — si logra los resultados esperados. <b style="display:inline;font-weight:700;">Eficiencia:</b> entregarlo al menor costo posible, sin sacrificar calidad.</span></span></div>
   </div>
-  <p class="src">Los objetivos 2 y 3 son el territorio del Presupuesto por Resultados — lo que vemos hoy. DGPP-MEF.</p>
-</div><span class="foot">04/17</span></section>
-
-<section class="slide"><div class="pad top dense">
-  <span class="kicker">Conceptos clave</span>
-  <h2 class="t">Efectividad y eficiencia</h2>
-  <div class="defs2">
-    <div><h4 aria-level="3">Efectividad</h4><p>En qué medida un servicio entrega los beneficios que se supone debe entregar a la sociedad — si el programa logra los resultados esperados.</p></div>
-    <div><h4 aria-level="3">Eficiencia</h4><p>Entregar los servicios al menor costo posible, sin sacrificar calidad.</p></div>
-  </div>
-</div><span class="foot">05/17</span></section>
+  <p class="src">Los objetivos 2 y 3 son el territorio del Presupuesto por Resultados. DGPP-MEF.</p>
+</div><span class="foot">04/34</span></section>
 
 <section class="slide"><div class="pad top">
   <span class="kicker">Marco conceptual</span>
   <blockquote>"La presupuestación basada en resultados busca mejorar la efectividad y eficiencia del gasto público, vinculando la financiación de las organizaciones del sector público con los resultados que entregan."</blockquote>
   <span class="cite">Marc Robinson</span>
-</div><span class="foot">06/17</span></section>
+</div><span class="foot">05/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Antes de ver la cifra</span>
+  <h2 class="t">Descontando la inflación, ¿cuánto creció el presupuesto en diez años?</h2>
+  <p class="body">El Presupuesto Institucional Modificado (PIM) pasó de S/ 158 mil millones en 2016 a S/ 288 mil millones en 2026.</p>
+  <div class="opts">
+    <div class="o"><b>A</b><span>≈ 10%</span></div>
+    <div class="o"><b>B</b><span>≈ 33%</span></div>
+    <div class="o"><b>C</b><span>≈ 80%</span></div>
+  </div>
+  <p class="src">Mano alzada. MEF, Consulta Amigable (PIM al 21-set-2026).</p>
+</div><span class="foot">06/34</span></section>
 
 <section class="slide"><div class="pad top dense">
   <span class="kicker">El eslabón roto</span>
@@ -205,7 +255,7 @@
     <li>Lo que reconecta asignación con resultados: <b>información de desempeño</b> — indicadores, evaluaciones, costeo.</li>
   </ul>
   <p class="src">PIM 2016 y 2026 (21-set-2026) — MEF, Consulta Amigable. Deflactado con inflación anual BCRP 2017-2025 más 2% anual (punto medio del rango meta) prorrateado a ene-set 2026.</p>
-</div><span class="foot">07/17</span></section>
+</div><span class="foot">07/34</span></section>
 
 <section class="slide"><div class="pad top dense">
   <span class="kicker">¿Por qué persiste la brecha?</span>
@@ -214,7 +264,7 @@
     <div class="v bad"><span class="tag">Cómo se asigna hoy</span><span class="big">Inercia presupuestal</span><span class="d">Recorte presupuestal ciego cuando hace falta — las necesidades de la institución definen las prioridades.</span></div>
     <div class="v good"><span class="tag">Cómo lo propone el PPR</span><span class="big">Asignación selectiva</span><span class="d">El punto de partida son las personas — sostenibilidad fiscal e inclusión social.</span></div>
   </div>
-</div><span class="foot">08/17</span></section>
+</div><span class="foot">08/34</span></section>
 
 <p class="section-tag">Bloque 2 · Qué es el Presupuesto por Resultados</p>
 <section class="slide"><div class="pad top dense">
@@ -227,19 +277,14 @@
     <li>Evaluar si se están logrando los resultados a favor de la población.</li>
   </ul>
   <p class="src">Lista completa: 7 puntos, en recursos. DGPP-MEF.</p>
-</div><span class="foot">09/17</span></section>
+</div><span class="foot">09/34</span></section>
 
 <section class="slide"><div class="pad top">
   <span class="kicker">Un concepto más amplio</span>
   <h2 class="t">El PPR es la aplicación presupuestal de la Gestión por Resultados</h2>
-  <p class="body">Antes de seguir, vale la pena ver de dónde viene la idea.</p>
-</div><span class="foot">10/17</span></section>
-
-<section class="slide"><div class="pad top">
-  <span class="kicker">Marco conceptual</span>
   <blockquote>"La gestión por resultados es una estrategia de gestión mediante la cual todos los actores que contribuyen al logro de un conjunto de resultados se aseguran de que sus procesos, productos y servicios favorecen la consecución de los resultados finales deseados."</blockquote>
   <span class="cite">Results-based Management Handbook, United Nations Development Group</span>
-</div><span class="foot">11/17</span></section>
+</div><span class="foot">10/34</span></section>
 
 <section class="slide"><div class="pad top dense">
   <span class="kicker">Gestión por Resultados</span>
@@ -250,14 +295,14 @@
     <li>Un buen planeamiento estratégico.</li>
     <li>Gestión estratégica de los recursos humanos y de las instituciones — incentivos.</li>
   </ul>
-</div><span class="foot">12/17</span></section>
+</div><span class="foot">11/34</span></section>
 
 <p class="section-tag">Bloque 3 · El modelo básico del PPR</p>
 <section class="slide"><div class="pad top">
   <span class="kicker">El modelo básico <span class="sub">· Definición</span></span>
   <blockquote>"En su forma más elemental, la presupuestación por resultados pretende garantizar que, al elaborar el presupuesto del gobierno, las personas encargadas de tomar las decisiones clave tengan en cuenta sistemáticamente los resultados a los que apunta el gasto."</blockquote>
   <span class="cite">M. Robinson &amp; D. Last (2009)</span>
-</div><span class="foot">13/17</span></section>
+</div><span class="foot">12/34</span></section>
 
 <section class="slide"><div class="pad top dense">
   <span class="kicker">El modelo básico <span class="sub">· Requisitos</span></span>
@@ -265,9 +310,10 @@
   <ul class="pts">
     <li>Contar con información sobre los objetivos y resultados del gasto.</li>
     <li>Un proceso de elaboración presupuestal que facilite el uso de esa información en la asignación.</li>
-    <li>Clasificación del gasto por programas — es decir, por objetivos.</li>
+    <li><span class="hl">Clasificación del gasto por programas — es decir, por objetivos.</span></li>
   </ul>
-</div><span class="foot">14/17</span></section>
+  <p class="src">El tercer requisito es uno de los cuatro mecanismos que vemos en el bloque 4.</p>
+</div><span class="foot">13/34</span></section>
 
 <section class="slide"><div class="pad top dense">
   <span class="kicker">El modelo básico <span class="sub">· Usos</span></span>
@@ -278,9 +324,187 @@
     <li>Mejorar la disciplina fiscal global — el espacio fiscal que crea la priorización.</li>
     <li>Contribuir a una formulación presupuestal multianual.</li>
   </ul>
-</div><span class="foot">15/17</span></section>
+</div><span class="foot">14/34</span></section>
 
-<p class="section-tag">Bloque 4 · Los principios del PPR</p>
+<p class="section-tag">Bloque 4 · Cuatro formas de vincular presupuesto y resultados</p>
+<section class="slide divider"><div class="pad">
+  <span class="kicker">Robinson (2007), cap. 1 — la lectura del control</span>
+  <h2 class="t xl">No hay una sola forma de hacer presupuesto por resultados</h2>
+</div><span class="foot">15/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Los mecanismos <span class="sub">· Robinson (2007)</span></span>
+  <h2 class="t">Clasificar por programas es solo uno de cuatro mecanismos</h2>
+  <div class="mech4">
+    <div class="m"><span class="n">1</span><span><b>Presupuesto por programas</b><span class="en">program budgeting</span></span></div>
+    <div class="m"><span class="n">2</span><span><b>Metas de desempeño ligadas al financiamiento</b><span class="en">funding-linked performance targets</span></span></div>
+    <div class="m"><span class="n">3</span><span><b>Incentivos presupuestarios a la agencia</b><span class="en">agency-level budgetary performance incentives</span></span></div>
+    <div class="m"><span class="n">4</span><span><b>Financiamiento por fórmula</b><span class="en">formula funding</span></span></div>
+  </div>
+  <p class="src">Robinson (2007), p. 1. «No existe una única forma» de hacer presupuesto por resultados (p. 15).</p>
+</div><span class="foot">16/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Cómo distinguirlos</span>
+  <h2 class="t">Dos preguntas bastan para distinguirlos</h2>
+  <div class="defs2">
+    <div><h4 aria-level="3">¿Hacia dónde mira el vínculo?</h4><p><b>Hacia adelante:</b> qué se espera lograr con este dinero. <b>Hacia atrás:</b> qué se logró → premio o sanción.</p></div>
+    <div><h4 aria-level="3">¿Quién o qué determina el monto?</h4><p>Una <b>priorización</b> entre programas, una <b>negociación de metas</b> o una <b>regla automática</b>.</p></div>
+  </div>
+</div><span class="foot">17/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Ejemplo resuelto</span>
+  <h2 class="t">Una regla que calcula el monto es financiamiento por fórmula</h2>
+  <p class="body"><b>Dinamarca:</b> cada escuela recibe fondos según el número de alumnos matriculados.</p>
+  <ol class="steps">
+    <li class="step">¿Quién decide el monto? Nadie caso por caso: lo calcula una regla — alumnos × monto por alumno.</li>
+    <li class="step">→ <b>Financiamiento por fórmula.</b></li>
+    <li class="step">Mira hacia adelante: a lo que se espera atender con ese dinero.</li>
+  </ol>
+</div><span class="foot">18/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Actividad en grupo <span class="sub">· 8 minutos</span></span>
+  <h2 class="t">En grupo y sin celular: 6 casos, 3 preguntas</h2>
+  <ol class="steps">
+    <li>¿Qué mecanismo es?</li>
+    <li>¿El vínculo mira hacia adelante o hacia atrás?</li>
+    <li>¿Es realmente presupuesto por resultados? Ojo: no todos los casos lo son. Justifiquen en una línea.</li>
+  </ol>
+  <p class="src">Respondan a mano en el reverso de la hoja. Después, puesta en común por sorteo: una persona por caso.</p>
+</div><span class="foot">19/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Los casos <span class="sub">· 1 a 3</span></span>
+  <div class="cards">
+    <div class="k"><div class="h"><span class="n">Caso 1</span>Reino Unido, 1998–2008</div><p>Cada ministerio negocia con el Tesoro metas cuantitativas — la mayoría sobre resultados, como alfabetización, obesidad infantil o mortalidad — en el mismo proceso en que se negocia cuánto dinero recibirá. «Atar nuevos recursos a nuevas reformas y resultados».</p></div>
+    <div class="k"><div class="h"><span class="n">Caso 2</span>Hospitales públicos</div><p>Australia desde 1993; también Portugal, Noruega y Reino Unido. El Estado paga a cada hospital un precio fijo por paciente atendido, según su diagnóstico. Si atenderlo le cuesta más que ese precio, el hospital asume la diferencia; si atiende menos pacientes, recibe menos dinero.</p></div>
+    <div class="k"><div class="h"><span class="n">Caso 3</span>Estados Unidos, 1993</div><p>Una ley obliga a todas las agencias federales a publicar planes estratégicos y metas anuales de desempeño. Años después, la oficina de auditoría del Congreso constata que las metas se fijaban sin relación con los montos que el presupuesto asignaba a cada agencia.</p></div>
+  </div>
+  <p class="src">Casos adaptados de Robinson (2007), cap. 1 — la lectura del Control de Lectura 1.</p>
+</div><span class="foot">20/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Los casos <span class="sub">· 4 a 6</span></span>
+  <div class="cards">
+    <div class="k"><div class="h"><span class="n">Caso 4</span>Florida (Estados Unidos)</div><p>Las agencias que superan sus estándares de desempeño pueden quedarse con hasta la mitad de los fondos que no ejecutaron, y ganan flexibilidad para manejar su presupuesto y su personal. Las que no los cumplen quedan obligadas a presentar reportes trimestrales y a rendir cuentas en persona.</p></div>
+    <div class="k"><div class="h"><span class="n">Caso 5</span>Transferencias a gobiernos locales</div><p>Un gobierno central reparte transferencias entre sus municipios con una fórmula que combina población e índice de pobreza. A cada municipio le llega su monto según la fórmula, sin metas ni condiciones sobre lo que logra con ese dinero.</p></div>
+    <div class="k"><div class="h"><span class="n">Caso 6</span>Estados Unidos, años sesenta</div><p>El gobierno reorganiza su presupuesto: en lugar de listar el gasto por partidas (sueldos, bienes, equipos), lo agrupa según los objetivos que persigue, y usa análisis de costos y resultados para comparar programas y decidir cuáles priorizar.</p></div>
+  </div>
+  <p class="src">Casos adaptados de Robinson (2007), cap. 1 — la lectura del Control de Lectura 1.</p>
+</div><span class="foot">21/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Puesta en común</span>
+  <h2 class="t">Dos de los seis casos no eran PPR</h2>
+  <table class="rt">
+    <thead><tr><th scope="col">Caso</th><th scope="col">Mecanismo</th><th scope="col">Vínculo</th><th scope="col">¿Es PPR?</th></tr></thead>
+    <tbody>
+      <tr class="step"><td>1 · Reino Unido</td><td>Metas ligadas al financiamiento</td><td>Hacia adelante</td><td>Sí</td></tr>
+      <tr class="step"><td>2 · Hospitales</td><td>Fórmula (precio por paciente)</td><td>Paga lo producido</td><td>Sí</td></tr>
+      <tr class="step"><td>3 · EE.UU. 1993</td><td>Metas sin relación con el monto</td><td>—</td><td><span class="no">No:</span> la meta no se calibra con el financiamiento</td></tr>
+      <tr class="step"><td>4 · Florida</td><td>Incentivos a la agencia</td><td>Hacia atrás</td><td>Sí</td></tr>
+      <tr class="step"><td>5 · Transferencias</td><td>Fórmula sin resultados de por medio</td><td>—</td><td><span class="no">No:</span> no hay presión por resultados</td></tr>
+      <tr class="step"><td>6 · EE.UU. años 60</td><td>Presupuesto por programas</td><td>Priorización</td><td>Sí</td></tr>
+    </tbody>
+  </table>
+  <p class="src">Robinson (2007), pp. 4, 9–15 y notas 8–9.</p>
+</div><span class="foot">22/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Síntesis</span>
+  <h2 class="t">Cada mecanismo vincula presupuesto y resultados de una forma distinta</h2>
+  <table class="rt">
+    <thead><tr><th scope="col">Mecanismo</th><th scope="col">Cómo vincula</th><th scope="col">Objetivo principal</th><th scope="col">Información que exige</th></tr></thead>
+    <tbody>
+      <tr><td>Presupuesto por programas</td><td>Priorizando entre programas</td><td>Asignar mejor el gasto</td><td>La más baja</td></tr>
+      <tr><td>Metas ligadas al financiamiento</td><td>Hacia adelante: qué se logra con este monto</td><td>Efectividad y eficiencia</td><td>Indicadores y metas</td></tr>
+      <tr><td>Incentivos a la agencia</td><td>Hacia atrás: desempeño → premio o sanción</td><td>Motivar a rendir más</td><td>Desempeño efectivo; juicio subjetivo</td></tr>
+      <tr><td>Financiamiento por fórmula</td><td>Regla explícita y automática</td><td>Presión por resultados, eficiencia</td><td>La más alta si es por costos</td></tr>
+    </tbody>
+  </table>
+  <p class="src">Elaboración propia a partir de Robinson (2007), cap. 1.</p>
+</div><span class="foot">23/34</span></section>
+
+<p class="section-tag">Bloque 5 · Qué hicieron otros países</p>
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">EE.UU. e Inglaterra</span>
+  <h2 class="t">Fijar metas no basta: tienen que calibrarse con el presupuesto</h2>
+  <div class="verdict">
+    <div class="v bad"><span class="tag">EE.UU. · GPRA, 1993</span><span class="big">Metas sin dientes</span><span class="d">Las agencias fijaron metas anuales, pero sin relación con el presupuesto (GAO, 1999). La reforma posterior pidió metas «compatibles con los niveles de financiamiento».</span></div>
+    <div class="v good"><span class="tag">Inglaterra · PSA, desde 1998</span><span class="big">Metas negociadas con el dinero</span><span class="d">Cada ministerio acordó sus metas — 110 metas «titulares» en 2005-08, la mayoría de resultados — en el mismo proceso en que se asignaba su presupuesto.</span></div>
+  </div>
+  <p class="src">Robinson (2007), pp. 8–9.</p>
+</div><span class="foot">24/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">EE.UU. · PART, 2002–2008</span>
+  <h2 class="t">PART: calificar cada programa para informar el presupuesto, no para fijarlo</h2>
+  <ul class="pts">
+    <li>Un cuestionario de <b>25 preguntas</b> en 4 secciones: propósito y diseño · planeamiento estratégico · gestión · resultados.</li>
+    <li>Cinco calificaciones: efectivo · moderadamente efectivo · adecuado · inefectivo · <b>resultados no demostrados</b>.</li>
+    <li>Dos preguntas que ya conocen: <i>¿el programa atiende un problema específico y existente?</i> (→ condición de interés) y <i>¿el pedido presupuestal está explícitamente ligado a las metas?</i></li>
+  </ul>
+  <p class="src">OMB (2008), Guide to the Program Assessment Rating Tool, preguntas 1.2 y 2.7; Fantone (2007), cap. 10 en Robinson (ed.); GAO-04-174.</p>
+</div><span class="foot">25/34</span></section>
+
+<section class="slide"><div class="pad top">
+  <span class="kicker">EE.UU. · ¿Funcionó PART?</span>
+  <h2 class="t">El puntaje pesó en el presupuesto, pero la política también</h2>
+  <p class="body">Un estudio de 234 programas del presupuesto 2004 encontró que los puntajes PART sí influyeron en el presupuesto propuesto; su efecto se reducía al considerar el apoyo político de cada programa.</p>
+  <p class="src">Gilmour, J. B. &amp; Lewis, D. E. (2006). Public Administration Review, 66(5), 742–752. doi:10.1111/j.1540-6210.2006.00639.x</p>
+</div><span class="foot">26/34</span></section>
+
+<p class="section-tag">Bloque 6 · ¿Y el Perú?</p>
+<section class="slide divider"><div class="pad">
+  <span class="kicker">De vuelta al control de lectura</span>
+  <h2 class="t xl">¿Y el Perú?</h2>
+</div><span class="foot">27/34</span></section>
+
+<section class="slide"><div class="pad top">
+  <span class="kicker">Lo que preguntó el control</span>
+  <h2 class="t">En el control dijimos: programas + metas, sin incentivos</h2>
+  <blockquote>El sistema de Programas Presupuestales del Perú se apoya sobre todo en clasificación por programas + metas de desempeño, sin formula funding ni incentivos presupuestarios a nivel de agencia. ¿Te parece una limitación o una elección prudente?</blockquote>
+  <span class="cite">Control de Lectura 1, Bloque B</span>
+</div><span class="foot">28/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Instrumentos peruanos</span>
+  <h2 class="t">Esa premisa era una simplificación: el Perú sí tiene incentivos presupuestarios</h2>
+  <div class="cards two">
+    <div class="k"><div class="h"><span class="n">Desde 2009 · municipalidades</span>Programa de Incentivos a la Mejora de la Gestión Municipal</div><p>Metas por compromiso → verificación → transferencia. Lo que no reciben quienes incumplen se reparte como bono entre quienes cumplen. Su objetivo, según la norma: <i>«vinculando el financiamiento a la consecución de resultados»</i>.</p><span class="s">Ley 29332; Ley 30372; DS 003-2026-EF</span></div>
+    <div class="k"><div class="h"><span class="n">Desde 2014 · gobiernos regionales</span>Fondo de Estímulo al Desempeño y Logro de Resultados Sociales (FED)</div><p>Desarrollo infantil temprano. Compromisos de gestión y metas de cobertura → informe de verificación → transferencia. Hasta S/ 77 millones en 2024-2025.</p><span class="s">Ley 30114 (84.ª DCF); DS 003-2024-MIDIS; DS 001-2025-MIDIS</span></div>
+  </div>
+</div><span class="foot">29/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">¿Encajan en Robinson?</span>
+  <h2 class="t">Encajan, con una diferencia: premian a gobiernos subnacionales, no a agencias</h2>
+  <ul class="pts">
+    <li>Miran <b>hacia atrás</b>: desempeño verificado → recursos. Es la lógica de los incentivos.</li>
+    <li>Pero el premio va a <b>municipalidades y gobiernos regionales</b>, no a los ministerios que ejecutan los programas presupuestales.</li>
+  </ul>
+  <p class="body"><b>¿Esto cambia tu posición del control?</b> Limitación · elección prudente · intermedia.</p>
+</div><span class="foot">30/34</span></section>
+
+<section class="slide"><div class="pad top dense">
+  <span class="kicker">Actividad en grupo <span class="sub">· 12 minutos + 90 segundos por grupo</span></span>
+  <h2 class="t">Su programa presupuestal: ¿qué mecanismo agregarían, y qué exigiría?</h2>
+  <div class="chips"><span>Grupo 1 · PP 0068</span><span>Grupo 2 · PP 0090</span><span>Grupo 3 · PP 0083</span></div>
+  <ol class="steps">
+    <li>¿Qué mecanismo agregarían a su programa — o por qué ninguno?</li>
+    <li>¿Qué capacidad operativa exigiría (Moore): personas, procesos, información, alianzas?</li>
+    <li>¿Qué podría salir mal? Por ejemplo: castigar a la entidad y, con ella, al ciudadano; metas que se juegan.</li>
+  </ol>
+</div><span class="foot">31/34</span></section>
+
+<section class="slide"><div class="pad">
+  <span class="kicker">Para llevarse</span>
+  <h2 class="t xl">La pregunta no es qué mecanismo es mejor, sino cuál puede sostener la capacidad que tienes</h2>
+</div><span class="foot">32/34</span></section>
+
+<p class="section-tag">Bloque 7 · Los principios del PPR</p>
 <section class="slide"><div class="pad top dense">
   <span class="kicker">Los principios del PPR</span>
   <h2 class="t">3 principios que sostienen el diseño de un programa</h2>
@@ -289,13 +513,16 @@
     <li><b>Causalidad</b>: las condiciones del ciudadano y su entorno interactúan a través de una cadena de causas y efectos.</li>
     <li><b>Evidencia</b>: las relaciones causales entre la intervención pública y esas condiciones se determinan con evidencia.</li>
   </ul>
-  <p class="src">Van a volver a estos 3 principios cuando diseñemos un programa presupuestal.</p>
-</div><span class="foot">16/17</span></section>
+  <p class="src">La próxima sesión: los programas presupuestales se diseñan sobre estos 3 principios.</p>
+</div><span class="foot">33/34</span></section>
 
-<section class="slide cover"><div class="pad">
-  <div class="col"><span class="kicker">A.17</span><span class="kicker">PPR</span></div>
-  <div class="main"><h1 class="big">Introducción al Presupuesto por Resultados</h1><div class="byline">GEP201 — Juan Pablo Silva Macher · Unidad III</div></div>
-</div><span class="foot">17/17</span></section>
+<section class="slide"><div class="pad">
+  <span class="kicker">Para después de clase</span>
+  <div class="qrwrap">
+    <div><h2 class="t xl">Recursos del curso</h2><p class="body">Aquí se publicarán la resolución de los casos y las fichas de cada experiencia.</p><span class="u">cain971.github.io/gep201-recursos</span></div>
+    <svg class="qr" viewBox="0 0 29 29" role="img" aria-label="Código QR hacia cain971.github.io/gep201-recursos" shape-rendering="crispEdges"><path fill="currentColor" d="M0,0h1v1h-1zM1,0h1v1h-1zM2,0h1v1h-1zM3,0h1v1h-1zM4,0h1v1h-1zM5,0h1v1h-1zM6,0h1v1h-1zM8,0h1v1h-1zM10,0h1v1h-1zM13,0h1v1h-1zM15,0h1v1h-1zM16,0h1v1h-1zM17,0h1v1h-1zM18,0h1v1h-1zM20,0h1v1h-1zM22,0h1v1h-1zM23,0h1v1h-1zM24,0h1v1h-1zM25,0h1v1h-1zM26,0h1v1h-1zM27,0h1v1h-1zM28,0h1v1h-1zM0,1h1v1h-1zM6,1h1v1h-1zM11,1h1v1h-1zM12,1h1v1h-1zM13,1h1v1h-1zM16,1h1v1h-1zM17,1h1v1h-1zM19,1h1v1h-1zM20,1h1v1h-1zM22,1h1v1h-1zM28,1h1v1h-1zM0,2h1v1h-1zM2,2h1v1h-1zM3,2h1v1h-1zM4,2h1v1h-1zM6,2h1v1h-1zM10,2h1v1h-1zM14,2h1v1h-1zM16,2h1v1h-1zM17,2h1v1h-1zM19,2h1v1h-1zM22,2h1v1h-1zM24,2h1v1h-1zM25,2h1v1h-1zM26,2h1v1h-1zM28,2h1v1h-1zM0,3h1v1h-1zM2,3h1v1h-1zM3,3h1v1h-1zM4,3h1v1h-1zM6,3h1v1h-1zM8,3h1v1h-1zM9,3h1v1h-1zM10,3h1v1h-1zM13,3h1v1h-1zM14,3h1v1h-1zM15,3h1v1h-1zM16,3h1v1h-1zM18,3h1v1h-1zM22,3h1v1h-1zM24,3h1v1h-1zM25,3h1v1h-1zM26,3h1v1h-1zM28,3h1v1h-1zM0,4h1v1h-1zM2,4h1v1h-1zM3,4h1v1h-1zM4,4h1v1h-1zM6,4h1v1h-1zM8,4h1v1h-1zM9,4h1v1h-1zM10,4h1v1h-1zM13,4h1v1h-1zM15,4h1v1h-1zM16,4h1v1h-1zM17,4h1v1h-1zM18,4h1v1h-1zM22,4h1v1h-1zM24,4h1v1h-1zM25,4h1v1h-1zM26,4h1v1h-1zM28,4h1v1h-1zM0,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM9,5h1v1h-1zM11,5h1v1h-1zM12,5h1v1h-1zM14,5h1v1h-1zM16,5h1v1h-1zM18,5h1v1h-1zM19,5h1v1h-1zM22,5h1v1h-1zM28,5h1v1h-1zM0,6h1v1h-1zM1,6h1v1h-1zM2,6h1v1h-1zM3,6h1v1h-1zM4,6h1v1h-1zM5,6h1v1h-1zM6,6h1v1h-1zM8,6h1v1h-1zM10,6h1v1h-1zM12,6h1v1h-1zM14,6h1v1h-1zM16,6h1v1h-1zM18,6h1v1h-1zM20,6h1v1h-1zM22,6h1v1h-1zM23,6h1v1h-1zM24,6h1v1h-1zM25,6h1v1h-1zM26,6h1v1h-1zM27,6h1v1h-1zM28,6h1v1h-1zM8,7h1v1h-1zM11,7h1v1h-1zM12,7h1v1h-1zM15,7h1v1h-1zM17,7h1v1h-1zM18,7h1v1h-1zM20,7h1v1h-1zM0,8h1v1h-1zM4,8h1v1h-1zM6,8h1v1h-1zM7,8h1v1h-1zM8,8h1v1h-1zM9,8h1v1h-1zM10,8h1v1h-1zM12,8h1v1h-1zM17,8h1v1h-1zM19,8h1v1h-1zM21,8h1v1h-1zM22,8h1v1h-1zM23,8h1v1h-1zM24,8h1v1h-1zM25,8h1v1h-1zM28,8h1v1h-1zM0,9h1v1h-1zM1,9h1v1h-1zM2,9h1v1h-1zM8,9h1v1h-1zM10,9h1v1h-1zM11,9h1v1h-1zM12,9h1v1h-1zM13,9h1v1h-1zM15,9h1v1h-1zM16,9h1v1h-1zM17,9h1v1h-1zM18,9h1v1h-1zM21,9h1v1h-1zM22,9h1v1h-1zM24,9h1v1h-1zM25,9h1v1h-1zM26,9h1v1h-1zM27,9h1v1h-1zM28,9h1v1h-1zM3,10h1v1h-1zM4,10h1v1h-1zM5,10h1v1h-1zM6,10h1v1h-1zM7,10h1v1h-1zM8,10h1v1h-1zM11,10h1v1h-1zM12,10h1v1h-1zM13,10h1v1h-1zM15,10h1v1h-1zM16,10h1v1h-1zM18,10h1v1h-1zM21,10h1v1h-1zM23,10h1v1h-1zM24,10h1v1h-1zM28,10h1v1h-1zM0,11h1v1h-1zM7,11h1v1h-1zM10,11h1v1h-1zM12,11h1v1h-1zM14,11h1v1h-1zM16,11h1v1h-1zM17,11h1v1h-1zM18,11h1v1h-1zM22,11h1v1h-1zM24,11h1v1h-1zM25,11h1v1h-1zM27,11h1v1h-1zM28,11h1v1h-1zM1,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM7,12h1v1h-1zM9,12h1v1h-1zM11,12h1v1h-1zM12,12h1v1h-1zM16,12h1v1h-1zM17,12h1v1h-1zM18,12h1v1h-1zM20,12h1v1h-1zM27,12h1v1h-1zM1,13h1v1h-1zM2,13h1v1h-1zM3,13h1v1h-1zM4,13h1v1h-1zM9,13h1v1h-1zM14,13h1v1h-1zM15,13h1v1h-1zM16,13h1v1h-1zM17,13h1v1h-1zM18,13h1v1h-1zM21,13h1v1h-1zM22,13h1v1h-1zM23,13h1v1h-1zM24,13h1v1h-1zM25,13h1v1h-1zM26,13h1v1h-1zM27,13h1v1h-1zM28,13h1v1h-1zM0,14h1v1h-1zM1,14h1v1h-1zM3,14h1v1h-1zM6,14h1v1h-1zM7,14h1v1h-1zM10,14h1v1h-1zM13,14h1v1h-1zM14,14h1v1h-1zM15,14h1v1h-1zM18,14h1v1h-1zM22,14h1v1h-1zM25,14h1v1h-1zM26,14h1v1h-1zM28,14h1v1h-1zM0,15h1v1h-1zM1,15h1v1h-1zM4,15h1v1h-1zM8,15h1v1h-1zM10,15h1v1h-1zM11,15h1v1h-1zM12,15h1v1h-1zM14,15h1v1h-1zM15,15h1v1h-1zM17,15h1v1h-1zM18,15h1v1h-1zM20,15h1v1h-1zM23,15h1v1h-1zM24,15h1v1h-1zM27,15h1v1h-1zM28,15h1v1h-1zM0,16h1v1h-1zM2,16h1v1h-1zM3,16h1v1h-1zM4,16h1v1h-1zM6,16h1v1h-1zM8,16h1v1h-1zM9,16h1v1h-1zM15,16h1v1h-1zM17,16h1v1h-1zM19,16h1v1h-1zM27,16h1v1h-1zM0,17h1v1h-1zM1,17h1v1h-1zM4,17h1v1h-1zM5,17h1v1h-1zM7,17h1v1h-1zM8,17h1v1h-1zM11,17h1v1h-1zM13,17h1v1h-1zM15,17h1v1h-1zM18,17h1v1h-1zM21,17h1v1h-1zM22,17h1v1h-1zM23,17h1v1h-1zM24,17h1v1h-1zM25,17h1v1h-1zM27,17h1v1h-1zM28,17h1v1h-1zM2,18h1v1h-1zM5,18h1v1h-1zM6,18h1v1h-1zM8,18h1v1h-1zM9,18h1v1h-1zM11,18h1v1h-1zM12,18h1v1h-1zM13,18h1v1h-1zM15,18h1v1h-1zM18,18h1v1h-1zM20,18h1v1h-1zM21,18h1v1h-1zM22,18h1v1h-1zM26,18h1v1h-1zM28,18h1v1h-1zM2,19h1v1h-1zM8,19h1v1h-1zM9,19h1v1h-1zM12,19h1v1h-1zM14,19h1v1h-1zM15,19h1v1h-1zM16,19h1v1h-1zM17,19h1v1h-1zM18,19h1v1h-1zM22,19h1v1h-1zM23,19h1v1h-1zM27,19h1v1h-1zM28,19h1v1h-1zM0,20h1v1h-1zM1,20h1v1h-1zM2,20h1v1h-1zM4,20h1v1h-1zM6,20h1v1h-1zM9,20h1v1h-1zM10,20h1v1h-1zM11,20h1v1h-1zM12,20h1v1h-1zM14,20h1v1h-1zM16,20h1v1h-1zM17,20h1v1h-1zM20,20h1v1h-1zM21,20h1v1h-1zM22,20h1v1h-1zM23,20h1v1h-1zM24,20h1v1h-1zM25,20h1v1h-1zM28,20h1v1h-1zM8,21h1v1h-1zM10,21h1v1h-1zM11,21h1v1h-1zM14,21h1v1h-1zM15,21h1v1h-1zM18,21h1v1h-1zM19,21h1v1h-1zM20,21h1v1h-1zM24,21h1v1h-1zM28,21h1v1h-1zM0,22h1v1h-1zM1,22h1v1h-1zM2,22h1v1h-1zM3,22h1v1h-1zM4,22h1v1h-1zM5,22h1v1h-1zM6,22h1v1h-1zM8,22h1v1h-1zM9,22h1v1h-1zM10,22h1v1h-1zM13,22h1v1h-1zM14,22h1v1h-1zM15,22h1v1h-1zM16,22h1v1h-1zM17,22h1v1h-1zM18,22h1v1h-1zM19,22h1v1h-1zM20,22h1v1h-1zM22,22h1v1h-1zM24,22h1v1h-1zM25,22h1v1h-1zM26,22h1v1h-1zM28,22h1v1h-1zM0,23h1v1h-1zM6,23h1v1h-1zM11,23h1v1h-1zM12,23h1v1h-1zM14,23h1v1h-1zM15,23h1v1h-1zM16,23h1v1h-1zM17,23h1v1h-1zM18,23h1v1h-1zM19,23h1v1h-1zM20,23h1v1h-1zM24,23h1v1h-1zM27,23h1v1h-1zM0,24h1v1h-1zM2,24h1v1h-1zM3,24h1v1h-1zM4,24h1v1h-1zM6,24h1v1h-1zM8,24h1v1h-1zM9,24h1v1h-1zM11,24h1v1h-1zM12,24h1v1h-1zM13,24h1v1h-1zM14,24h1v1h-1zM16,24h1v1h-1zM17,24h1v1h-1zM19,24h1v1h-1zM20,24h1v1h-1zM21,24h1v1h-1zM22,24h1v1h-1zM23,24h1v1h-1zM24,24h1v1h-1zM25,24h1v1h-1zM28,24h1v1h-1zM0,25h1v1h-1zM2,25h1v1h-1zM3,25h1v1h-1zM4,25h1v1h-1zM6,25h1v1h-1zM10,25h1v1h-1zM12,25h1v1h-1zM13,25h1v1h-1zM14,25h1v1h-1zM15,25h1v1h-1zM28,25h1v1h-1zM0,26h1v1h-1zM2,26h1v1h-1zM3,26h1v1h-1zM4,26h1v1h-1zM6,26h1v1h-1zM10,26h1v1h-1zM12,26h1v1h-1zM15,26h1v1h-1zM16,26h1v1h-1zM17,26h1v1h-1zM19,26h1v1h-1zM21,26h1v1h-1zM25,26h1v1h-1zM26,26h1v1h-1zM27,26h1v1h-1zM28,26h1v1h-1zM0,27h1v1h-1zM6,27h1v1h-1zM9,27h1v1h-1zM10,27h1v1h-1zM12,27h1v1h-1zM13,27h1v1h-1zM14,27h1v1h-1zM16,27h1v1h-1zM17,27h1v1h-1zM20,27h1v1h-1zM24,27h1v1h-1zM25,27h1v1h-1zM27,27h1v1h-1zM28,27h1v1h-1zM0,28h1v1h-1zM1,28h1v1h-1zM2,28h1v1h-1zM3,28h1v1h-1zM4,28h1v1h-1zM5,28h1v1h-1zM6,28h1v1h-1zM8,28h1v1h-1zM9,28h1v1h-1zM14,28h1v1h-1zM16,28h1v1h-1zM17,28h1v1h-1zM18,28h1v1h-1zM20,28h1v1h-1zM22,28h1v1h-1zM24,28h1v1h-1zM25,28h1v1h-1zM27,28h1v1h-1z"/></svg>
+  </div>
+</div><span class="foot">34/34</span></section>
 
 </div>
 
@@ -318,10 +545,21 @@
     hintTimer=setTimeout(function(){hint.classList.remove('show');},2200);
   }
   function render(){ slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); }); }
-  function enter(){ document.body.classList.add('presenting'); fitScale(); render(); showHint(); }
+  function pasos(){ return Array.prototype.slice.call(slides[idx].querySelectorAll('.step')); }
+  function ocultarPasos(){ pasos().forEach(function(p){ p.classList.remove('shown'); }); }
+  function mostrarPasos(){ pasos().forEach(function(p){ p.classList.add('shown'); }); }
+  function enter(){ document.body.classList.add('presenting'); fitScale(); ocultarPasos(); render(); showHint(); }
   function exit(){ document.body.classList.remove('presenting'); }
-  function next(){ if(idx<slides.length-1){ idx++; render(); } }
-  function prev(){ if(idx>0){ idx--; render(); } }
+  function next(){
+    var pend=pasos().filter(function(p){ return !p.classList.contains('shown'); });
+    if(pend.length){ pend[0].classList.add('shown'); return; }
+    if(idx<slides.length-1){ idx++; ocultarPasos(); render(); }
+  }
+  function prev(){
+    var vis=pasos().filter(function(p){ return p.classList.contains('shown'); });
+    if(vis.length){ vis[vis.length-1].classList.remove('shown'); return; }
+    if(idx>0){ idx--; mostrarPasos(); render(); }
+  }
 
   btn.addEventListener('click', function(){ try{ enter(); }catch(e){} });
   window.addEventListener('resize', function(){ if(document.body.classList.contains('presenting')) fitScale(); });
@@ -329,8 +567,8 @@
     if(!document.body.classList.contains('presenting')) return;
     if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){ next(); }
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){ prev(); }
-    else if(e.key==='Home'){ idx=0; render(); }
-    else if(e.key==='End'){ idx=slides.length-1; render(); }
+    else if(e.key==='Home'){ idx=0; ocultarPasos(); render(); }
+    else if(e.key==='End'){ idx=slides.length-1; mostrarPasos(); render(); }
     else if(e.key==='Escape'){ exit(); }
   });
   deck.addEventListener('click', function(e){
