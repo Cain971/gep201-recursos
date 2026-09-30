@@ -299,6 +299,11 @@ html { scroll-padding-top: 80px; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
+.pico-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 480px) { .pico-grid { grid-template-columns: 1fr; } }
+.code-block:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
@@ -315,6 +320,7 @@ html { scroll-padding-top: 80px; }
     <li><a href="#reflexion">Reflexión</a></li>
   </ul>
 </nav>
+<main id="contenido">
 
 <!-- HERO -->
 <section class="hero" id="inicio">
@@ -389,7 +395,7 @@ html { scroll-padding-top: 80px; }
       <span>Prompt · revisión de evidencia</span>
       <button class="copy-btn" id="copy-prompt-btn" onclick="copyBlock('prompt-text','copy-prompt-btn')">Copiar</button>
     </div>
-    <pre class="code-block" id="prompt-text">Actúa como asistente de revisión de evidencia, no como analista. Tu única
+    <pre class="code-block" id="prompt-text" tabindex="0" role="region" aria-label="Prompt para copiar">Actúa como asistente de revisión de evidencia, no como analista. Tu única
 tarea es buscar y clasificar evidencia sobre la siguiente relación, formulada
 como pregunta PICO: [PEGAR AQUÍ tu pregunta — población/condición, factor,
 comparación, efecto esperado].
@@ -475,7 +481,7 @@ Reglas:
       <span>Plantilla · por cada fuente</span>
       <button class="copy-btn" id="copy-template-btn" onclick="copyBlock('template-text','copy-template-btn')">Copiar</button>
     </div>
-    <pre class="code-block" id="template-text">Fuente: [cita corta, tomada de la fila que te dio el prompt o de tu propia búsqueda]
+    <pre class="code-block" id="template-text" tabindex="0" role="region" aria-label="Plantilla para copiar">Fuente: [cita corta, tomada de la fila que te dio el prompt o de tu propia búsqueda]
 Fecha: [cuándo la revisaste]
 
 1. Mi lectura (leyendo la fuente original)
@@ -503,19 +509,19 @@ Fecha: [cuándo la revisaste]
 
     <p><strong>Fuente:</strong> Huamán, R. et al. (ejemplo ficticio). "Efectividad de la suplementación con hierro y adherencia al tratamiento en anemia infantil."<br><strong>Fecha:</strong> 15 de setiembre de 2026</p>
 
-    <h4>1. Mi lectura (leyendo la fuente original)</h4>
+    <h4 aria-level="3">1. Mi lectura (leyendo la fuente original)</h4>
     <blockquote>Creo que esta fuente muestra que la suplementación reduce la anemia, pero sospecho que el efecto depende de la adherencia — en la práctica muchas familias abandonan el tratamiento antes de completarlo.</blockquote>
 
-    <h4>2. Lo que devolvió la IA</h4>
+    <h4 aria-level="3">2. Lo que devolvió la IA</h4>
     <p>Tipo: causal. Categoría: 2 (cuasi-experimental, diseño pre-post sin grupo de control aleatorizado). Apoya la afirmación, con matiz: el efecto es significativo solo en niños con adherencia mayor a 80%. Fragmento citado: "la reducción de anemia fue considerablemente mayor en el grupo con alta adherencia, sin efecto significativo en el grupo con baja adherencia."</p>
 
-    <h4>3. Contraste</h4>
+    <h4 aria-level="3">3. Contraste</h4>
     <ul>
       <li><strong>Coincide en:</strong> el matiz de adherencia que yo sospechaba aparece explícito en el estudio.</li>
       <li><strong>Discrepa en:</strong> yo pensaba que el problema era específicamente "efectos secundarios"; el estudio no explora por qué baja la adherencia, solo mide el efecto de tenerla o no. Sigo sin saber la causa de fondo.</li>
     </ul>
 
-    <h4>4. Decisión de uso</h4>
+    <h4 aria-level="3">4. Decisión de uso</h4>
     <ul class="check-list-mini">
       <li>La uso tal cual</li>
       <li class="on">La uso con matices — mi cadena debe incluir "adherencia" como factor intermedio, no asumir que repartir hierro basta.</li>
@@ -602,6 +608,7 @@ Fecha: [cuándo la revisaste]
   </div>
 </section>
 
+</main>
 <footer>
   <a href="../index.html" style="color:var(--gold);text-decoration:none;letter-spacing:.12em;">&larr; Volver a recursos de clase</a>
   <div style="margin-top:.8rem;">GEP201 · Gestión Financiera del Estado · PUCP · Juan Pablo Silva Macher</div>

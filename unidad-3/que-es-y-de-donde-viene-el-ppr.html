@@ -246,6 +246,8 @@ html { scroll-padding-top: 80px; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
@@ -258,6 +260,7 @@ html { scroll-padding-top: 80px; }
     <li><a href="#historia">Historia en el Perú</a></li>
   </ul>
 </nav>
+<main id="contenido">
 
 <section class="hero" id="inicio">
   <div class="hero-inner">
@@ -350,6 +353,7 @@ html { scroll-padding-top: 80px; }
   </div>
 </section>
 
+</main>
 <footer>GEP201 · PUCP · Juan Pablo Silva Macher</footer>
 
 <script>

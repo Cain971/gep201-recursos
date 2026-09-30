@@ -369,6 +369,8 @@ html { scroll-padding-top: 80px; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
@@ -384,6 +386,7 @@ html { scroll-padding-top: 80px; }
     <li><a href="#autochequeo">Autochequeo</a></li>
   </ul>
 </nav>
+<main id="contenido">
 
 <!-- HERO -->
 <section class="hero" id="inicio">
@@ -530,19 +533,19 @@ html { scroll-padding-top: 80px; }
 
   <div class="mag-grid fade-in">
     <div class="mag-item">
-      <h4>Extensión</h4>
+      <h4 aria-level="3">Extensión</h4>
       <p>¿Cuántos y dónde? Número de afectados, cobertura geográfica, distribución por grupo poblacional.</p>
     </div>
     <div class="mag-item">
-      <h4>Intensidad</h4>
+      <h4 aria-level="3">Intensidad</h4>
       <p>¿Qué tan grave en quienes lo padecen? No es lo mismo una afectación leve que una severa.</p>
     </div>
     <div class="mag-item">
-      <h4>Evolución</h4>
+      <h4 aria-level="3">Evolución</h4>
       <p>¿Mejora, está estancada o empeora? La tendencia en ~5 años define la urgencia.</p>
     </div>
     <div class="mag-item">
-      <h4>Brecha</h4>
+      <h4 aria-level="3">Brecha</h4>
       <p>¿A qué distancia de un referente? Una meta nacional, un promedio regional, un estándar. Un dato sin referente es solo una cifra.</p>
     </div>
   </div>
@@ -669,35 +672,35 @@ html { scroll-padding-top: 80px; }
 
   <div class="trap-grid">
     <div class="trap fade-in">
-      <h4>Solución disfrazada de problema</h4>
+      <h4 aria-level="3">Solución disfrazada de problema</h4>
       <p>La condición nombra una intervención ("falta de X programa") en vez de un estado de las personas. <em>Ayuda:</em> ¿esto está en las personas o en el aparato del Estado?</p>
     </div>
     <div class="trap fade-in">
-      <h4>Confundir magnitud con causa</h4>
+      <h4 aria-level="3">Confundir magnitud con causa</h4>
       <p>Colar afirmaciones causales ("X provoca Y") en la relevancia. <em>Ayuda:</em> aquí solo dimensionas; la causalidad es la etapa 2 (modelo explicativo).</p>
     </div>
     <div class="trap fade-in">
-      <h4>El compilatorio de citas</h4>
+      <h4 aria-level="3">El compilatorio de citas</h4>
       <p>Acumular párrafos citados uno tras otro en vez de sintetizar las ideas fuerza. <em>Ayuda:</em> el Anexo II lo prohíbe expresamente — pega cada fuente a tu argumento.</p>
     </div>
     <div class="trap fade-in">
-      <h4>Evidencia observacional como causal robusta</h4>
+      <h4 aria-level="3">Evidencia observacional como causal robusta</h4>
       <p>Presentar un estudio de categoría 3 como si probara causalidad directa. <em>Ayuda:</em> declara qué categoría de evidencia (Anexo I) estás usando.</p>
     </div>
     <div class="trap fade-in">
-      <h4>El indicador que mide la intervención</h4>
+      <h4 aria-level="3">El indicador que mide la intervención</h4>
       <p>"% de escuelas que recibieron acompañamiento" mide lo que hace el Estado, no el problema en las personas. <em>Ayuda:</em> el indicador de la condición mide el estado, no el gasto ni la actividad.</p>
     </div>
     <div class="trap fade-in">
-      <h4>El dato sin referente</h4>
+      <h4 aria-level="3">El dato sin referente</h4>
       <p>Una cifra sola no dice si el problema es grave o leve. <em>Ayuda:</em> siempre contra una meta, un promedio o un estándar.</p>
     </div>
     <div class="trap fade-in">
-      <h4>La fuente secundaria</h4>
+      <h4 aria-level="3">La fuente secundaria</h4>
       <p>Citar a quien cita al INEI, en vez del INEI. <em>Ayuda:</em> ir siempre a la fuente que produce el dato.</p>
     </div>
     <div class="trap fade-in">
-      <h4>La comparación rota</h4>
+      <h4 aria-level="3">La comparación rota</h4>
       <p>Comparar dos años entre los que cambió la metodología de medición. <em>Ayuda:</em> verificar la ficha técnica antes de armar una serie.</p>
     </div>
   </div>
@@ -716,7 +719,7 @@ html { scroll-padding-top: 80px; }
     </div>
 
     <div class="check-group">
-      <h4>I.1 · Descripción</h4>
+      <h4 aria-level="3">I.1 · Descripción</h4>
       <label class="check-item"><input type="checkbox" data-ck="d1"><span>Mi condición describe un estado de las personas, hogares, comunidades o su entorno — no una intervención, un programa ni una entidad.</span></label>
       <label class="check-item"><input type="checkbox" data-ck="d2"><span>Precisa el sujeto: bajé de "la población" a un grupo poblacional concreto (edad, territorio, condición).</span></label>
       <label class="check-item"><input type="checkbox" data-ck="d3"><span>Tengo una definición conceptual (qué es) y una operacional (cómo se mide).</span></label>
@@ -724,7 +727,7 @@ html { scroll-padding-top: 80px; }
     </div>
 
     <div class="check-group">
-      <h4>I.2 · Relevancia (incluye la magnitud)</h4>
+      <h4 aria-level="3">I.2 · Relevancia (incluye la magnitud)</h4>
       <label class="check-item"><input type="checkbox" data-ck="r1"><span>Justifico por qué es un problema público desde al menos dos dimensiones (jurídica, social, económica, ambiental).</span></label>
       <label class="check-item"><input type="checkbox" data-ck="r2"><span>Cito el sustento normativo (Constitución, ley, política nacional) y verifiqué su vigencia.</span></label>
       <label class="check-item"><input type="checkbox" data-ck="r3"><span>Cada idea fuerza tiene su fuente; no es un compilatorio de citas (Anexo II).</span></label>
@@ -734,14 +737,14 @@ html { scroll-padding-top: 80px; }
     </div>
 
     <div class="check-group">
-      <h4>I.3 · Indicador</h4>
+      <h4 aria-level="3">I.3 · Indicador</h4>
       <label class="check-item"><input type="checkbox" data-ck="i1"><span>El indicador mide el estado de la condición, no la intervención ni el gasto.</span></label>
       <label class="check-item"><input type="checkbox" data-ck="i2"><span>Tiene ficha técnica: numerador y denominador claros, fuente y periodicidad.</span></label>
       <label class="check-item"><input type="checkbox" data-ck="i3"><span>Sale de un instrumento oficial (encuesta nacional, registro administrativo, sistema sectorial).</span></label>
     </div>
 
     <div class="check-group">
-      <h4>Fuentes (transversal)</h4>
+      <h4 aria-level="3">Fuentes (transversal)</h4>
       <label class="check-item"><input type="checkbox" data-ck="f1"><span>Todas mis fuentes son oficiales peruanas o de organismos multilaterales / revistas indexadas.</span></label>
       <label class="check-item"><input type="checkbox" data-ck="f2"><span>Fui a la fuente primaria, no a una nota de prensa ni a una fuente que cita a otra.</span></label>
       <label class="check-item"><input type="checkbox" data-ck="f3"><span>Verifiqué que no haya cambios metodológicos que rompan la comparación entre años.</span></label>
@@ -784,6 +787,7 @@ html { scroll-padding-top: 80px; }
   </div>
 </section>
 
+</main>
 <footer>
   <a href="../index.html" style="color:var(--gold);text-decoration:none;letter-spacing:.12em;">&larr; Volver a recursos de clase</a>
   <div style="margin-top:.8rem;">GEP201 · Gestión Financiera del Estado · PUCP · Juan Pablo Silva Macher</div>

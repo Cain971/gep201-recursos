@@ -115,9 +115,12 @@
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
 </style>
 </head>
 <body>
+<main id="contenido">
 
 <div class="deck-head">
   <h1>Introducción al Presupuesto por Resultados</h1>
@@ -166,8 +169,8 @@
   <span class="kicker">Conceptos clave</span>
   <h2 class="t">Efectividad y eficiencia</h2>
   <div class="defs2">
-    <div><h4>Efectividad</h4><p>En qué medida un servicio entrega los beneficios que se supone debe entregar a la sociedad — si el programa logra los resultados esperados.</p></div>
-    <div><h4>Eficiencia</h4><p>Entregar los servicios al menor costo posible, sin sacrificar calidad.</p></div>
+    <div><h4 aria-level="3">Efectividad</h4><p>En qué medida un servicio entrega los beneficios que se supone debe entregar a la sociedad — si el programa logra los resultados esperados.</p></div>
+    <div><h4 aria-level="3">Eficiencia</h4><p>Entregar los servicios al menor costo posible, sin sacrificar calidad.</p></div>
   </div>
 </div><span class="foot">05/17</span></section>
 
@@ -282,6 +285,7 @@
 
 </div>
 
+</main>
 <script>
 (function(){
   var deck=document.querySelector('.deck');

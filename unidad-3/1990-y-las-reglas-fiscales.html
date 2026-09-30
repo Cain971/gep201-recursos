@@ -248,6 +248,8 @@ html { scroll-padding-top: 80px; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
@@ -261,6 +263,7 @@ html { scroll-padding-top: 80px; }
     <li><a href="#ejercicio">Ejercicio</a></li>
   </ul>
 </nav>
+<main id="contenido">
 
 <section class="hero" id="inicio">
   <div class="hero-inner">
@@ -317,15 +320,15 @@ html { scroll-padding-top: 80px; }
 
   <div class="mechs fade-in">
     <div class="mech">
-      <h4>1 · Dinámica r − g ("efecto bola de nieve")</h4>
+      <h4 aria-level="3">1 · Dinámica r − g ("efecto bola de nieve")</h4>
       <p>Si la tasa de interés real que paga el Estado por su deuda (r) supera la tasa de crecimiento de la economía (g), la deuda crece sola, sin que el gobierno tenga que gastar de más — el servicio de la deuda se come una porción creciente del presupuesto cada año.</p>
     </div>
     <div class="mech">
-      <h4>2 · Espacio fiscal</h4>
+      <h4 aria-level="3">2 · Espacio fiscal</h4>
       <p>Más deuda hoy es menos margen para responder a la próxima crisis — una pandemia, un desastre natural, una recesión. Un país con poco espacio fiscal llega a la próxima emergencia sin capacidad de endeudarse más para enfrentarla.</p>
     </div>
     <div class="mech">
-      <h4>3 · Desplazamiento del crédito privado (<em style="color:var(--gold-light)">crowding out</em>)</h4>
+      <h4 aria-level="3">3 · Desplazamiento del crédito privado (<em style="color:var(--gold-light)">crowding out</em>)</h4>
       <p>Más deuda pública compite por el mismo crédito disponible en la economía — sube el costo del financiamiento para las empresas privadas, que terminan invirtiendo menos.</p>
     </div>
   </div>
@@ -359,6 +362,7 @@ html { scroll-padding-top: 80px; }
   </div>
 </section>
 
+</main>
 <footer>GEP201 · PUCP · Juan Pablo Silva Macher</footer>
 
 <script>

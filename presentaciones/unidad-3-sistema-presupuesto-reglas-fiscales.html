@@ -181,9 +181,12 @@
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
   .fade-in { opacity: 1 !important; transform: none !important; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30: estructura) */
 </style>
 </head>
 <body>
+<main id="contenido">
 
 <div class="deck-head">
   <h1>Sistema de presupuesto público y reglas fiscales</h1>
@@ -274,14 +277,14 @@
 <section class="slide"><div class="pad top dense">
   <span class="kicker">Reglas fiscales</span>
   <h2 class="t">Límites sobre el déficit y la deuda</h2>
-  <table class="rules"><thead><tr><th></th><th>2025</th><th>2026</th><th>2027</th><th>2028-30</th></tr></thead>
+  <table class="rules"><thead><tr><td></td><th>2025</th><th>2026</th><th>2027</th><th>2028-30</th></tr></thead>
   <tbody>
     <tr><td>Déficit fiscal (% PBI)</td><td class="num">2,2</td><td class="num">1,8</td><td class="num">1,4</td><td class="num">→ 1,0</td></tr>
     <tr><td>Deuda pública (% PBI)</td><td class="num">31*</td><td class="num">29,3</td><td class="num">29,3</td><td class="num">→ 27,7</td></tr>
   </tbody></table>
   <div class="defs2 compact">
-    <div><h4>Déficit fiscal</h4><p>Gasto del Estado en un año, por encima de sus ingresos de ese mismo año. Se financia con deuda.</p></div>
-    <div><h4>Deuda pública</h4><p>El acumulado de todos los déficits financiados en el tiempo — lo que el Estado debe hoy, no solo este año.</p></div>
+    <div><h4 aria-level="3">Déficit fiscal</h4><p>Gasto del Estado en un año, por encima de sus ingresos de ese mismo año. Se financia con deuda.</p></div>
+    <div><h4 aria-level="3">Deuda pública</h4><p>El acumulado de todos los déficits financiados en el tiempo — lo que el Estado debe hoy, no solo este año.</p></div>
   </div>
   <p class="src">*2025 preliminar (Consejo Fiscal, 3er trim.) · límite legal de deuda: 38% del PBI. Senda vigente: Decreto Legislativo 1621 (jul-2024). Reglas de gasto ligadas al crecimiento del PBI, DL 1276.</p>
 </div><span class="foot">09/23</span></section>
@@ -471,6 +474,7 @@
 
 </div>
 
+</main>
 <script>
 (function(){
   var deck=document.querySelector('.deck');
