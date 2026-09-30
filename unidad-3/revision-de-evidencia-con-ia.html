@@ -271,7 +271,7 @@ footer {
   font-family: 'IBM Plex Mono', monospace; font-size: .6rem; letter-spacing: .12em;
   color: var(--text-dim); text-transform: uppercase;
 }
-.fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.js .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
 @media (max-width: 680px) {
@@ -293,7 +293,14 @@ html { scroll-padding-top: 80px; }
   .nav-links { width: 100%; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .nav-links::-webkit-scrollbar { display: none; }
 }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30): respetar "movimiento reducido" */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .fade-in { opacity: 1 !important; transform: none !important; }
+}
 </style>
+<script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
 <body>
 

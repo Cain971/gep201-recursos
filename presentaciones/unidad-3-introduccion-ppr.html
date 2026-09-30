@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Introducción al PPR — Grilla modular</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -104,7 +109,15 @@
   body.presenting .deck{max-width:none; margin:0; gap:0;}
   body.presenting .slide{display:none;}
   body.presenting .slide.active{ display:flex; position:fixed; top:50%; left:50%; width:1280px; height:720px; margin:0; transform-origin:center center; transform:translate(-50%,-50%) scale(var(--present-scale,1)); }
+
+/* Accesibilidad (auditoría de base-visual, 2026-09-30): respetar "movimiento reducido" */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .fade-in { opacity: 1 !important; transform: none !important; }
+}
 </style>
+</head>
+<body>
 
 <div class="deck-head">
   <h1>Introducción al Presupuesto por Resultados</h1>
@@ -309,3 +322,5 @@
   });
 })();
 </script>
+</body>
+</html>
