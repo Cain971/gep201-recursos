@@ -10,15 +10,26 @@ Cada archivo del repo queda accesible en esa URL por su ruta. Los cambios requie
 
 ## Organización
 
-Por unidad del sílabo (espeja `clases/` del repo del curso):
+Por unidad del sílabo (espeja `clases/` del repo del curso). Presentaciones y
+recursos de una unidad viven **juntos** en su carpeta; las presentaciones
+llevan el prefijo `deck-`:
 
 ```
-index.html                              → landing con enlaces a todos los recursos
+index.html                              → landing con enlaces a los recursos
 unidad-1/
   triangulo-estrategico.html            → Clase 3 · triángulo estratégico de Moore
 unidad-2/
   condicion-de-interes.html             → Clase 4 · condición de interés (Directiva MEF + búsqueda de fuentes)
+unidad-3/
+  deck-sistema-presupuesto-reglas-fiscales.html   → presentación, sesión 6
+  deck-introduccion-ppr.html                      → presentación, sesión 7 (PxR)
+  … recursos de las clases 5 y 6
+presentaciones/                         → solo redirecciones a unidad-3/ (enlaces antiguos, desde 2026-10-05)
 ```
+
+Las presentaciones se proyectan desde Pages. Su borrador, si hace falta uno
+antes de publicar, se trabaja en `gep201-curso/clases/unidad-X/` (privado) y se
+publica aquí; ya no hay copia "oficial" privada.
 
 ## Convención
 
