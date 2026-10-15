@@ -482,6 +482,10 @@ body.presenting .slide.active {
     .diagrama, .cabeceras { display: none; }
     .diagrama-lista { position: static; width: auto; height: auto; overflow: visible; clip: auto; white-space: normal; font-size: var(--size-body); padding-left: 1.2em; margin: 0; }
   }
+
+/* Accesibilidad (puerta de base-visual, 2026-10-15): el botón «Tema» con el borde de la ficha, --mark (3:1 o más; --line daba 1,35:1).
+   Es la regla del núcleo 1.1.0; se va al migrar este deck (Etapa 3) */
+.boton.secundario { border-color: var(--mark); }
 </style>
 </head>
 <body>

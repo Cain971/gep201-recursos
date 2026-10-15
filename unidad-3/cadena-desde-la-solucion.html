@@ -412,6 +412,11 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
 @media (max-width: 640px) {
   .ref-item, .ref-item a { overflow-wrap: anywhere; }
 }
+
+/* Accesibilidad (puerta de base-visual, 2026-10-15: bordes de los controles a 3:1; el neutro da 3,22:1 o más, antes de 1,34 a 2,54:1) */
+.q-option, .ci-btn, .reset-btn, .check-reset, .copy-btn { border-color: rgba(201,168,76,0.6); }
+.q-option.correct, .ci-btn.selected-correct, .ci-btn.pick-correct { border-color: #4D9A6D; }
+.q-option.wrong, .ci-btn.selected-wrong, .ci-btn.pick-wrong { border-color: #E75E4C; }
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>

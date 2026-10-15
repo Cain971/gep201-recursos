@@ -683,6 +683,11 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
 @media (max-width: 640px) {
   .ref-item, .ref-item a { overflow-wrap: anywhere; }
 }
+
+/* Accesibilidad (puerta de base-visual, 2026-10-15: bordes de los controles a 3:1; el neutro da 3,22:1 o más, antes de 1,34 a 2,54:1; el rótulo del triángulo, al dorado al 80 %, 5,30:1, antes 1,81 y 2,83:1) */
+.q-option, .ci-btn, .reset-btn, .check-reset, .copy-btn { border-color: rgba(201,168,76,0.6); }
+.q-option.correct, .ci-btn.selected-correct, .ci-btn.pick-correct { border-color: #4D9A6D; }
+.q-option.wrong, .ci-btn.selected-wrong, .ci-btn.pick-wrong { border-color: #E75E4C; }
 </style>
 <script>document.documentElement.classList.add('js') /* auditoría de base-visual, 2026-09-30: sin JS, el contenido se ve */</script>
 </head>
@@ -751,8 +756,8 @@ main a:not([class]), footer a:not([class]) { text-decoration: underline; text-de
         <line x1="250" y1="30" x2="470" y2="310" stroke="rgba(97,175,239,0.15)" stroke-width="1"/>
         <line x1="30" y1="310" x2="470" y2="310" stroke="rgba(201,168,76,0.15)" stroke-width="1"/>
         <!-- Center label -->
-        <text x="250" y="185" text-anchor="middle" fill="rgba(201,168,76,0.5)" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="3">ALINEACIÓN</text>
-        <text x="250" y="198" text-anchor="middle" fill="rgba(201,168,76,0.3)" font-family="'IBM Plex Mono',monospace" font-size="8" letter-spacing="2">= VALOR PÚBLICO</text>
+        <text x="250" y="185" text-anchor="middle" fill="rgba(201,168,76,0.8)" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="3">ALINEACIÓN</text>
+        <text x="250" y="198" text-anchor="middle" fill="rgba(201,168,76,0.8)" font-family="'IBM Plex Mono',monospace" font-size="8" letter-spacing="2">= VALOR PÚBLICO</text>
         <!-- Vertex 1 — TOP: Valor Público -->
         <circle cx="250" cy="30" r="22" fill="rgba(201,168,76,0.15)" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/>
         <text x="250" y="26" text-anchor="middle" fill="#c9a84c" font-family="'IBM Plex Mono',monospace" font-size="8" font-weight="500">VALOR</text>
