@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="es" data-identidad="grilla-modular" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prescriptivo y teoría de cambio · GEP201</title>
+<!-- Construido con base-visual (herramientas/ensamblar.py) desde sesion-09-deck.plantilla.html: no se edita aquí; se edita la plantilla y se vuelve a construir. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style data-bv="nucleo/tokens.css" data-version="1.0.0">
+/* base-visual · núcleo · tokens — v1.0.0 (Etapa 1, formalizar: el contrato congelado)
+   El contrato: los componentes y el motor SOLO leen estas variables (PLAN §2.3).
+   Cada identidad (identidades/*.css) redefine los colores, las fuentes, el radio
+   y la sombra; la escala de texto, espacio y movimiento es común.
+   Los valores de color de aquí son un respaldo neutro por si falta la identidad.
+   Papeles del acento (revisión del 2026-09-30, C1):
+   - --accent: lo que no es texto (marcas, rellenos, filetes, foco); basta 3:1.
+   - --accent-ink: el acento como texto. En las identidades que se proyectan
+     llega a 7:1 sobre --surface.
+   Extensiones opcionales (una identidad las define solo si las necesita):
+   - --font-figure: letra de la cifra protagonista (si falta, --font-display).
+   - --action, --on-action, --action-hover: el botón principal (si faltan, tinta
+     sobre papel y el acento al pasar el mouse).
+   - --phase y --slide-edge: borde de color en las diapositivas con la clase .fase.
+   v0.2.0 (exploraciones/2026-10-01-tipografia-escala/): una sola escala de página
+   ×1,25, cuyos pasos son también los pisos del celular en la diapositiva, y
+   --measure de 52ch (65 caracteres medidos a 16 px; los 68ch de antes daban 85).
+   v0.3.0 (exploraciones/2026-10-05-color-contraste/): los estados de la casa son
+   «solo lo que falla lleva color». --good puede ser la tinta sobre un gris neutro
+   (Grilla y Cuentas Claras); --warn avisa y --critical falla, siempre fuera de la
+   familia del acento. --ink-faint puede valer lo mismo que --ink-soft (un solo
+   gris). Muévete conserva su semáforo hasta la Etapa 4. Los respaldos de abajo no
+   cambian: solo rigen si falta la identidad.
+   v0.4.0 (exploraciones/2026-10-09-semaforo-y-acento/): colores de señal, cada
+   color dice una sola cosa. El acento es «mira esto» y «lo que sigue»; el semáforo,
+   verde «cumple», amarillo «en riesgo» y rojo «no cumple». Cada estado tiene el
+   mismo vocabulario que el acento:
+   - --good: la señal plena, lo que no es texto (barras, marcas); basta 3:1;
+   - --good-ink: el estado como texto; en las identidades que se proyectan, 7:1
+     sobre --surface, --paper y su fondo;
+   - --good-soft: el fondo de la etiqueta.
+   Igual para --warn y --critical. Ningún texto va sobre la señal plena.
+   v0.5.0 (exploraciones/2026-10-09-espaciado-ritmo/): el marco de la diapositiva,
+   «un eje y dos ritmos». Los tokens --slide-* NO se definen aquí: los define y los
+   redefine deck.css en .slide .pad (en cqw, así escalan con la diapositiva) y
+   las composiciones los leen. Son parte del contrato:
+   - --slide-line: la unidad del ritmo, una línea del cuerpo (25 px × 1,4 = 35 px);
+   - --slide-gap: entre bloques de evidencia (una línea; media en la .densa);
+   - --slide-gap-head: kicker → título (el título va pegado a su kicker);
+   - --slide-gap-title: título → evidencia (una línea; dos tercios en la .densa);
+   - --slide-gutter: el canal entre columnas (una línea);
+   - --slide-source-gap: relleno sobre la fuente (0: la fuente es solo la fuente);
+     desde la v0.6.0 solo rige donde la fuente sigue en el flujo (el celular);
+   - --slide-pad-top, --slide-pad-x, --slide-pad-bottom: el margen al borde, que fija
+     el eje donde empieza el kicker (7, 8 y 8 cqw; abajo, 5,5 en la .densa).
+   v0.6.0 (exploraciones/2026-10-11-componentes/): sin tokens nuevos. La ficha usa los
+   que ya hay (--surface, --mark, --radius, --shadow y los -soft de los estados).
+   v0.7.0 (exploraciones/2026-10-11-extraccion/): --qr-ink y --qr-paper, el QR del cierre. Son fijos,
+   negro sobre blanco en todas las identidades y en los dos temas (varios lectores no leen un QR
+   invertido): ninguna identidad los redefine.
+   v1.0.0 (formalizar): el contrato queda congelado en nucleo/contrato.json, que lista cada token en su grupo
+   (identidad, común, opcionales, marco, parámetros del autor e internas). Desde aquí, en 1.x esas listas solo
+   crecen: quitar o renombrar un token es de la 2.0. Sus valores sí se pueden afinar. Este archivo no cambia
+   de valores respecto de la v0.7.0. `python herramientas/ensamblar.py contrato` lo comprueba. */
+:root {
+  /* color */
+  --paper: #FAFAF8;        /* fondo de la página */
+  --surface: #FFFFFF;      /* tarjetas, bloques elevados y la diapositiva */
+  --ink: #16181A;          /* texto principal */
+  --ink-soft: #4A4F54;     /* texto secundario */
+  --ink-faint: #5E636A;    /* metadatos, fuentes, pies */
+  --line: #D9DCDF;         /* filetes y bordes finos (decorativos) */
+  --mark: #878C94;         /* marcas secundarias de los gráficos: 3:1 sobre --surface */
+  --accent: #1F4E79;       /* acento racionado: una decisión por bloque */
+  --accent-soft: #E3ECF5;  /* fondo de resaltado */
+  --accent-ink: #163A5C;   /* el acento como texto */
+  --on-accent: #FFFFFF;    /* texto sobre --accent */
+  --good: #1D6B4F;  --good-ink: #1D6B4F;  --good-soft: #E1F0E9;              /* «cumple» */
+  --warn: #8A5A00;  --warn-ink: #8A5A00;  --warn-soft: #F7ECD6;              /* «en riesgo» */
+  --critical: #A8322A;  --critical-ink: #A8322A;  --critical-soft: #F6E1DE;  /* «no cumple» */
+  --backdrop: #000000;     /* alrededor de la diapositiva al proyectar */
+  --qr-ink: #000000;  --qr-paper: #FFFFFF;  /* el QR: fijos, no los redefine ninguna identidad (v0.7.0) */
+
+  /* tipografía */
+  --font-text: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-text);
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --step--1: .8125rem;     /* 13 px: etiquetas y pies; nada baja de 12 px. La escala no
+                              cambia en v0.2.0: sus pasos son los pisos del celular */
+  --step-0: 1rem;          /* cuerpo */
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+  --step-5: 3.052rem;      /* escala 1,25 */
+  --leading: 1.55;
+  --leading-tight: 1.15;
+  --measure: 52ch;         /* largo de línea: 65 caracteres medidos (45–75) */
+
+  /* tamaños por contexto: los componentes los leen y .slide los redefine en cqw
+     (así cada componente se define una sola vez; revisión, D1) */
+  --size-meta: var(--step--1);      /* kicker, fuente, etiquetas, botones, pie */
+  --size-body: var(--step-0);
+  --size-title: var(--step-3);
+  --size-title-xl: var(--step-4);
+  --size-figure: var(--step-5);
+  --measure-title: 30ch;
+
+  /* espacio y forma */
+  --space-1: .25rem;  --space-2: .5rem;  --space-3: .75rem;  --space-4: 1rem;
+  --space-5: 1.5rem;  --space-6: 2rem;   --space-7: 3rem;    --space-8: 4.5rem;
+  --radius: 4px;
+  --shadow: none;
+  --tap: 44px;             /* objetivo táctil (meta AAA de la casa) */
+
+  /* movimiento */
+  --dur-1: 150ms;
+  --dur-2: 300ms;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; }
+}
+</style>
+<style data-bv="identidades/grilla-modular.css" data-version="1.0.0">
+/* base-visual · identidad · Grilla modular — v1.0.0 (la 1.0; sin cambios desde la v0.4.0)
+   Fuente: decks de la Unidad III de GEP201 (tokens de diapositiva --s*) y app de
+   evaluación (mismos valores). Exploración: exploraciones/2026-09-22-direcciones-suizas/.
+   Un solo rojo, racionado: significa "mira esto", no "malo" (ficha del 2026-09-22;
+   decisión de JP del 2026-09-30). Por eso --critical ya no repite el acento.
+   Modo oscuro [derivado]: los decks de GEP201 no tienen modo oscuro (sus colores
+   son fijos); se parte del marco oscuro de las páginas de exploración (#16140F…).
+   Los decks se ven claros por defecto (deck.js); el oscuro es para quien lo elige.
+   Ajustados al extraer (2026-09-30): --good #12805F → #027A59 y --warn #B45309 →
+   #AD4D00 (los de la app no llegaban a 4,5:1 sobre sus fondos suaves).
+   v0.1.1, valores provisionales hasta la exploración de color (revisión, C1–C4):
+   --ink-faint a 7:1 (#5A574E → #56534A); --accent-ink, el rojo del texto, ya da
+   7,2:1 (#A32218, el registro del #B01008 de Quarto); --critical, un vino
+   (#8B2241) distinto del bermellón; --mark para las barras secundarias (3:1).
+   --surface es la diapositiva (#FAFAF8) y --paper el marco (#F7F5F0), como en los
+   decks: la superficie es la más clara, igual que en Cuentas Claras.
+   v0.3.0 (exploraciones/2026-10-05-color-contraste/, decisión de JP del 2026-10-05):
+   - Los dos rojos se quedan: el vivo (--accent) para barras y foco, que solo pide
+     3:1, y el oscuro para el texto, afinado a #A12016 para llegar a 7:1 también
+     sobre el papel (antes #A32218, 6,89:1; ΔE 0,006, no se ve).
+   - Estados, «solo lo que falla lleva color»: «cumple» en tinta sobre un gris
+     neutro, «en riesgo» en ámbar y «no cumple» en morado, fuera de la familia del
+     rojo (el rojo significa "mira esto"). Los tres a 7:1 sobre su fondo.
+   - Un solo gris secundario: --ink-faint = --ink-soft. La letra (mono, mayúsculas)
+     ya separa el kicker de la fuente; el token se conserva por contrato.
+   v0.4.0 (exploraciones/2026-10-09-semaforo-y-acento/, decisión de JP del 2026-10-09):
+   colores de señal, cada color dice una sola cosa, como en la señalética de seguridad.
+   - Azul ultramar, «mira esto» y «lo que sigue»: la cifra, la barra destacada, los
+     enlaces y el foco. Reemplaza al rojo como acento.
+   - El semáforo: rojo, «no cumple» (el vivo de antes es su señal, y el de texto se
+     oscurece a #9C150C para llegar a 7:1 sobre su fondo); amarillo dorado, «en
+     riesgo»; verde azulado (h 164), «cumple» y «hecho», que con deuteranopía se
+     separa del rojo (ΔE 0,094; uno amarillento quedaba a 0,036).
+   - Cada estado en tres tokens: la señal plena (--good, para gráficos), su texto
+     (--good-ink, a 7:1 sobre la diapositiva, el papel y su fondo) y su fondo
+     (--good-soft). El amarillo pleno no llega a 3:1 sobre el papel: en un gráfico
+     va con borde o etiqueta.
+   - Papel, tinta, el gris único, filetes y marcas: sin cambios. */
+[data-identidad="grilla-modular"] {
+  --paper: #F7F5F0;  --surface: #FAFAF8;
+  --ink: #0A0A08;  --ink-soft: #3F3D37;  --ink-faint: #3F3D37;
+  --line: #D8D5C9;  --mark: #8C897F;
+  --accent: #2B4CAD;  --accent-soft: #E6EDFC;  --accent-ink: #2B4CAD;  --on-accent: #FFFFFF;
+  --good: #007754;  --good-ink: #005B3F;  --good-soft: #D9F5E7;
+  --warn: #FCC100;  --warn-ink: #654C00;  --warn-soft: #FFEDC5;
+  --critical: #C0281C;  --critical-ink: #9C150C;  --critical-soft: #FDE7E3;
+  --font-text: "Archivo", system-ui, sans-serif;
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --radius: 0px;
+  --shadow: none;
+}
+[data-identidad="grilla-modular"][data-theme="dark"] {
+  --paper: #16140F;  --surface: #1E1B15;
+  --ink: #EFEAE0;  --ink-soft: #CFC7B7;  --ink-faint: #CFC7B7;
+  --line: #332E24;  --mark: #726A59;
+  --accent: #5B85F2;  --accent-soft: #232D45;  --accent-ink: #80A4F8;  --on-accent: #16140F;
+  --good: #00D095;  --good-ink: #65D1A4;  --good-soft: #173629;
+  --warn: #FCC100;  --warn-ink: #DDB659;  --warn-soft: #392D12;
+  --critical: #F06050;  --critical-ink: #FDA295;  --critical-soft: #432622;
+}
+@media (prefers-color-scheme: dark) {
+  [data-identidad="grilla-modular"]:not([data-theme="light"]) {
+    --paper: #16140F;  --surface: #1E1B15;
+    --ink: #EFEAE0;  --ink-soft: #CFC7B7;  --ink-faint: #CFC7B7;
+    --line: #332E24;  --mark: #726A59;
+    --accent: #5B85F2;  --accent-soft: #232D45;  --accent-ink: #80A4F8;  --on-accent: #16140F;
+    --good: #00D095;  --good-ink: #65D1A4;  --good-soft: #173629;
+    --warn: #FCC100;  --warn-ink: #DDB659;  --warn-soft: #392D12;
+    --critical: #F06050;  --critical-ink: #FDA295;  --critical-soft: #432622;
+  }
+}
+</style>
+<style data-bv="nucleo/base.css" data-version="1.0.0">
+/* base-visual · núcleo · base — v1.0.0 (la 1.0; sin cambios desde la v0.2.0)
+   Lo mínimo común a todo producto: documento, texto, enlaces, foco y movimiento.
+   Solo lee tokens. Recoge lo aprendido al corregir docencia (2026-09-30): enlaces
+   subrayados, foco visible, movimiento reducido y contenido visible sin JS.
+   v0.1.1: los enlaces usan el acento de texto, y la numeración y las viñetas van
+   en mono y en tinta (el rojo racionado: la estructura la marca la mono).
+   v0.1.2: body declara su color, su letra y su interlineado, no solo el fondo.
+   Si los hereda de html, cualquier estilo previo sobre body los pisa: el
+   esqueleto de un Artifact pone un color casi negro y 14 px de sistema, y el
+   texto quedaba oscuro sobre fondo oscuro, en otra letra y apretado.
+   v0.2.0 (dimensión 1): la numeración de las listas va en mono, al tamaño de los
+   metadatos (--size-meta) y sin punto: marca la estructura sin competir con el
+   texto (F3; decisión de JP, 2026-10-01). Sin ceros a la izquierda: esos quedan
+   para secuencias reales, como la agenda y el pie («06 / 23»). */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+  font-family: var(--font-text); color: var(--ink); background: var(--paper);
+  line-height: var(--leading);
+}
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-text); font-size: 1rem; line-height: var(--leading); }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: var(--leading-tight); text-wrap: balance; margin: 0 0 var(--space-3); }
+p { margin: 0 0 var(--space-4); max-width: var(--measure); }
+img, svg, video { max-width: 100%; height: auto; }
+code, kbd, samp { font-family: var(--font-mono); font-size: max(12px, .92em); }
+li::marker { font-family: var(--font-mono); color: var(--ink-soft); }
+@counter-style bv-numero { system: extends decimal; suffix: "\2002"; }  /* «1 », sin punto */
+ol { list-style-type: bv-numero; }
+ol > li::marker { font-size: var(--size-meta); }
+::selection { background: var(--accent-soft); color: var(--ink); }
+
+/* enlaces: se distinguen por algo más que el color (WCAG 1.4.1) */
+a { color: var(--accent-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* movimiento reducido: sin animaciones ni desplazamiento suave */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* para lectores de pantalla: presente en el documento, invisible en pantalla */
+.visualmente-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+<style data-bv="nucleo/componentes.css" data-version="1.2.0">
+/* base-visual · núcleo · componentes — v1.2.0 (Etapa 3: la secuencia y la red)
+   Componentes de páginas Y de diapositivas, con una sola definición: los tamaños
+   salen de los tokens de contexto (--size-*), que .slide redefine en deck.css
+   (revisión del 2026-09-30, D1). Solo leen tokens. Nada baja de 12 px y todo lo
+   táctil mide --tap.
+   Acento racionado (decisión de JP, 2026-09-30): en texto solo lo llevan la cifra,
+   los enlaces, desde la v0.4.0 la etiqueta «en curso» y desde la v0.7.0 el .destacado; la estructura (kicker, etiquetas, numeración, botones) va en
+   tinta y mono, la voz utilitaria (F3).
+   v0.2.0 (exploraciones/2026-10-01-tipografia-escala/): kicker en mono 500 y
+   .05em; títulos en 700 y la cifra en 800; el texto corrido (cuerpo, nota de la
+   cifra y fuente) usa --leading y --measure, que la diapositiva redefine; la cifra,
+   con caja de .85 (los dígitos no tienen descendentes) y unidad en 400.
+   v0.6.0 (exploraciones/2026-10-11-componentes/): la tarjeta pasa a ser una ficha de
+   borde --mark; los grupos de fichas (.tarjetas) miden lo mismo y alinean sus filas;
+   el veredicto y la cita son fichas; las barras llevan el valor en la punta, con
+   --v (0 a 1) en lugar de un ancho en %. La fuente en el pie está en deck.css.
+   v0.7.0 (exploraciones/2026-10-11-extraccion/, revisiones/2026-10-11-extraccion-grupo-d.md):
+   la pregunta (el quiz y el clasificador de los recursos, con nucleo/pregunta.js), las
+   alternativas de una predicción, la cita sola y lo que los decks de GEP201 escribían a mano
+   (el texto de las tablas y de las fichas en la diapositiva, la nota de una lista, el
+   .destacado, las .etiquetas, la fila destacada y el cierre con QR).
+   v0.7.1 (ronda 3 de la misma exploración, decisión de JP): para destacar, se atenúa el resto.
+   El paso actual de las columnas y la fila destacada de una tabla dejan el azul y el fondo
+   celeste: lo importante queda en tinta y lo demás pasa a --ink-soft.
+   v1.1.0 (exploraciones/2026-10-15-cierre-etapa-2/, decisión 1 de JP): el botón secundario y el
+   desplegable llevan el borde de la ficha, --mark (3:1 o más en las tres identidades y los dos
+   temas; --line daba de 1,20 a 1,57:1). --mark para lo que es un objeto; --line, para el filete.
+   v1.2.0 (exploraciones/2026-10-15-composicion/, decisiones 2 y 3 de JP): la secuencia y la red de
+   causas, las dos formas que más se repetían fuera del núcleo (11 de 200 diapositivas en seis decks),
+   con nucleo/red.js para las flechas de la red. */
+
+/* F1: la cornisa y la tesis (principios/firma.md) */
+.kicker { font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 var(--space-2); }
+.kicker .sub { color: var(--ink); }
+.titulo { font-family: var(--font-display); font-size: var(--size-title); font-weight: 700; line-height: var(--leading-tight); text-wrap: balance; max-width: var(--measure-title); margin: 0 0 var(--space-3); }
+.titulo.xl { font-size: var(--size-title-xl); }
+.cuerpo { font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); margin: 0 0 var(--space-4); }
+/* la lista del cuerpo (v0.7.0; la .lista de la sesión 8 y la .causes de la sesión 7 de GEP201):
+   un poco de aire entre ítems y, si hace falta, una nota por ítem, debajo, en gris y al
+   tamaño de los metadatos. La numeración es la de base.css (mono, sin punto).
+   <ol class="cuerpo"><li><b>Qué es un programa presupuestal</b> <span class="nota">…</span></li></ol> */
+.cuerpo li + li { margin-top: .35em; }
+.cuerpo li > .nota { display: block; font-size: var(--size-meta); line-height: var(--leading); color: var(--ink-soft); }
+
+/* «mira esto» dentro del texto (v0.7.0; el .hl de la sesión 7 y la .pregunta de la sesión 8):
+   el acento de texto en negrita. Es el azul de «mira esto» (v0.4.0), así que va una vez por
+   diapositiva, como el resto del acento. Una frase: <b class="destacado">…</b>; una línea
+   entera: <p class="cuerpo destacado">…</p> */
+.destacado { color: var(--accent-ink); font-weight: 700; }
+
+/* un grupo de etiquetas (v0.7.0; los .chips de la sesión 7): una fila que se parte
+   <p class="etiquetas"><span class="etiqueta">Grupo 1 · PP 0068</span>…</p> */
+.etiquetas { display: flex; flex-wrap: wrap; gap: .6em; font-size: var(--size-meta); max-width: none; margin: 0; padding: 0; list-style: none; }
+
+/* F2: fuente visible donde está el dato. Sin filete (provisional: el filete
+   dentro de una tarjeta hacía doble línea con su borde, gusto 2) */
+.fuente { font-family: var(--font-mono); font-size: var(--size-meta); line-height: var(--leading); color: var(--ink-faint); max-width: 90ch; margin: var(--space-4) 0 0; }
+
+/* tarjeta = la ficha (dimensión 4, 2026-10-11): fondo --surface y borde de 1 px. En la
+   Grilla, que no lleva sombra ni esquinas redondeadas, es una ficha rectangular. El
+   borde es --mark y no --line: --line da 1,41:1 sobre la diapositiva (el mismo color
+   del filete fino que «no se veía clara»); --mark da 3,35:1, y la casa pide 3:1 a los
+   objetos gráficos. Si en el aula no separa las fichas desde la última fila: --ink-soft
+   (6,75:1 con luz de sala) o la variante .fondo (ficha, «Cuándo reconsiderar») */
+.tarjeta { background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); box-shadow: var(--shadow); padding: var(--space-5); }
+.tarjeta > :last-child { margin-bottom: 0; }
+.slide .tarjeta { padding: max(var(--space-4), calc(var(--size-body) * .9)); }
+
+/* cifra protagonista: un número grande, su unidad y una nota. Es la pieza de
+   texto que lleva el acento del bloque */
+.cifra { font-family: var(--font-figure, var(--font-display)); font-size: var(--size-figure); font-weight: 800; line-height: .85; letter-spacing: -.02em; color: var(--accent-ink); font-variant-numeric: proportional-nums; margin: 0; }
+.cifra .unidad { font-family: var(--font-text); font-size: .4em; font-weight: 400; color: var(--ink-soft); }
+.cifra-nota { color: var(--ink-soft); font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); margin: var(--space-2) 0 0; }
+
+/* etiqueta: neutra por defecto; el estado lleva color y palabra (el color nunca
+   va solo), sin signo: la Grilla habla con letra (F3) y un ícono es el registro
+   de las aplicaciones. v0.4.0: la palabra en el -ink del estado, sobre su -soft.
+   Caja homogénea (pedido de JP, 2026-10-09): suelta, mide lo que la palabra más
+   larga de los estados («no cumple», «en riesgo», «pendiente»: 9 letras de mono
+   con su espaciado, más el relleno y el borde), con la palabra centrada; en una
+   tabla llena su columna, así la columna queda pareja.
+   «En curso» (.sigue) es lo que sigue: el azul, en la palabra y en el borde */
+.etiqueta {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4em;
+  min-width: calc(9 * (1ch + .06em) + 1.4em + 2px); white-space: nowrap;
+  font-family: var(--font-mono); font-size: var(--size-meta); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); padding: .2em .7em;
+}
+.etiqueta.buena { color: var(--good-ink); background: var(--good-soft); border-color: transparent; }
+.etiqueta.alerta { color: var(--warn-ink); background: var(--warn-soft); border-color: transparent; }
+.etiqueta.critica { color: var(--critical-ink); background: var(--critical-soft); border-color: transparent; }
+.etiqueta.sigue { color: var(--accent-ink); border-color: var(--accent); }
+.tabla td > .etiqueta { display: flex; }
+
+/* fichas en paralelo (dimensión 4): un veredicto, una cita frente a otra. El grupo pone
+   --n columnas del mismo ancho (por defecto 2) y cada ficha ocupa --filas filas con
+   subgrid: las fichas miden lo mismo y cada fila (el estado, el nombre, el dato…)
+   queda a la misma altura en todas, aunque el texto de una sea más largo. --filas
+   tiene que ser el número de hijos de la ficha (4 en el veredicto, 2 en la cita); sin
+   declararlo vale 1, para una ficha de un solo bloque. En el celular se apilan.
+   <div class="tarjetas" style="--filas: 4">
+     <div class="tarjeta veredicto buena">
+       <span class="etiqueta buena">Cumple</span>
+       <p class="nombre">Déficit fiscal</p><p class="dato">2,2 %</p><p class="detalle">…</p>
+     </div>…
+   </div> */
+.tarjetas { display: grid; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); grid-auto-rows: auto; column-gap: var(--slide-gutter, var(--space-5)); row-gap: 0; align-items: stretch; }
+.tarjetas > .tarjeta { display: grid; grid-row: span var(--filas, 1); grid-template-rows: subgrid; row-gap: .5em; align-content: start; min-width: 0; margin: 0; }
+.tarjetas > .tarjeta > * { margin: 0; max-width: none; }
+
+/* el texto de una ficha (v0.7.0; los casos y los instrumentos de la sesión 7): el rótulo es un
+   .kicker, la cabeza un .nombre, el texto un <p> a .82 del cuerpo en la diapositiva (20,5 px al
+   proyectar, como la cita) y, si lleva, su .fuente al final. Antes, un <p> suelto dentro de
+   una ficha salía a 16 px al proyectar. --filas es el número de hijos.
+   <div class="tarjetas" style="--n: 3; --filas: 3">
+     <div class="tarjeta"><p class="kicker">Caso 1</p><p class="nombre">Reino Unido, 1998–2008</p><p>…</p></div>…
+   </div> */
+.tarjeta .nombre { font-size: var(--size-body); font-weight: 700; line-height: 1.2; }
+:where(.slide .tarjeta) > p { font-size: calc(var(--size-body) * .82); line-height: 1.3; }
+
+/* el veredicto: el estado (etiqueta, sola: el color de la ficha no dice nada), lo que se
+   mide (.nombre), el dato y su descripción */
+.veredicto .etiqueta { justify-self: start; align-self: start; }
+.veredicto .dato { font-size: calc(var(--size-body) * 1.6); font-weight: 800; line-height: 1.05; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.veredicto .detalle { font-size: calc(var(--size-body) * .82); line-height: 1.3; color: var(--ink-soft); }
+
+/* la cita: la misma ficha, sin estado. El rótulo de quién habla es un .kicker (mono) y el
+   texto citado va a .82 del cuerpo (20,5 px al proyectar, los que se vieron en clase;
+   antes `.dos p` le ganaba a `.cita` y el .9 declarado no se aplicaba nunca). Dos filas.
+   <div class="tarjetas" style="--filas: 2">
+     <figure class="tarjeta cita"><figcaption class="kicker">Autor</figcaption><blockquote>…</blockquote></figure>…
+   </div> */
+.cita { margin: 0; }
+.cita > blockquote { margin: 0; font-size: calc(var(--size-body) * .82); line-height: 1.3; }
+
+/* la cita sola (v0.7.0, decisión de JP del 2026-10-11; exploraciones/2026-10-11-extraccion/,
+   E de la ronda 2): sin caja. La ficha es para dos citas frente a frente; sola, sería un marco
+   alrededor del texto. Va en el mismo orden que la ficha: quién lo dice, corto y en mono, y
+   después la cita, al tamaño y en la medida del cuerpo, con la comilla de apertura colgada
+   para que el texto quede en el eje. La referencia completa va en la .fuente del pie, como
+   cualquier dato. Una frase en <b> solo si es la que prueba el título, y entonces la fuente
+   dice «Énfasis añadido».
+   <figure class="cita-sola"><figcaption class="kicker">Quién lo dice</figcaption><blockquote>«…»</blockquote></figure> */
+.cita-sola { display: grid; gap: .6em; margin: 0; }
+.cita-sola > .kicker { margin: 0; }
+.cita-sola > blockquote { margin: 0; font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); text-indent: -.5em; }
+
+/* las alternativas de una predicción en la diapositiva (v0.7.0; C de la exploración del
+   2026-10-11): una ficha por alternativa, la letra en mono y el valor que se vota al tamaño
+   del título grande. La respuesta se revela con la flecha: una etiqueta en su ficha con .step
+   (en lectura y al imprimir se ve). --filas: 3 con la etiqueta, 2 sin ella.
+   <div class="tarjetas alternativas" style="--n: 3; --filas: 3">
+     <div class="tarjeta"><p class="kicker">A</p><p class="valor">≈ 10 %</p></div>
+     <div class="tarjeta"><p class="kicker">B</p><p class="valor">≈ 33 %</p><span class="etiqueta buena step">Correcta</span></div>…
+   </div> */
+.tarjetas.alternativas .valor { font-size: var(--size-title-xl); font-weight: 800; line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.tarjetas.alternativas .etiqueta { justify-self: start; }
+
+/* variante .fondo (la alternativa viva de JP, 2026-10-11): el estado como fondo en lugar
+   de solo la etiqueta. La ficha toma el -soft de su estado (.buena, .alerta, .critica en
+   la ficha), pierde el borde (sin borde, el panel es la caja) y la etiqueta queda como
+   palabra sobre el fondo. Los fondos dan 1,11:1 sobre la diapositiva: se ven en pantalla
+   y se lavan con luz de sala; se activa si la etiqueta no se distingue desde la última
+   fila. La cita se queda como ficha neutra.
+   <div class="tarjetas fondo" style="--filas: 4">…</div> */
+.tarjetas.fondo > .tarjeta { border-color: transparent; }
+.tarjetas.fondo > .tarjeta.buena { background: var(--good-soft); }
+.tarjetas.fondo > .tarjeta.alerta { background: var(--warn-soft); }
+.tarjetas.fondo > .tarjeta.critica { background: var(--critical-soft); }
+.tarjetas.fondo .etiqueta { background: transparent; padding-inline: 0; justify-content: flex-start; min-width: 0; }
+.tarjetas.fondo .detalle { color: var(--ink); }
+
+/* botón: en tinta y en mono, como en los decks de GEP201 y la app de evaluación
+   (revisión, P3). Una identidad con manual de marca puede cambiarlo con --action */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--tap); padding: 0 var(--space-5);
+  font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; line-height: 1; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--on-action, var(--paper)); background: var(--action, var(--ink));
+  border: 1px solid var(--action, var(--ink)); border-radius: var(--radius); cursor: pointer; text-decoration: none;
+  transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
+}
+.boton:hover { color: var(--on-accent); background: var(--action-hover, var(--accent)); border-color: var(--action-hover, var(--accent)); }
+.boton.secundario { color: var(--ink); background: transparent; border-color: var(--mark); }  /* v1.1.0: antes --line */
+.boton.secundario:hover { color: var(--ink); background: transparent; border-color: var(--ink); }
+.boton:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* la pregunta (v0.7.0, decisión de JP del 2026-10-11; exploraciones/2026-10-11-extraccion/, B):
+   el quiz y el clasificador de los recursos son la misma pieza. Un enunciado, sus
+   alternativas (botones de verdad, con el borde de la ficha: --mark da 3,35:1 y la casa pide
+   3:1 al borde de un control) y la explicación. Al responder, nucleo/pregunta.js marca
+   .respondida, .correcta y .elegida y pone dos etiquetas: «Correcta» en la correcta e
+   «Incorrecta» en la elegida, si no lo era. El resto no cambia de color (cada color dice una
+   sola cosa, y lo dice la etiqueta, sin ✓ ni ✗). La respuesta y las explicaciones van en el
+   HTML: data-correcta en la pregunta, data-valor en cada alternativa y, en cada explicación,
+   data-para con las alternativas a las que responde (sin data-para, se muestra siempre). Sin
+   JS se ven todas las explicaciones, como una hoja de respuestas.
+   <div class="pregunta" data-correcta="b">
+     <p class="kicker">Pregunta 2 de 5</p>
+     <p class="enunciado">…</p>
+     <div class="alternativas">
+       <button class="alternativa" type="button" data-valor="a"><span class="letra">A</span><span class="texto">…</span></button>…
+     </div>
+     <p class="retro" data-para="b">…</p><p class="retro" data-para="a c d">…</p>
+   </div>
+   El clasificador: la misma pieza con .clasificar y alternativas cortas, sin .letra; van en
+   fila y en mono. Un contador opcional en la página: <p data-puntaje>…</p>, y un botón con
+   data-reiniciar. */
+.pregunta { display: grid; gap: var(--space-4); max-width: 46rem; }
+.pregunta > * { margin: 0; }
+.pregunta .enunciado { font-family: var(--font-display); font-size: calc(var(--size-body) * 1.25); font-weight: 700; line-height: 1.3; max-width: var(--measure); }
+.pregunta .alternativas { display: grid; gap: var(--space-2); }
+.pregunta .alternativa {
+  display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; min-height: var(--tap);
+  padding: var(--space-3) var(--space-4); margin: 0;
+  font: inherit; font-size: var(--size-body); line-height: var(--leading); text-align: left; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); cursor: pointer;
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+.pregunta .alternativa:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pregunta:not(.respondida) .alternativa:hover { border-color: var(--ink); }
+.pregunta .alternativa .letra { flex: none; min-width: 1.2em; padding-top: .2em; font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; color: var(--ink-soft); }
+.pregunta .alternativa .texto { flex: 1; min-width: 0; }
+.pregunta .alternativa .etiqueta { flex: none; align-self: center; }
+.pregunta.respondida .alternativa { cursor: default; }
+.pregunta.respondida .alternativa:is(.correcta, .elegida) { border-color: var(--ink); }
+.pregunta.respondida .alternativa:not(.correcta):not(.elegida) { color: var(--ink-soft); }
+.pregunta .retro { font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); }
+.js .pregunta:not(.respondida) .retro, .js .pregunta .retro.otra { display: none; }
+.pregunta.clasificar .enunciado { font-family: var(--font-text); font-size: var(--size-body); font-weight: 400; line-height: var(--leading); }
+.pregunta.clasificar .alternativas { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.pregunta.clasificar .alternativa { width: auto; max-width: 100%; flex-wrap: wrap; row-gap: var(--space-1); align-items: center; font-family: var(--font-mono); font-size: var(--size-meta); letter-spacing: .06em; text-transform: uppercase; }
+
+/* desplegable: <details> nativo (teclado y lectores de pantalla sin JS) */
+.desplegable { background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); }  /* v1.1.0: antes --line */
+.desplegable + .desplegable { margin-top: var(--space-2); }
+.desplegable > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  min-height: var(--tap); padding: var(--space-3) var(--space-4); cursor: pointer; list-style: none; font-weight: 600;
+}
+.desplegable > summary::-webkit-details-marker { display: none; }
+.desplegable > summary::after { content: "▾"; color: var(--ink-soft); transition: transform var(--dur-2) var(--ease-out); }
+.desplegable[open] > summary::after { transform: rotate(180deg); }
+.desplegable > :not(summary) { padding: 0 var(--space-4) var(--space-4); margin: 0; }
+.desplegable[open] { border-color: var(--ink-faint); }
+
+/* tabla: filetes finos, cabeceras en mono, cifras alineadas */
+.tabla-contenedor { overflow-x: auto; }
+.tabla { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.tabla th { font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); text-align: left; }
+.tabla th, .tabla td { padding: var(--space-2) var(--space-3) var(--space-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tabla .num { text-align: right; font-family: var(--font-mono); }
+.tabla caption { caption-side: bottom; text-align: left; font-size: var(--size-meta); color: var(--ink-faint); padding-top: var(--space-2); }
+/* la fila que hay que mirar (v0.7.1, decisión de JP del 2026-10-11, D de la ronda 3 de
+   exploraciones/2026-10-11-extraccion/): no se marca la fila, se atenúan las demás. La
+   destacada queda en tinta y las otras pasan a --ink-soft (10,4:1, sobre el 7:1 de la casa),
+   con la negrita en 500; las etiquetas de estado no cambian. Reemplaza al fondo celeste de la
+   v0.7.0 (la tr.clave de la sesión 8), que no combinaba y se lavaba con luz de sala (1,12:1) */
+.tabla:has(tr.destacada) tbody tr:not(.destacada) td { color: var(--ink-soft); }
+.tabla:has(tr.destacada) tbody tr:not(.destacada) td b { font-weight: 500; }
+/* en la diapositiva (v0.7.0; la regla local de la sesión 8): las celdas a .82 del cuerpo
+   (20,5 px al proyectar; antes heredaban los 16 px de body) y, al proyectar, la tabla no se
+   encoge ni se vuelve una región con barra: si no cabe, se acorta el texto o va la .densa.
+   El estado de una fila va como etiqueta (.etiqueta.critica), no en rojo suelto */
+.slide .tabla td { font-size: calc(var(--size-body) * .82); line-height: 1.3; }
+@media (min-width: 721px) { .slide .tabla-contenedor { flex-shrink: 0; overflow: visible; } }
+
+/* marco de gráfico (PLAN §4.5): kicker, título que afirma, gráfico, fuente.
+   Patrón: las marcas se dibujan; las etiquetas son texto HTML, así respetan el
+   piso de 12 px en celular (el texto dentro de un SVG escalado no lo respeta).
+   Las medidas van en em: crecen con --size-meta en la diapositiva. Una barra
+   destacada en acento; el resto en --mark, más liviano que el texto (revisión, C4).
+   Barras con el valor en la punta (dimensión 4, 2026-10-11; «bars → value at the tip»,
+   guía de gráficos): cada fila lleva su --v (0 a 1) y el valor se pega al final de su
+   barra, no en una columna aparte. La barra se mide sobre una pista cuyo 100 % deja
+   4.5em libres a la derecha para el valor del extremo (--valor-ancho, si el valor es
+   más largo que «100 %»).
+   <dl class="barras">
+     <dt>Programa A</dt><dd style="--v: .82"><span class="barra destacada"></span><span class="valor">82 %</span></dd>…
+   </dl> */
+.marco { margin: 0; }
+.barras { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .6em .9em; align-items: center; margin: var(--space-3) 0 0; font-family: var(--font-mono); font-size: var(--size-meta); }
+.barras dt { color: var(--ink-soft); }
+.barras dd { position: relative; height: 1.2em; margin: 0 var(--valor-ancho, 4.5em) 0 0; }
+.barras .barra { display: block; width: calc(var(--v) * 100%); height: 100%; background: var(--mark); border-radius: var(--radius); }
+.barras .barra.destacada { background: var(--accent); }
+.barras .valor { position: absolute; left: calc(var(--v) * 100% + .7em); top: 0; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Composiciones sobre la retícula de 12 columnas (v0.5.0, dimensión 3; fichas en
+   exploraciones/2026-10-09-espaciado-ritmo/). El canal entre columnas es
+   --slide-gutter (una línea del cuerpo), que define el marco de la diapositiva;
+   en una página sin él, vale --space-5. En el celular todas se apilan. */
+
+/* cifra al lado de sus razones: la cifra es la evidencia de un título que afirma.
+   El número y lo que mide, en las columnas 1 a 5; las razones, en las 6 a 12,
+   alineados arriba.
+   <div class="cifra-campo">
+     <div class="cifra-dato"><p class="cifra">7 650 <span class="unidad">%</span></p><p class="cifra-nota">…</p></div>
+     <ol class="razones"><li><b>…</b> …</li></ol>
+   </div> */
+.cifra-campo, .grafico-campo, .columnas { font-size: var(--size-body); }
+.cifra-campo, .grafico-campo { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--slide-gutter, var(--space-5)); align-items: start; }
+.cifra-campo > .cifra-dato { grid-column: 1 / 6; }
+.cifra-campo > .razones { grid-column: 6 / 13; margin: 0; padding-left: 1.5em; padding-top: .2em; font-size: var(--size-body); line-height: var(--leading); }
+.razones li + li { margin-top: .4em; }
+.razones b { display: block; }
+.cifra-dato .cifra-nota { margin-top: .5em; }
+
+/* gráfico con su lectura: el gráfico en las columnas 1 a 8 y lo que hay que ver en
+   él en las 9 a 12, al mismo nivel (no como pie de página). La fuente vuelve a ser
+   solo la fuente (F2). El gráfico es del tipo que pidan los datos: barras
+   horizontales (.barras) o columnas verticales (.grafico-columnas).
+   <div class="grafico-campo"><dl class="barras">…</dl><p class="lectura">…</p></div> */
+.grafico-campo > :not(.lectura) { grid-column: 1 / 9; margin: 0; }
+.grafico-campo > .lectura { grid-column: 9 / 13; margin: 0; max-width: none; font-size: var(--size-body); line-height: var(--leading); }
+.grafico-campo > .lectura b { color: var(--accent-ink); }
+
+/* columnas verticales con el valor encima y el periodo debajo, la destacada en el
+   acento y el resto en gris, sobre una línea de base (el .barchart del GEP201,
+   ahora en HTML y con tokens, para respetar el piso de 12 px en el celular).
+   <div class="grafico-columnas" role="img" aria-label="…">
+     <div class="col destacada" style="--v: .384"><span class="tope"><span class="valor">88</span><span class="barra"></span></span><span class="etq">2006-2011</span></div>…
+   </div> */
+.grafico-columnas { --alto: 12rem; font-size: var(--size-body); display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); align-items: end; }
+.slide .grafico-columnas { --alto: 15cqw; }
+.grafico-columnas .col { display: flex; flex-direction: column; align-items: stretch; gap: .4em; }
+.grafico-columnas .tope { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: .3em; border-bottom: 1px solid var(--line); }
+.grafico-columnas .barra { width: 62%; height: calc(var(--alto) * var(--v)); background: var(--mark); }
+.grafico-columnas .col.destacada .barra { background: var(--accent); }
+.grafico-columnas .valor, .grafico-columnas .etq { font-family: var(--font-mono); font-size: var(--size-meta); font-variant-numeric: tabular-nums; text-align: center; }
+.grafico-columnas .etq { color: var(--ink-soft); }
+.grafico-columnas .col.destacada .valor { color: var(--accent-ink); font-weight: 500; }
+
+/* columnas con número en tinta (B′, el original de GEP201): filete fino arriba,
+   número grande como ancla de cada columna, cabeza en negrita y texto en gris. El
+   número va en tinta: el azul es «mira esto» y «lo que sigue», y con tres números
+   azules por diapositiva dejaría de señalar algo. El número es opcional. --n fija
+   cuántas columnas.
+   El paso actual (.actual; v0.7.1, decisión de JP del 2026-10-11, D de la ronda 3): no
+   lleva color. Queda en tinta, con el filete de arriba en tinta y de 2 px, y los otros
+   pasos se atenúan (número y cabeza en --ink-soft y en 500). Antes, su número iba en azul,
+   y repetía lo que ya decía el título («hoy estamos en el segundo»). Sin .actual, todas las
+   columnas van iguales.
+   <div class="columnas" style="--n: 3">
+     <div class="actual"><span class="n">1</span><div><h3>…</h3><p>…</p></div></div>…
+   </div> */
+.columnas { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: var(--slide-gutter, var(--space-5)); }
+.columnas > div { display: flex; gap: .8em; border-top: 1px solid var(--line); padding-top: .9em; }
+.columnas > div > div { min-width: 0; }
+.columnas .n { flex: none; font-weight: 800; font-size: calc(var(--size-body) * 1.3); line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.columnas :is(h3, h4) { font-size: var(--size-body); font-weight: 700; line-height: 1.2; margin: 0 0 .25em; }
+.columnas p { max-width: none; margin: 0; font-size: calc(var(--size-body) * .8); line-height: 1.3; color: var(--ink-soft); }
+.columnas > .actual { border-top: 2px solid var(--ink); padding-top: calc(.9em - 1px); }
+.columnas:has(> .actual) > div:not(.actual) :is(.n, h3, h4) { color: var(--ink-soft); font-weight: 500; }
+
+/* la secuencia (v1.2.0, decisión 2 de JP del 2026-10-15, C; exploraciones/2026-10-15-composicion/):
+   pasos en orden, cada uno en una ficha (fondo --surface y borde --mark, 3:1 o más), unidos por flechas
+   dibujadas. Es la .ruta del deck de la DAES, generalizada; reemplaza la .cadena de la sesión 8 (borde
+   --line, 1,41:1, y la flecha como carácter) y la .hierarchy de las reglas fiscales. Las fichas miden lo
+   mismo y sus filas se alinean (subgrid, como .tarjetas). La flecha va en el canal, centrada en la
+   ficha y en --ink-soft: es dibujo, no un «→». El supuesto de una flecha cuelga debajo, con una llave
+   del centro de un paso al del siguiente, y va dentro del paso del que sale la flecha: así, en el
+   celular y para un lector de pantalla, se lee entre los dos pasos que une. El frágil (.fragil) es el
+   «mira esto» de la diapositiva (F4: una vez); la llave sigue en 1 px (con 2 px en un solo lado sería
+   una franja) y lo marca el color. .actual marca el paso en curso, como en .columnas: borde de 2 px en
+   tinta y los otros, atenuados. --n fija cuántos pasos.
+   En el celular los pasos se apilan, la flecha apunta hacia abajo y el supuesto queda como nota.
+   <ol class="secuencia" style="--n: 3">
+     <li><p class="kicker">Producto</p><p class="nombre">…</p><p class="detalle">…</p>
+         <p class="supuesto fragil"><span class="kicker">Supuesto frágil</span> …</p></li>
+     <li>…</li>
+   </ol> */
+.secuencia {
+  --canal: calc(var(--slide-gutter, var(--space-5)) * 1.6);
+  display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); grid-auto-rows: auto;
+  column-gap: var(--canal); row-gap: 0; margin: 0; padding: 0; list-style: none; font-size: var(--size-body);
+}
+.secuencia > li { display: grid; grid-row: span 4; grid-template-rows: subgrid; min-width: 0; margin: 0; }
+/* la ficha, detrás de las tres primeras filas del paso; el supuesto queda fuera */
+.secuencia > li::before {
+  content: ""; grid-area: 1 / 1 / 4 / 2;
+  background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.secuencia > li > * { grid-column: 1; position: relative; margin: 0; max-width: none; padding-inline: calc(var(--size-body) * .8); }
+.secuencia > li > .kicker { grid-row: 1; padding-top: .8em; }
+.secuencia > li > .nombre { grid-row: 2; padding-top: .3em; font-size: var(--size-body); font-weight: 700; line-height: 1.2; }
+.secuencia > li > .nombre:first-child { padding-top: .8em; }
+.secuencia > li > .detalle { grid-row: 3; padding-top: .35em; padding-bottom: .85em; font-size: calc(var(--size-body) * .82); line-height: 1.3; color: var(--ink-soft); }
+.secuencia > li:not(:has(> .detalle)) > .nombre { padding-bottom: .85em; }
+/* la flecha, en el canal: el trazo y su punta en un solo seudoelemento */
+.secuencia > li:not(:last-child)::after {
+  content: ""; grid-area: 1 / 1 / 4 / 2; align-self: center; justify-self: end; position: relative; z-index: 1;
+  width: calc(var(--canal) * .62); height: .72em; margin-right: calc(var(--canal) * -.81);
+  background: var(--ink-soft);
+  clip-path: polygon(0 calc(50% - 1px), calc(100% - .42em) calc(50% - 1px), calc(100% - .42em) 0, 100% 50%,
+                     calc(100% - .42em) 100%, calc(100% - .42em) calc(50% + 1px), 0 calc(50% + 1px));
+}
+/* el supuesto de la flecha que sale de este paso: una llave del centro de este paso al del siguiente */
+.secuencia .supuesto {
+  grid-row: 4; align-self: start; margin: .95em 0 0 50%; width: calc(100% + var(--canal)); padding: .5em .4em 0;
+  border-top: 1px solid var(--ink-soft); font-size: var(--size-meta); line-height: 1.3; text-align: center;
+}
+.secuencia .supuesto::before, .secuencia .supuesto::after { content: ""; position: absolute; top: -.5em; height: .5em; border-left: 1px solid var(--ink-soft); }
+.secuencia .supuesto::before { left: 0; }
+.secuencia .supuesto::after { right: 0; }
+.secuencia .supuesto > .kicker { display: block; margin: 0 0 .2em; }
+.secuencia .supuesto.fragil { border-top-color: var(--accent); }
+.secuencia .supuesto.fragil::before, .secuencia .supuesto.fragil::after { border-left-color: var(--accent); }
+.secuencia .supuesto.fragil > .kicker { color: var(--accent-ink); }
+.secuencia:has(> .actual) > li:not(.actual) > :is(.kicker, .nombre, .detalle) { color: var(--ink-soft); }
+.secuencia:has(> .actual) > li:not(.actual) > .nombre { font-weight: 500; }
+.secuencia > .actual::before { border: 2px solid var(--ink); }
+
+/* la red de causas (v1.2.0, decisión 3 de JP del 2026-10-15: C, con sus tres pedidos y el sombreado
+   de la ronda 3; exploraciones/2026-10-15-composicion/): las cajas en una retícula (cada .nodo dice su
+   columna, --col, y su fila, --fila; --filas si ocupa más de una) y las flechas que nucleo/red.js
+   dibuja desde la lista de relaciones (ul.relaciones > li, con data-de y data-a: los id de dos nodos).
+   Cada relación se escribe una vez: es la fuente de las flechas y lo que lee un lector de pantalla
+   (los nodos y las cabeceras van con aria-hidden); sin JS, la lista se ve debajo. La caja mide lo que
+   su texto y las flechas la siguen, también con la letra de otra identidad. Reemplaza el diagrama
+   generado de la sesión 8 (un script por deck, el texto abreviado y el detalle a 17 px) y el SVG del
+   Taller (en el celular, el texto bajaba a 6 px).
+   - El nodo es la ficha; la condición de interés (.final), con 2 px de tinta, mide lo que su texto.
+   - Las flechas, en --ink-soft: el grosor dice cuánto pesa la causa (.fuerte, .debil) y la discontinua,
+     que no hay evidencia (.sin-evidencia; en el nodo, su borde).
+   - La leyenda (.leyenda), no una explicación en texto: una muestra de cada trazo con su palabra, en
+     mono. Por defecto va debajo, a todo el ancho; en una celda libre, con --col y --fila.
+   - El camino (.camino en sus nodos y en sus relaciones) es lo que afirma el título: las flechas en el
+     acento, la caja con borde de 2 px del acento y fondo --accent-soft, y el nombre en tinta (en el
+     acento sobre el celeste daba 6,53:1). Lo demás se atenúa. Cuenta como un solo «mira esto».
+   - Las columnas miden lo que su texto más largo (auto); --n fija cuántas y --plantilla las fija a
+     mano (auto auto minmax(0, 1fr): la última toma lo que sobra).
+   - En el celular, el mismo diagrama, compacto: columnas iguales, el texto a 13 px y el canal angosto.
+   <figure class="red" style="--n: 3">
+     <p class="cabecera" style="--col: 1" aria-hidden="true">Prácticas de cuidado</p>…
+     <div class="nodo" id="r-lav" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">…</p><p class="detalle">…</p></div>…
+     <p class="leyenda" style="--col: 3; --fila: 5"><span><span class="muestra" aria-hidden="true"></span>Con evidencia</span>…</p>
+     <ul class="relaciones"><li data-de="r-lav" data-a="r-ira">Menos lavado de manos → más infección respiratoria</li>…</ul>
+   </figure> */
+.red {
+  --canal: calc(var(--slide-line, var(--space-5)) * 2);
+  position: relative; display: grid; grid-template-columns: var(--plantilla, repeat(var(--n, 3), auto));
+  grid-auto-rows: auto; column-gap: var(--canal); row-gap: calc(var(--slide-line, var(--space-5)) * .32);
+  align-items: center; margin: 0; font-size: var(--size-body);
+}
+.red > .cabecera {
+  grid-row: 1; grid-column: var(--col); align-self: end; margin: 0; max-width: none; white-space: nowrap;
+  font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+}
+.red > .nodo {
+  grid-column: var(--col); grid-row: var(--fila) / span var(--filas, 1); align-self: center; position: relative; z-index: 1;
+  display: grid; gap: .05em; margin: 0; padding: .3em .6em .35em;
+  background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.red > .nodo > * { margin: 0; max-width: none; }
+.red .nodo .nombre { font-size: calc(var(--size-body) * .82); font-weight: 700; line-height: 1.2; }
+.red .nodo .detalle { font-size: var(--size-meta); line-height: 1.25; color: var(--ink-soft); }
+.red > .nodo.final { justify-self: start; max-width: 100%; border: 2px solid var(--ink); }
+.red > .nodo.sin-evidencia { border-style: dashed; }
+.red > svg.flechas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+.red .flecha { color: var(--ink-soft); }
+.red .flecha line { stroke: currentColor; stroke-width: 2.5; fill: none; }
+.red .flecha.fuerte line { stroke-width: 6; }
+.red .flecha.debil line { stroke-width: 1.5; }
+.red .flecha.sin-evidencia line { stroke-width: 1.5; stroke-dasharray: 7 6; }
+.red .flecha .punta { fill: currentColor; }
+/* el camino: lo demás se atenúa (gris y peso 500; las flechas, en --mark) */
+.red:has(.camino) > .nodo:not(.camino) { color: var(--ink-soft); }
+.red:has(.camino) > .nodo:not(.camino) .nombre { font-weight: 500; }
+.red:has(.camino) > .nodo.final:not(.camino) { border: 1px solid var(--mark); }
+.red:has(.camino) .flecha:not(.camino) { color: var(--mark); }
+.red > .nodo.camino { border: 2px solid var(--accent); background: var(--accent-soft); }
+.red .flecha.camino { color: var(--accent); }
+.red .flecha.camino:not(.fuerte) line { stroke-width: 3; }
+/* la leyenda: una muestra de cada trazo y su palabra, con el color que el trazo tiene en el dibujo */
+.red > .leyenda {
+  grid-column: var(--col, 1 / -1); grid-row: var(--fila, auto); align-self: end; z-index: 1;
+  display: flex; flex-wrap: wrap; gap: .35em 1.2em; margin: 0; max-width: none;
+  font-family: var(--font-mono); font-size: var(--size-meta); line-height: 1.3; color: var(--ink-soft);
+}
+.red > .leyenda > span { display: inline-flex; align-items: center; gap: .55em; white-space: nowrap; }
+.red .leyenda .muestra { display: inline-block; flex: none; width: 2em; height: 0; border-top: 2.5px solid var(--ink-soft); }
+.red .leyenda .muestra.fuerte { border-top-width: 6px; }
+.red .leyenda .muestra.debil { border-top-width: 1.5px; }
+.red .leyenda .muestra.sin-evidencia { border-top: 2px dashed var(--ink-soft); }
+.red:has(.camino) .leyenda .muestra:not(.camino) { border-top-color: var(--mark); }
+.red .leyenda .muestra.camino { border-top: 3px solid var(--accent); }
+/* la lista de relaciones: sin JS, debajo del dibujo; con las flechas dibujadas, solo para los lectores
+   de pantalla (red.js pone .con-flechas) */
+.red > .relaciones { grid-column: 1 / -1; margin: .5em 0 0; padding-left: 1.2em; font-size: var(--size-meta); line-height: 1.3; }
+.red.con-flechas > .relaciones { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; padding: 0; }
+
+/* cierre con el QR (v0.7.0; la última diapositiva de la sesión 7): el texto y el enlace en las
+   columnas 1 a 8, el código en las 9 a 12. El código va siempre negro sobre blanco, también en
+   el tema oscuro (varios lectores no leen un QR invertido), con su margen de silencio de 4
+   módulos: con --qr como ancho total, el relleno es 4/37 de --qr en un QR de 29 módulos (si el
+   QR tiene otro tamaño, --qr-modulos). Sus colores son --qr-ink y --qr-paper, fijos a propósito.
+   <div class="qr-campo">
+     <div><h2 class="titulo xl">Recursos del curso</h2><p class="cuerpo">…</p><a href="…">…</a></div>
+     <svg class="qr" viewBox="0 0 29 29" role="img" aria-label="Código QR hacia …" shape-rendering="crispEdges">…</svg>
+   </div> */
+.qr-campo { --qr: 12rem; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--slide-gutter, var(--space-5)); align-items: center; font-size: var(--size-body); }
+.slide .qr-campo { --qr: 22cqw; }
+.qr-campo > :not(.qr) { grid-column: 1 / 9; min-width: 0; }
+.qr-campo > :not(.qr) > * { margin: 0 0 var(--slide-gap, var(--space-4)); }
+.qr-campo > :not(.qr) > :last-child { margin-bottom: 0; }
+.qr-campo a { font-family: var(--font-mono); font-size: var(--size-meta); }
+.qr-campo > .qr { grid-column: 9 / 13; justify-self: end; box-sizing: border-box; width: var(--qr); max-width: 100%; height: auto;
+  padding: calc(var(--qr) * 4 / (var(--qr-modulos, 29) + 8)); color: var(--qr-ink); background: var(--qr-paper); }
+
+/* celular: todo en una columna */
+@media (max-width: 720px) {
+  .qr-campo { grid-template-columns: minmax(0, 1fr); row-gap: var(--slide-gap, var(--space-4)); }
+  .qr-campo > :not(.qr), .qr-campo > .qr { grid-column: 1 / -1; justify-self: start; }
+  .cifra-campo, .grafico-campo { grid-template-columns: minmax(0, 1fr); row-gap: var(--slide-gap, var(--space-4)); }
+  .cifra-campo > .cifra-dato, .cifra-campo > .razones, .grafico-campo > :not(.lectura), .grafico-campo > .lectura { grid-column: 1 / -1; }
+  .columnas { grid-template-columns: minmax(0, 1fr); }
+  .columnas > div { gap: var(--space-3); padding-top: var(--space-3); }
+  .columnas > .actual { padding-top: calc(var(--space-3) - 1px); }
+  /* las fichas se apilan, cada una con su alto (ya no hay una fila de la otra con la
+     que alinearse) */
+  .tarjetas { grid-template-columns: minmax(0, 1fr); row-gap: var(--slide-gap, var(--space-4)); }
+  .tarjetas > .tarjeta { grid-row: auto; grid-template-rows: none; }
+  /* la secuencia: los pasos apilados, la flecha hacia abajo y el supuesto como nota */
+  .secuencia { grid-template-columns: minmax(0, 1fr); }
+  .secuencia > li { grid-row: auto; grid-template-rows: none; position: relative; padding-bottom: 2.4em; }
+  .secuencia > li:last-child { padding-bottom: 0; }
+  .secuencia > li:not(:last-child)::after {
+    grid-area: auto; position: absolute; left: 1.4em; bottom: .45em; width: .72em; height: 1.5em; margin: 0;
+    clip-path: polygon(calc(50% - 1px) 0, calc(50% + 1px) 0, calc(50% + 1px) calc(100% - .42em), 100% calc(100% - .42em),
+                       50% 100%, 0 calc(100% - .42em), calc(50% - 1px) calc(100% - .42em));
+  }
+  .secuencia .supuesto { margin: .7em 0 0; width: auto; padding: 0 0 0 .8em; text-align: left; border-top: 0; border-left: 1px solid var(--ink-soft); }
+  .secuencia .supuesto.fragil { border-left-color: var(--accent); }
+  .secuencia .supuesto::before, .secuencia .supuesto::after { display: none; }
+  /* la red: el mismo diagrama, compacto (columnas iguales, el texto a 13 px y el canal angosto) */
+  .red { --canal: 1.3em; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); row-gap: .5em; }
+  .red > .cabecera { white-space: normal; letter-spacing: .02em; line-height: 1.25; }
+  .red > .nodo { padding: .3em .4em .35em; }
+  .red .nodo :is(.nombre, .detalle) { font-size: var(--size-meta); }
+  .red > .leyenda { grid-column: 1 / -1; grid-row: auto; margin-top: .4em; }
+}
+</style>
+<style data-bv="nucleo/deck.css" data-version="1.1.0">
+/* base-visual · núcleo · motor de decks (CSS) — v1.1.0 (cierre de la Etapa 2: la escala de sala)
+   Sale del motor de dia1/dia2 (Taller) y de los decks de GEP201. Solo lee tokens.
+   Tres modos: lectura (por defecto: columna de diapositivas), proyector
+   (body.presenting: una diapositiva de 1280×720 escalada) e impresión (una por
+   página). Celular (≤ 720 px): la diapositiva crece con su contenido.
+   Los componentes (kicker, título, cuerpo, fuente, cifra, barras, botones) viven
+   en componentes.css: aquí la diapositiva solo redefine sus tamaños (--size-*),
+   su ritmo y su anclaje. El deck es claro por defecto: lo fija deck.js.
+   v0.2.0: la escala A «Por distancia» con la cifra de B (decisión del 2026-10-01,
+   exploraciones/2026-10-01-tipografia-escala/ficha.md): 20 / 28 / 48 / 64 / 144 px
+   al proyectar, valores redondos elegidos por la distancia de lectura. Los pisos
+   del celular son pasos de la escala de página.
+   v0.4.0 (decisión de JP del 2026-10-09, ronda 4 de
+   exploraciones/2026-10-09-semaforo-y-acento/): el cuerpo pasa de 28 a 25 px al
+   proyectar. En una diapositiva densa de GEP201, el aire sube de 20 a 62 px, y el
+   alcance queda en 3,9 alturas de imagen (lo recomendado es de 4 a 5). Sirve
+   también para las clases virtuales. Los 28 px quedan en reserva para salas
+   grandes; el título, el texto chico y la cifra no cambian.
+   v0.5.0 (decisión de JP del 2026-10-09, exploraciones/2026-10-09-espaciado-ritmo/):
+   el marco «un eje y dos ritmos» (tokens --slide-*, y la densa solo cuando no
+   cabe) y las composiciones portada y divisor con pestaña.
+   v0.6.0 (decisión de JP del 2026-10-11, exploraciones/2026-10-11-componentes/): la
+   fuente baja a la línea del pie y sale del flujo; el contenido gana el alto que
+   ocupaba. De las 6 diapositivas de la sesión 8 de GEP201 que necesitaban la densa,
+   5 caben sin ella.
+   v1.1.0 (decisión 7 de JP, exploraciones/2026-10-15-cierre-etapa-2/): dos escalas, declaradas
+   por deck. El aula, por defecto y sin cambios; la sala, con data-escala="sala" (la del deck de la
+   reunión con la DAES). */
+
+.deck-head {
+  max-width: 1280px; margin: 0 auto var(--space-6);
+  display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5);
+  align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line); padding-bottom: var(--space-4);
+}
+.deck-head h1 { font-family: var(--font-display); font-size: var(--step-2); line-height: var(--leading-tight); margin: 0; }
+.deck-head p { margin: 0; color: var(--ink-soft); font-size: var(--step--1); }
+.deck-acciones { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.deck { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: var(--space-6); }
+
+.slide {
+  container-type: inline-size;
+  position: relative; display: flex; flex-direction: column;
+  aspect-ratio: 16 / 9; width: 100%; overflow: hidden;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+  /* tamaños de la diapositiva: el valor en cqw por 12,8 es el tamaño al proyectar
+     (la diapositiva mide 1280 px); el mínimo, un paso de la escala de página, es el
+     piso en celular. Sin topes: un tope en rem fijaba el tamaño al proyectar sin
+     decirlo (revisión, P6) */
+  --size-meta: max(var(--step--1), 1.5625cqw);  /* 20 px al proyectar; 13 en el celular */
+  --size-body: max(var(--step-0), 1.953125cqw); /* 25; 16 */
+  --size-title: max(var(--step-2), 3.75cqw);    /* 48; 25 */
+  --size-title-xl: max(var(--step-3), 5cqw);    /* 64; 31,25 */
+  --size-figure: max(var(--step-5), 11.25cqw);  /* 144; 48,8 */
+  --measure-title: none;
+  line-height: var(--leading);
+}
+/* la escala de sala (v1.1.0): se declara una vez por deck, nunca diapositiva por diapositiva:
+   <main class="deck" data-escala="sala">. Por la misma lógica de la escala del aula («Por
+   distancia»): alrededor de una mesa, la gente está más cerca de la pantalla que la última fila
+   del aula. 16 / 20 / 40 / 56 / 112 px al proyectar; el ritmo sigue al cuerpo (20 × 1,4 = 28 px).
+   El cuerpo se lee con fluidez hasta 3,1 alturas de imagen en un proyector 4:3 y 4,2 en una
+   pantalla 16:9 (el del aula, 3,9 y 5,2); si la última silla está más lejos, va la del aula. El
+   eje, los márgenes y el celular no cambian: los pisos los dan los max() */
+[data-escala="sala"] .slide {
+  --size-meta: max(var(--step--1), 1.25cqw);      /* 16 px al proyectar */
+  --size-body: max(var(--step-0), 1.5625cqw);     /* 20 */
+  --size-title: max(var(--step-2), 3.125cqw);     /* 40 */
+  --size-title-xl: max(var(--step-3), 4.375cqw);  /* 56 */
+  --size-figure: max(var(--step-5), 8.75cqw);     /* 112 */
+}
+[data-escala="sala"] .slide .pad { --slide-line: 2.1875cqw; }  /* 28 px */
+/* 16:9 (lectura, proyector e impresión): interlineado y medida propios; en el
+   celular rige la página (1,55 y 52ch) */
+@media (min-width: 721px) {
+  .slide { --leading: 1.4; --measure: 50ch; }  /* 62 caracteres por línea */
+}
+/* fase (Cuentas Claras): el borde de color solo en las diapositivas que la declaran */
+.slide.fase { border-left: var(--slide-edge, 5px) solid var(--phase, var(--line)); }
+
+/* El marco (v0.5.0, dimensión 3: «un eje y dos ritmos»; exploraciones/2026-10-09-espaciado-ritmo/).
+   - El eje: el kicker empieza siempre en el mismo punto (102 px del borde izquierdo
+     y 90 del de arriba al proyectar), en la diapositiva normal y en la densa
+     (amplía P5 de la revisión). Lo que no cabe se gana abajo y entre bloques, nunca
+     moviendo el punto donde empieza la lectura.
+   - El ritmo se mide en líneas del cuerpo: --slide-line = 25 px × 1,4 = 35 px.
+     El kicker va pegado a su título (son una unidad: proximidad); entre el título y
+     la evidencia, y entre bloques, una línea; el mismo canal de una línea separa las
+     columnas (--slide-gutter).
+   - .densa, SOLO cuando no cabe (la sonda de «margen interior chico» lo avisa): el
+     mismo eje, título → evidencia a dos tercios de línea, entre bloques media línea
+     y el margen de abajo baja de 102 a 70 px (la sonda avisa bajo 64).
+   Los tokens --slide-* se definen aquí y los leen las composiciones; el celular
+   (≤ 720 px) los redefine en la escala de página. Los márgenes del borde
+   (--slide-pad-*) viven en .slide: el divisor los lee para ubicar su pestaña. */
+.slide {
+  --slide-pad-top: 7cqw; --slide-pad-x: 8cqw; --slide-pad-bottom: 8cqw;
+}
+.slide .pad {
+  --slide-line: 2.734375cqw;                          /* 35 px al proyectar */
+  --slide-gap: var(--slide-line);                     /* entre bloques de evidencia */
+  --slide-gap-head: .75cqw;                           /* kicker → título (9,6 px) */
+  --slide-gap-title: var(--slide-line);               /* título → evidencia */
+  --slide-source-gap: 0px;                            /* la fuente: solo la fuente, sin relleno extra */
+  --slide-gutter: var(--slide-line);                  /* canal entre columnas */
+  flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: flex-start;
+  padding: var(--slide-pad-top) var(--slide-pad-x) var(--slide-pad-bottom); gap: var(--slide-gap);
+}
+.slide .pad.densa {
+  --slide-pad-bottom: 5.5cqw;                         /* 70 px */
+  --slide-gap: calc(var(--slide-line) / 2);
+  --slide-gap-title: calc(var(--slide-line) * 2 / 3);
+}
+/* anclado abajo o centrado: excepciones heredadas. La portada y el divisor ya no
+   las usan (anclan su título con margin-top: auto y dejan el kicker en el eje) */
+.slide .pad.abajo { justify-content: flex-end; }
+.slide .pad.centro { justify-content: center; }
+/* en la diapositiva el ritmo lo da el gap: los componentes no traen márgenes */
+.slide .pad > * { margin: 0; }
+/* las excepciones al gap, como diferencia con él */
+.slide .pad > .kicker + .titulo { margin-top: calc(var(--slide-gap-head) - var(--slide-gap)); }
+.slide .pad > .titulo + :not(.fuente) { margin-top: calc(var(--slide-gap-title) - var(--slide-gap)); }
+/* la fuente en la línea del pie (F2; v0.6.0, dimensión 4): baja a la banda del número de
+   diapositiva —misma línea de base— a la izquierda, sobre el eje donde empieza el
+   kicker, y el número queda a la derecha. El pie deja de tener dos bandas. Sale del
+   flujo: el contenido gana el alto que ocupaba (la sonda `altoLibre` ya no la cuenta).
+   Si da dos líneas crece hacia arriba y nunca pisa el número (límite a la derecha).
+   Salvo la portada, el divisor y los rellenos anclados abajo o centrados: ahí la
+   fuente ya iba sin anclar, en el flujo. Escribe los rangos de páginas con
+   `white-space: nowrap` («pp. 5-6»); si no, la fuente de dos líneas parte el número. */
+.slide .pad > .fuente { position: absolute; left: var(--slide-pad-x); right: 12cqw; bottom: 1.8cqw; margin: 0; padding: 0; max-width: none; }
+.slide.portada .pad > .fuente, .slide.divisor .pad > .fuente, .slide .pad.abajo > .fuente, .slide .pad.centro > .fuente { position: static; margin-top: 0; padding-top: 0; max-width: 90ch; }
+
+/* Las composiciones que anclan su título abajo (portada y divisor) declaran el
+   margin-top: auto también con .kicker + .titulo: la regla del marco de arriba
+   (.slide .pad > .kicker + .titulo) le ganaría a un .titulo suelto, y el título
+   quedaría pegado a su kicker (encontrado en la ronda 2 de la dimensión 3). */
+
+/* portada (C, en el eje): el kicker se queda donde está en todas las diapositivas
+   y el título baja a la línea de abajo; el vacío queda entre los dos, como en un
+   cartel suizo. Todo se dice una vez: sin columna ni referencia que repitan el
+   kicker o el pie.
+   <section class="slide portada"><div class="pad">
+     <p class="kicker">…</p><h2 class="titulo xl">…</h2><p class="fuente">…</p>
+   </div><span class="pie">01 / 34</span></section> */
+.slide.portada .pad > .titulo, .slide.portada .pad > .kicker + .titulo { margin-top: auto; }
+
+/* divisor (M, el separador): conserva el color en el borde y el resto en blanco de
+   la franja, con el sentido de la pestaña de un separador de archivador o el uñero
+   de un diccionario: una pestaña azul en el borde derecho, a la altura de su parte
+   (la 1 arriba, la última abajo). Al hojear el deck en lectura se ve el índice. Las
+   ranuras se reparten en el alto útil del marco (entre el margen de arriba y el de
+   abajo), así el folio queda libre. Se declara la parte y el total:
+   <section class="slide divisor" style="--parte: 3; --partes: 4">
+     <span class="pestana" aria-hidden="true">3</span><div class="pad">
+       <p class="kicker">…</p><h2 class="titulo">…</h2></div>…</section>
+   Sin --parte no se dibuja pestaña. */
+.slide.divisor { --alto-util: calc(56.25cqw - var(--slide-pad-top) - var(--slide-pad-bottom)); }
+.slide.divisor .pad > .titulo, .slide.divisor .pad > .kicker + .titulo { margin-top: auto; }
+.slide.divisor .pestana {
+  position: absolute; right: 0; width: 4cqw;
+  top: calc(var(--slide-pad-top) + (var(--parte, 1) - 1) * var(--alto-util) / var(--partes, 1));
+  height: calc(var(--alto-util) / var(--partes, 1));
+  background: var(--accent); color: var(--on-accent);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 1.2cqw;
+  font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; font-variant-numeric: tabular-nums;
+}
+.slide.divisor:not([style*="--parte"]) .pestana { display: none; }
+.slide .pie {
+  position: absolute; right: 2.4cqw; bottom: 1.8cqw;
+  font-family: var(--font-mono); font-size: var(--size-meta); font-variant-numeric: tabular-nums; color: var(--ink-faint);
+}
+
+/* revelado paso a paso: solo al proyectar; en lectura, sin JS o al imprimir se ve todo */
+body.presenting .slide.active .step:not(.visto) { visibility: hidden; }
+
+/* celular: la diapositiva deja el 16:9 y crece con su contenido */
+@media (max-width: 720px) {
+  .slide { aspect-ratio: auto; min-height: 56vw; }
+  /* el mismo ritmo, en la escala de página; la densa no hace nada aquí (la diapositiva
+     crece con su contenido) */
+  .slide, .slide .pad, .slide .pad.densa {
+    --slide-pad-top: var(--space-6); --slide-pad-x: var(--space-5); --slide-pad-bottom: var(--space-7);
+  }
+  .slide .pad, .slide .pad.densa {
+    --slide-gap: var(--space-4); --slide-gap-head: var(--space-1); --slide-gap-title: var(--space-4); --slide-gutter: var(--space-4);
+  }
+  .slide .pie { right: var(--space-4); bottom: var(--space-3); }
+  /* la fuente vuelve al flujo, al final de la diapositiva: sin 16:9 no hay línea del pie
+     a la que bajar, y fuera del flujo se superpondría al contenido */
+  .slide .pad > .fuente { position: static; margin-top: auto; padding-top: var(--slide-source-gap); max-width: 90ch; }
+  /* la pestaña del divisor: sin 16:9 no hay alto útil en cqw; se reparte el alto de la diapositiva */
+  .slide.divisor .pestana {
+    width: var(--space-5); padding-top: var(--space-2);
+    top: calc((var(--parte, 1) - 1) * 100% / var(--partes, 1)); height: calc(100% / var(--partes, 1));
+  }
+  .deck-acciones #present-btn { display: none; }
+}
+
+/* proyector */
+/* el body cubre toda la ventana: la diapositiva activa es fixed y el body se queda
+   sin alto, así que en 4:3 las franjas mostraban el --paper de html (v0.2.0) */
+body.presenting { background: var(--backdrop); overflow: hidden; min-height: 100vh; }
+body.presenting .deck-head { display: none; }
+body.presenting .deck { max-width: none; margin: 0; gap: 0; }
+body.presenting .slide { display: none; }
+body.presenting .slide.active {
+  display: flex; position: fixed; top: 50%; left: 50%;
+  width: 1280px; height: 720px; aspect-ratio: auto; margin: 0; border-radius: 0;
+  /* el borde va por fuera: el interior mide 1280 px exactos, y así 1,5625cqw son
+     20 px y no 19,97 (v0.2.0) */
+  box-sizing: content-box;
+  transform-origin: center; transform: translate(-50%, -50%) scale(var(--present-scale, 1));
+}
+.present-hint {
+  position: fixed; bottom: var(--space-4); left: 50%; transform: translateX(-50%); z-index: 10;
+  font-family: var(--font-mono); font-size: var(--step--1); color: var(--paper); background: var(--ink);
+  padding: var(--space-1) var(--space-4); border-radius: var(--radius);
+  pointer-events: none; opacity: 0; transition: opacity var(--dur-2) var(--ease-out);
+}
+.present-hint.show { opacity: .92; }
+
+/* impresión: una diapositiva por página, en el tema vigente */
+@media print {
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .deck-head, .present-hint { display: none !important; }
+  .deck { gap: 0; max-width: none; }
+  .slide { box-shadow: none; border-radius: 0; break-after: page; aspect-ratio: 16 / 9; }
+  @page { size: 13.333in 7.5in; margin: 0; }
+}
+</style>
+<style>
+  /* propio de este deck, solo con tokens (var(--…)): el relleno de la página y, si hace falta, una
+     composición que el núcleo no trae, con un comentario que diga qué prueba (se anota en
+     base-visual/pendientes.md como candidata al núcleo) */
+  body { margin: 0; padding: var(--space-5); background: var(--paper); color: var(--ink); font-family: var(--font-text); }
+  @media (max-width: 720px) { body { padding: var(--space-3); } }
+</style>
+</head>
+<body>
+<header class="deck-head">
+  <div>
+    <h1>Prescriptivo y teoría de cambio · GEP201</h1>
+    <p>GEP201 · Unidad IV · Sesión 9 · Gestión Financiera del Estado · 21 de octubre de 2026</p>
+  </div>
+  <div class="deck-acciones">
+    <button id="theme-btn" class="boton secundario" type="button">Tema</button>
+    <button id="present-btn" class="boton" type="button">Presentar</button>
+  </div>
+</header>
+<main class="deck" data-escala="sala">
+
+  <!-- 1 · portada -->
+  <section class="slide portada">
+    <div class="pad">
+      <p class="kicker">GEP201 <span class="sub">· Unidad IV · Sesión 9</span></p>
+      <h2 class="titulo xl">Una teoría de cambio pide presupuesto solo por las relaciones causales que se sostienen con evidencia</h2>
+      <p class="fuente">Gestión Financiera del Estado · 21 de octubre de 2026</p>
+    </div>
+    <span class="pie">01 / 39</span>
+  </section>
+
+  <!-- 2 · agenda: el arco de la sesión (solo títulos) -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Hoy</p>
+      <h2 class="titulo">Primero se valora el respaldo de las causas, después se interviene y al final se justifica el presupuesto</h2>
+      <ol class="cuerpo">
+        <li><b>Valorar el respaldo de las relaciones causales</b></li>
+        <li><b>De la causa a la intervención</b></li>
+        <li><b>La teoría de cambio y lo que sigue para el RP3</b></li>
+      </ol>
+    </div>
+    <span class="pie">02 / 39</span>
+  </section>
+
+  <!-- 3 · calendario: las fechas hasta el RP3 -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Apertura</p>
+      <h2 class="titulo">Hoy no hay entregas: el RP2 se entrega el lunes 26 y se presenta el miércoles 28</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Fecha</th><th scope="col">Qué pasa</th></tr></thead>
+          <tbody>
+            <tr><td><b>Lun 26 oct</b></td><td>RP2: entrega en PAIDEIA, hasta las 23:59</td></tr>
+            <tr><td><b>Mié 28 oct</b></td><td>CL2 sobre Barber (2013), 20 minutos, y después el oral del RP2</td></tr>
+            <tr><td><b>Vie 30 oct</b></td><td>Coevaluación del RP2: último día</td></tr>
+            <tr><td><b>Mié 11 nov</b></td><td>RP3: entrega y oral</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">Calendario del curso, GEP201 2026-2.</p>
+    </div>
+    <span class="pie">03 / 39</span>
+  </section>
+
+  <!-- 4 · divisor de la parte 1 -->
+  <section class="slide divisor" style="--parte: 1; --partes: 3">
+    <span class="pestana" aria-hidden="true">1</span>
+    <div class="pad">
+      <p class="kicker">Parte 1</p>
+      <h2 class="titulo xl">Valorar el respaldo de las relaciones causales</h2>
+    </div>
+    <span class="pie">04 / 39</span>
+  </section>
+
+  <!-- 5 · definición formal: el diseño se basa en la causalidad y la evidencia -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">La Directiva exige que el modelo explicativo se construya con la mejor evidencia disponible</h2>
+      <div class="tarjetas" style="--filas: 2">
+        <figure class="tarjeta cita"><figcaption class="kicker">Directiva, artículo 6.1</figcaption><blockquote>«El diseño del PP es un proceso basado en la causalidad y evidencia en el que participan las entidades que cuentan con competencias funcionales sobre los resultados del PP.»</blockquote></figure>
+        <figure class="tarjeta cita"><figcaption class="kicker">Directiva, artículo 11.1</figcaption><blockquote>«El modelo explicativo considera la identificación y definición del modelo conceptual relacionado a la condición de interés, así como la representación jerarquizada de los factores causales que inciden en la condición de interés; conforme a la mejor evidencia disponible.»</blockquote></figure>
+      </div>
+      <p class="cuerpo">En el diagrama del modelo, cada relación causal entre un factor y su efecto se dibuja como una flecha.</p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículos 6.1 y 11.1.</p>
+    </div>
+    <span class="pie">05 / 39</span>
+  </section>
+
+  <!-- 6 · definición formal: categorías de evidencia -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">La Directiva clasifica la evidencia según su capacidad de sustentar relaciones causales</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Categoría</th><th scope="col">Diseños de estudio</th><th scope="col">Qué dice la Directiva</th></tr></thead>
+          <tbody>
+            <tr><td><b>1</b></td><td>Meta-análisis y estudios experimentales</td><td>Se prioriza: permiten inferir relaciones robustas de causalidad directa.</td></tr>
+            <tr><td><b>2</b></td><td>Estudios cuasi-experimentales: regresión discontinua, diferencias en diferencias, «matching»</td><td>Ofrecen una aproximación robusta a relaciones de causa y efecto.</td></tr>
+            <tr><td><b>3</b></td><td>Estudios observacionales: cohortes, casos y controles, análisis multivariado</td><td>Se toma en cuenta la evidencia observacional.</td></tr>
+            <tr><td><b>Complementaria</b></td><td>Revisiones sistemáticas sin meta-análisis y estudios de caso con comparación sistemática</td><td>Se pueden incorporar; se mira la cantidad de estudios, su convergencia y el tamaño y la magnitud del efecto.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo I (adaptado de Stegenga, 2013). Resumen propio.</p>
+    </div>
+    <span class="pie">06 / 39</span>
+  </section>
+
+  <!-- 7 · las tres preguntas de control -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">Una relación causal se sostiene si su evidencia es del tipo que necesita y cubre a quienes nombra</h2>
+      <div class="columnas" style="--n: 3">
+        <div><span class="n">1</span><div><h3>¿Qué evidencia necesita?</h3><p>La relación afirma que un factor produce un efecto: pide evidencia causal, no solo una cifra.</p></div></div>
+        <div><span class="n">2</span><div><h3>¿Qué evidencia trae?</h3><p>Magnitud dice cuánto y a quién; mecanismo, cómo ocurre; causa, que un diseño permite atribuir el efecto.</p></div></div>
+        <div><span class="n">3</span><div><h3>¿A quiénes cubre?</h3><p>Un distrito no es una región, primaria no es secundaria y una muestra pequeña no es la población.</p></div></div>
+      </div>
+      <p class="fuente">Orientaciones comunes del informe del RP1, GEP201 (2026).</p>
+    </div>
+    <span class="pie">07 / 39</span>
+  </section>
+
+  <!-- 8 · la escala de respaldo -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">El respaldo tiene cuatro niveles: no sostenerse con esta evidencia no es lo mismo que ser falsa</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">N.º</th><th scope="col">Nivel</th><th scope="col">Cuándo</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td><b>Se sostiene</b></td><td>La evidencia es del tipo que la relación necesita y cubre a la población de la que habla.</td></tr>
+            <tr><td class="num">2</td><td><b>Se sostiene con matiz</b></td><td>Apoya en parte: otra población, solo el mecanismo o solo la asociación. Se mantiene declarando su alcance.</td></tr>
+            <tr><td class="num">3</td><td><b>Es solo hipótesis</b></td><td>Es plausible, pero la evidencia no permite afirmarla. Se dice qué la confirmaría.</td></tr>
+            <tr class="destacada"><td class="num">4</td><td><b>No se sostiene con esta evidencia</b></td><td>La evidencia no tiene relación lógica con lo que se afirma. La relación puede ser cierta.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">Elaboración propia, a partir del informe del RP1, GEP201 (2026).</p>
+    </div>
+    <span class="pie">08 / 39</span>
+  </section>
+
+  <!-- 9 · una valoración modelada, con un caso ajeno a Altamar -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">Valorar es graduar y reparar: esta relación trae una asociación y pide una causa</h2>
+      <div class="columnas" style="--n: 3">
+        <div><span class="n">1</span><div><h3>La relación</h3><p>Menos hierro en la dieta aumenta la anemia en niños de 6 a 12 meses. La evidencia: una encuesta a 40 hogares de un distrito, donde los niños con anemia comen menos alimentos con hierro.</p></div></div>
+        <div><span class="n">2</span><div><h3>El nivel</h3><p>Es solo hipótesis. La relación pide una causa y la evidencia trae una asociación, de 40 hogares de un solo distrito.</p></div></div>
+        <div><span class="n">3</span><div><h3>La reparación</h3><p>Subiría de nivel con una evaluación que compare niños con y sin más hierro en la dieta, o con una encuesta que cubra toda la región.</p></div></div>
+      </div>
+      <p class="fuente">Caso y cifras ilustrativos. Elaboración propia.</p>
+    </div>
+    <span class="pie">09 / 39</span>
+  </section>
+
+  <!-- 10 · actividad: Altamar en tríos -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Actividad en trío <span class="sub">· 13 minutos</span></p>
+      <h2 class="titulo">Valoren el respaldo de las cinco relaciones causales de Altamar y digan cómo las repararían</h2>
+      <ol class="cuerpo">
+        <li><b>Qué nivel de la escala merece cada relación</b></li>
+        <li><b>Por qué no alcanza, en una frase</b></li>
+        <li><b>Cómo la repararían: qué evidencia la subiría de nivel</b></li>
+      </ol>
+      <p class="cuerpo destacado">Recuerden: «no se sostiene con esta evidencia» no es lo mismo que «es falsa».</p>
+    </div>
+    <span class="pie">10 / 39</span>
+  </section>
+
+  <!-- 11 · las cinco relaciones causales de Altamar (sin la clave) -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">¿Qué nivel de respaldo merece cada relación causal de Altamar?</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Relación causal</th><th scope="col">Evidencia que trae</th></tr></thead>
+          <tbody>
+            <tr><td><b>1 · La pobreza del hogar aumenta la deserción</b></td><td>Encuesta de hogares representativa por departamento: la deserción del quintil más pobre triplica la del más rico. Evaluación experimental de transferencias en secundaria rural de otro país de la región: redujo la deserción.</td></tr>
+            <tr><td><b>2 · La distancia a la escuela aumenta la deserción</b></td><td>Censo escolar: donde el traslado promedio pasa de una hora, la deserción es el doble.</td></tr>
+            <tr><td><b>3 · El trabajo en la cosecha aumenta la deserción</b></td><td>Estudio de caso en una comunidad, con 25 entrevistas: los jóvenes dejan la escuela para trabajar en la cosecha.</td></tr>
+            <tr><td><b>4 · El embarazo adolescente aumenta la deserción</b></td><td>Desde 2022 la región ejecuta un programa de prevención del embarazo adolescente, «lo que confirma que es una causa importante».</td></tr>
+            <tr><td><b>5 · El acoso escolar no es una causa de la deserción</b></td><td>Encuesta a 40 estudiantes de dos colegios urbanos de la capital regional: ninguno reportó acoso.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">Caso ficticio, con cifras ilustrativas. Elaboración propia.</p>
+    </div>
+    <span class="pie">11 / 39</span>
+  </section>
+
+  <!-- 12 · plenario -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Plenario <span class="sub">· 10 minutos</span></p>
+      <h2 class="titulo">Voten el nivel de cada relación causal y discutan solo donde la clase se dividió</h2>
+      <ol class="cuerpo">
+        <li><b>Voto a mano alzada, relación por relación</b></li>
+        <li><b>Se discuten solo las que dividieron a la clase</b></li>
+        <li><b>El sorteo elige quién justifica cada voto</b></li>
+      </ol>
+    </div>
+    <span class="pie">12 / 39</span>
+  </section>
+
+  <!-- 13 · actividad: volver a lo propio -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Actividad en trío <span class="sub">· 9 minutos</span></p>
+      <h2 class="titulo">Valoren la relación causal más débil de sus avances y escriban cómo la repararían</h2>
+      <ol class="cuerpo">
+        <li><b>Elijan la relación causal más débil de su modelo explicativo</b></li>
+        <li><b>Valoren su respaldo con la escala</b></li>
+        <li><b>Escriban qué evidencia la subiría de nivel</b></li>
+      </ol>
+      <p class="cuerpo destacado">La relación que reparen hoy es la que seguirán desarrollando en sus entregas.</p>
+    </div>
+    <span class="pie">13 / 39</span>
+  </section>
+
+  <!-- 14 · ticket individual -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Ticket individual <span class="sub">· 3 minutos</span></p>
+      <h2 class="titulo">Den un ejemplo de una afirmación que podría ser cierta y, aun así, no sostenerse con su evidencia</h2>
+      <p class="cuerpo">Por escrito y de forma individual.</p>
+    </div>
+    <span class="pie">14 / 39</span>
+  </section>
+
+  <!-- 15 · divisor de la parte 2 -->
+  <section class="slide divisor" style="--parte: 2; --partes: 3">
+    <span class="pestana" aria-hidden="true">2</span>
+    <div class="pad">
+      <p class="kicker">Parte 2</p>
+      <h2 class="titulo xl">De la causa a la intervención</h2>
+    </div>
+    <span class="pie">15 / 39</span>
+  </section>
+
+  <!-- 16 · puente: el modelo explicativo del curso con el camino que tiene evidencia -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Solo se interviene sobre una relación causal que se sostiene con evidencia</h2>
+      <figure class="red" style="--n: 3; --plantilla: auto auto minmax(0, 1fr)">
+        <p class="cabecera" style="--col: 1" aria-hidden="true">Prácticas de cuidado</p>
+        <p class="cabecera" style="--col: 2" aria-hidden="true">Infecciones y dieta</p>
+        <p class="cabecera" style="--col: 3" aria-hidden="true">Condición de interés</p>
+        <div class="nodo camino" id="d16-lav" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">↓ Lavado de manos</p><p class="detalle">Madres de niños menores de 24 meses</p></div>
+        <div class="nodo" id="d16-lac" style="--col: 1; --fila: 3" aria-hidden="true"><p class="nombre">↓ Lactancia materna exclusiva</p><p class="detalle">Madres de niños menores de 6 meses</p></div>
+        <div class="nodo sin-evidencia" id="d16-hie" style="--col: 1; --fila: 4" aria-hidden="true"><p class="nombre">↓ Hierro y zinc en la dieta</p><p class="detalle">Madres de niños de 6 a 12 meses</p></div>
+        <div class="nodo camino" id="d16-dia" style="--col: 2; --fila: 2" aria-hidden="true"><p class="nombre">↑ Diarrea aguda</p><p class="detalle">Niños de 6 a 24 meses</p></div>
+        <div class="nodo" id="d16-die" style="--col: 2; --fila: 4" aria-hidden="true"><p class="nombre">↓ Calidad de la dieta</p><p class="detalle">Niños de 6 a 12 meses</p></div>
+        <div class="nodo final camino" id="d16-dci" style="--col: 3; --fila: 2; --filas: 3" aria-hidden="true"><p class="nombre">↑ Desnutrición crónica</p><p class="detalle">Niños menores de 60 meses</p></div>
+        <p class="leyenda" style="--col: 3; --fila: 5"><span><span class="muestra" aria-hidden="true"></span>Con evidencia</span><span><span class="muestra fuerte" aria-hidden="true"></span>Pesa más</span><span><span class="muestra sin-evidencia" aria-hidden="true"></span>Sin evidencia</span><span><span class="muestra camino" aria-hidden="true"></span>Camino elegido</span></p>
+        <ul class="relaciones">
+          <li data-de="d16-lav" data-a="d16-dia" class="camino">Menos lavado de manos (madres de niños menores de 24 meses) → más diarrea aguda (con evidencia; camino elegido)</li>
+          <li data-de="d16-lac" data-a="d16-dia">Menos lactancia materna exclusiva (madres de niños menores de 6 meses) → más diarrea aguda (con evidencia)</li>
+          <li data-de="d16-hie" data-a="d16-die" class="sin-evidencia">Menos hierro y zinc en la dieta → peor calidad de la dieta (se buscó evidencia y no se encontró)</li>
+          <li data-de="d16-dia" data-a="d16-dci" class="fuerte camino">Más diarrea aguda → más desnutrición crónica (la causa que más pesa; camino elegido)</li>
+          <li data-de="d16-die" data-a="d16-dci">Peor calidad de la dieta → más desnutrición crónica (con evidencia)</li>
+        </ul>
+      </figure>
+      <p class="fuente">UNICEF (1990). Strategy for improved nutrition of children and women in developing countries; modelo adaptado en el curso (sesión 5).</p>
+    </div>
+    <span class="pie">16 / 39</span>
+  </section>
+
+  <!-- 17 · predicción: caso del control de precios de medicamentos (sin respuesta revelada) -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Si el Estado fija un precio máximo a los medicamentos, ¿qué pasa con el acceso de los hogares?</h2>
+      <p class="cuerpo">Voten antes de ver cualquier dato.</p>
+      <div class="tarjetas alternativas" style="--n: 3; --filas: 3">
+        <div class="tarjeta"><p class="kicker">A</p><p class="nombre">Mejora</p><p>Bajan los precios y compran más hogares.</p></div>
+        <div class="tarjeta"><p class="kicker">B</p><p class="nombre">No cambia</p><p>Los hogares ya compraban lo que necesitaban.</p></div>
+        <div class="tarjeta"><p class="kicker">C</p><p class="nombre">Empeora</p><p>Hay menos oferta y cuesta más conseguirlos.</p></div>
+      </div>
+      <p class="fuente">Predicción de la clase, basada en razonamiento y sin fuente verificada.</p>
+    </div>
+    <span class="pie">17 / 39</span>
+  </section>
+
+  <!-- 18 · definición formal: el modelo prescriptivo -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">El modelo prescriptivo reúne las intervenciones seleccionadas por la evidencia sobre su eficacia</h2>
+      <figure class="cita-sola">
+        <figcaption class="kicker">Directiva, artículo 12</figcaption>
+        <blockquote>«El modelo prescriptivo es el conjunto de intervenciones seleccionadas y jerarquizadas en base a la mejor literatura o evidencia disponible que afectan los factores causales identificados en el modelo explicativo o que revierten la situación negativa o problemática identificada. La selección de estas intervenciones debe considerar su eficacia y/o costo efectividad.»</blockquote>
+      </figure>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 12.</p>
+    </div>
+    <span class="pie">18 / 39</span>
+  </section>
+
+  <!-- 19 · el modelo prescriptivo: intervención más cadena causal -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Intervenir es actuar sobre un factor del modelo explicativo, diciendo qué se hace y a quién</h2>
+      <ol class="secuencia" style="--n: 4">
+        <li><p class="kicker">Intervención</p><p class="nombre">Consejería a madres</p><p class="detalle">Madres de niños menores de 24 meses</p></li>
+        <li><p class="kicker">Factor</p><p class="nombre">Más lavado de manos</p><p class="detalle">Madres de niños menores de 24 meses</p></li>
+        <li><p class="kicker">Factor</p><p class="nombre">Menos diarrea aguda</p><p class="detalle">Niños de 6 a 24 meses</p></li>
+        <li><p class="kicker">Condición de interés</p><p class="nombre">Menos desnutrición crónica</p><p class="detalle">Niños menores de 60 meses</p></li>
+      </ol>
+      <p class="fuente">Ejemplo del curso (Canva, sesión 5), con el marco de UNICEF (1990). La eficacia de la intervención no se evalúa aquí.</p>
+    </div>
+    <span class="pie">19 / 39</span>
+  </section>
+
+  <!-- 20 · las dos búsquedas sistemáticas -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Hay que buscar dos cosas: lo eficaz que no se hace y lo que se hace sin ser eficaz</h2>
+      <div class="tarjetas" style="--n: 2; --filas: 4">
+        <div class="tarjeta"><p class="kicker">Búsqueda 1</p><p class="nombre">Intervenciones eficaces</p><p>Qué intervenciones tienen evidencia de que mueven el factor.</p><p>Lo que aparece: eficaces que todavía no se implementan.</p></div>
+        <div class="tarjeta"><p class="kicker">Búsqueda 2</p><p class="nombre">Eficacia de las vigentes</p><p>Qué muestra la evidencia sobre lo que hoy se ejecuta.</p><p>Lo que aparece: vigentes que no son eficaces.</p></div>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 8.1.a y Anexo II, sección III; Canva del curso, sesión 5.</p>
+    </div>
+    <span class="pie">20 / 39</span>
+  </section>
+
+  <!-- 21 · priorizar: poco texto a propósito (brief 03) -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Las intervenciones se jerarquizan por su poder explicativo y el esfuerzo se concentra en muy pocas</h2>
+      <p class="cuerpo">Se ordenan de mayor a menor poder explicativo, conforme a la evidencia disponible. <b class="destacado">Muy pocas, bien implementadas.</b></p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección III; concentrarse en pocas, del Canva del curso (sesión 5).</p>
+    </div>
+    <span class="pie">21 / 39</span>
+  </section>
+
+  <!-- 22 · divisor de la parte 3 -->
+  <section class="slide divisor" style="--parte: 3; --partes: 3">
+    <span class="pestana" aria-hidden="true">3</span>
+    <div class="pad">
+      <p class="kicker">Parte 3</p>
+      <h2 class="titulo xl">La teoría de cambio</h2>
+    </div>
+    <span class="pie">22 / 39</span>
+  </section>
+
+  <!-- 23 · definición formal: la teoría de cambio -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">La teoría de cambio formula el resultado que se debe lograr y los productos que se entregarán para ello</h2>
+      <figure class="cita-sola">
+        <figcaption class="kicker">Directiva, artículo 13.1</figcaption>
+        <blockquote>«La teoría del cambio (TdC) es una representación gráfica de la decisión estratégica respecto de cómo se pretenden lograr los cambios deseados en una determinada política pública. La TdC involucra, por tanto, la formulación del resultado específico que se debe lograr y los productos que se deben entregar para ello.»</blockquote>
+      </figure>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 13.1.</p>
+    </div>
+    <span class="pie">23 / 39</span>
+  </section>
+
+  <!-- 24 · definición formal: producto y resultado específico -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">La teoría de cambio es el argumento para pedir presupuesto: dice qué se entrega y qué cambia</h2>
+      <div class="tarjetas" style="--filas: 2">
+        <figure class="tarjeta cita"><figcaption class="kicker">Producto, artículo 4, literal c</figcaption><blockquote>«Conjunto articulado de bienes y/o servicios que recibe la población beneficiaria con el objetivo de generar un cambio. Los productos son la consecuencia de haber realizado, según las especificaciones técnicas, las actividades correspondientes en la magnitud y el tiempo previsto.»</blockquote></figure>
+        <figure class="tarjeta cita"><figcaption class="kicker">Resultado específico, artículo 4, literal b</figcaption><blockquote>«Representa el cambio que se debe lograr en la condición de interés.»</blockquote></figure>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 4, literales b y c.</p>
+    </div>
+    <span class="pie">24 / 39</span>
+  </section>
+
+  <!-- 25 · de las intervenciones a los productos -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">Los productos agrupan las intervenciones que comparten sujeto y resultado</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Intervenciones</th><th scope="col">Producto</th></tr></thead>
+          <tbody>
+            <tr><td>Consejería a madres, sesión educativa y sesión demostrativa</td><td><b>Producto 1.</b> Consejería y sesiones a madres de niños menores de 12 meses</td></tr>
+            <tr><td>Vacuna contra el rotavirus y vacuna contra el neumococo</td><td><b>Producto 2.</b> Vacunación de niños menores de 12 meses</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 13.2 y Anexo II, sección IV (Tabla 1). Ejemplo del curso (Canva, sesión 5).</p>
+    </div>
+    <span class="pie">25 / 39</span>
+  </section>
+
+  <!-- 26 · cómo se redactan un producto y un resultado -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">Producto y resultado se redactan con tres elementos cada uno</h2>
+      <div class="tarjetas" style="--n: 2; --filas: 4">
+        <div class="tarjeta"><p class="kicker">Producto</p><p class="nombre">Bien o servicio, atributo y población</p><p>El bien o servicio que brinda la entidad, el atributo de calidad que se garantiza y la población o el entorno que lo recibe.</p><p>Ejemplo: distribución de agua potable de forma oportuna a la población en el ámbito rural.</p></div>
+        <div class="tarjeta"><p class="kicker">Resultado</p><p class="nombre">Dirección, condición y población</p><p>La dirección del cambio (incrementar, reducir o mantener), la condición que se desea cambiar y la población o el entorno.</p><p>Ejemplo: incremento del acceso a agua potable de calidad de la población en el ámbito rural.</p></div>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV.</p>
+    </div>
+    <span class="pie">26 / 39</span>
+  </section>
+
+  <!-- 27 · el diseño completo: productos y tres niveles de resultados -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">La teoría de cambio ordena el programa en productos y tres niveles de resultados</h2>
+      <figure class="red" style="--n: 4; --plantilla: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, .85fr)">
+        <p class="cabecera" style="--col: 1" aria-hidden="true">Productos</p>
+        <p class="cabecera" style="--col: 2" aria-hidden="true">Resultados inmediatos</p>
+        <p class="cabecera" style="--col: 3" aria-hidden="true">Resultados intermedios</p>
+        <p class="cabecera" style="--col: 4" aria-hidden="true">Resultado final</p>
+        <div class="nodo" id="d27-vac" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">Vacunas</p><p class="detalle">Niños menores de 12 meses</p></div>
+        <div class="nodo" id="d27-cre" style="--col: 1; --fila: 3" aria-hidden="true"><p class="nombre">Consejería y sesiones en el CRED</p><p class="detalle">Madres de niños menores de 12 meses</p></div>
+        <div class="nodo" id="d27-lav" style="--col: 2; --fila: 2" aria-hidden="true"><p class="nombre">↑ Lavado de manos</p><p class="detalle">Madres de niños menores de 24 meses</p></div>
+        <div class="nodo" id="d27-lac" style="--col: 2; --fila: 3" aria-hidden="true"><p class="nombre">↑ Lactancia materna exclusiva</p><p class="detalle">Madres de niños menores de 6 meses</p></div>
+        <div class="nodo" id="d27-pre" style="--col: 2; --fila: 4" aria-hidden="true"><p class="nombre">↑ Preparación adecuada de alimentos</p><p class="detalle">Madres de niños de 6 a 24 meses</p></div>
+        <div class="nodo" id="d27-dia" style="--col: 3; --fila: 2" aria-hidden="true"><p class="nombre">↓ Diarrea e infecciones respiratorias</p><p class="detalle">Niños menores de 24 meses</p></div>
+        <div class="nodo" id="d27-die" style="--col: 3; --fila: 4" aria-hidden="true"><p class="nombre">↑ Calidad de la dieta</p><p class="detalle">Niños de 6 a 24 meses</p></div>
+        <div class="nodo final" id="d27-dci" style="--col: 4; --fila: 2; --filas: 3" aria-hidden="true"><p class="nombre">↓ Desnutrición crónica</p><p class="detalle">Niños menores de 60 meses</p></div>
+        <ul class="relaciones">
+          <li data-de="d27-vac" data-a="d27-dia">Más vacunas (niños menores de 12 meses) → menos diarrea e infecciones respiratorias (con evidencia)</li>
+          <li data-de="d27-cre" data-a="d27-lav">Más consejería y sesiones en el CRED → más lavado de manos (con evidencia)</li>
+          <li data-de="d27-cre" data-a="d27-lac">Más consejería y sesiones en el CRED → más lactancia materna exclusiva (con evidencia)</li>
+          <li data-de="d27-cre" data-a="d27-pre">Más consejería y sesiones en el CRED → mejor preparación de alimentos (con evidencia)</li>
+          <li data-de="d27-lav" data-a="d27-dia">Más lavado de manos → menos diarrea e infecciones respiratorias (con evidencia)</li>
+          <li data-de="d27-lac" data-a="d27-dia">Más lactancia materna exclusiva → menos diarrea e infecciones respiratorias (con evidencia)</li>
+          <li data-de="d27-pre" data-a="d27-die">Mejor preparación de alimentos → mejor calidad de la dieta (con evidencia)</li>
+          <li data-de="d27-dia" data-a="d27-dci">Menos diarrea e infecciones respiratorias → menos desnutrición crónica (con evidencia)</li>
+          <li data-de="d27-die" data-a="d27-dci">Mejor calidad de la dieta → menos desnutrición crónica (con evidencia)</li>
+        </ul>
+      </figure>
+      <p class="fuente">Canva del curso, sesión 5, con el marco de UNICEF (1990). Niveles de resultado según la Directiva 2020.</p>
+    </div>
+    <span class="pie">27 / 39</span>
+  </section>
+
+  <!-- 28 · equivalencia entre las dos directivas -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">El curso ordena los resultados por su cadena causal; la Directiva 2026 los ordena por su plazo</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Qué se compara</th><th scope="col">Directiva 2020 (la del curso)</th><th scope="col">Directiva 2026</th></tr></thead>
+          <tbody>
+            <tr><td><b>Niveles</b></td><td>Inmediato, intermedio y final</td><td>Inicial, intermedio y final</td></tr>
+            <tr class="destacada"><td><b>Cómo se ordenan</b></td><td>Por su posición en la cadena causal</td><td>Por su plazo y la influencia de la entidad</td></tr>
+            <tr><td><b>¿Un programa puede tener un resultado final?</b></td><td>Sí</td><td>«Por ningún motivo»</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">MEF (2020), Directiva N.º 0005-2020-EF/50.01, Anexo II, n.º 5.2; MEF (2026), Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV.</p>
+    </div>
+    <span class="pie">28 / 39</span>
+  </section>
+
+  <!-- 29 · los supuestos entre pasos -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">Entre dos pasos hay un supuesto, y el más frágil decide si el producto llega a cambiar algo</h2>
+      <ol class="secuencia" style="--n: 4">
+        <li><p class="kicker">Producto</p><p class="nombre">Consejería a madres</p><p class="detalle">Lo que el presupuesto financia</p>
+            <p class="supuesto fragil"><span class="kicker">Supuesto frágil</span> Las madres aplican la consejería en casa</p></li>
+        <li><p class="kicker">Resultado inmediato</p><p class="nombre">Más lavado de manos</p>
+            <p class="supuesto"><span class="kicker">Supuesto</span> Hay agua y jabón en el hogar</p></li>
+        <li><p class="kicker">Resultado intermedio</p><p class="nombre">Menos diarrea aguda</p></li>
+        <li><p class="kicker">Resultado final</p><p class="nombre">Menos desnutrición crónica</p></li>
+      </ol>
+      <p class="fuente">Ejemplo del curso (Canva, sesión 5). Los supuestos son ilustrativos.</p>
+    </div>
+    <span class="pie">29 / 39</span>
+  </section>
+
+  <!-- 30 · tres cosas que se confunden -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">Un supuesto frágil no es una causa ni un vacío de información</h2>
+      <div class="tarjetas" style="--n: 3; --filas: 3">
+        <div class="tarjeta"><p class="kicker">No es</p><p class="nombre">Una causa</p><p>Las causas van en el modelo explicativo y explican la condición de interés.</p></div>
+        <div class="tarjeta"><p class="kicker">No es</p><p class="nombre">Un vacío de información</p><p>«No hay estudios» no dice qué da por cierto la cadena.</p></div>
+        <div class="tarjeta"><p class="kicker">Es</p><p class="nombre">Lo que la cadena da por cierto</p><p>Entre dos pasos. Si falla, el resultado se cae aunque el producto se entregue al 100&nbsp;%.</p></div>
+      </div>
+      <p class="fuente">Taller en Presupuesto por Resultados (EGPP, PUCP, 2026), día 2.</p>
+    </div>
+    <span class="pie">30 / 39</span>
+  </section>
+
+  <!-- 31 · del supuesto frágil a la pregunta PICO -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">De un supuesto frágil nace la pregunta de evidencia, y un estudio puede responderla</h2>
+      <p class="cuerpo destacado">¿Las madres que reciben la consejería lavan más las manos en casa que las que no la reciben?</p>
+      <div class="columnas" style="--n: 4">
+        <div><div><h3>P · Quiénes</h3><p>Madres de niños menores de 24 meses.</p></div></div>
+        <div><div><h3>I · Qué reciben</h3><p>Consejería sobre lavado de manos.</p></div></div>
+        <div><div><h3>C · Sin qué</h3><p>Madres que no reciben la consejería.</p></div></div>
+        <div><div><h3>O · Qué cambia</h3><p>Más lavado de manos en el hogar.</p></div></div>
+      </div>
+      <p class="fuente">Ejemplo ilustrativo, con el método PICO de la sesión 8.</p>
+    </div>
+    <span class="pie">31 / 39</span>
+  </section>
+
+  <!-- 32 · aplicación en grupos -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Actividad en grupo <span class="sub">· 8 minutos</span></p>
+      <h2 class="titulo">Tomen el producto de su relación causal reparada y marquen su supuesto más frágil en una oración</h2>
+      <ol class="cuerpo">
+        <li><b>El producto prioritario de su relación causal reparada</b></li>
+        <li><b>El resultado inmediato que produce</b></li>
+        <li><b>El supuesto más frágil, en una oración</b></li>
+      </ol>
+      <p class="cuerpo destacado">Es el primer borrador de su teoría de cambio.</p>
+    </div>
+    <span class="pie">32 / 39</span>
+  </section>
+
+  <!-- 33 · lo que pide el RP3 según la consigna de PAIDEIA -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
+      <h2 class="titulo">El RP3 pide los indicadores del programa y el análisis de su implementación</h2>
+      <div class="columnas" style="--n: 2">
+        <div><span class="n">1</span><div><h3>Indicadores</h3><p>Los de desempeño y los de producción física, según la sección de indicadores del Anexo II de la Directiva.</p></div></div>
+        <div><span class="n">2</span><div><h3>Implementación</h3><p>El análisis de la implementación, según las pautas del trabajo final en lo referido a implementación.</p></div></div>
+      </div>
+      <p class="cuerpo">Documento en Word. Cierra el miércoles 11 de noviembre a las 17:00.</p>
+      <p class="fuente">Consigna del RP3 en PAIDEIA; MEF (2026), Directiva N.º 0001-2026-EF/50.01, Anexo II, sección VI.</p>
+    </div>
+    <span class="pie">33 / 39</span>
+  </section>
+
+  <!-- 34 · indicadores de desempeño y de producción física -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
+      <h2 class="titulo">El desempeño mide resultados y productos; la producción física mide lo que se entrega</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Indicador</th><th scope="col">Qué mide</th><th scope="col">Dónde se define</th></tr></thead>
+          <tbody>
+            <tr><td><b>Desempeño</b></td><td>«La evolución de un resultado, la eficacia de un producto o la eficiencia de la línea de producción a partir de la relación de dos o más variables.»</td><td>Resultado y producto: nombre y justificación (Tabla 5)</td></tr>
+            <tr><td><b>Producción física</b></td><td>«La cantidad de bienes y/o servicios provistos, en términos de una unidad de medida establecida.»</td><td>Producto (Tabla 6) y actividad (Tabla 7): unidad de medida y atributos para la medición</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 4, literales h e i, y Anexo II, sección VI. Los textos entre comillas están abreviados.</p>
+    </div>
+    <span class="pie">34 / 39</span>
+  </section>
+
+  <!-- 35 · la teoría de cambio solo incluye resultados medibles -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
+      <h2 class="titulo">La teoría de cambio solo puede incluir resultados que se puedan medir</h2>
+      <figure class="cita-sola">
+        <figcaption class="kicker">Directiva, Anexo II, sección IV</figcaption>
+        <blockquote>«Todos los resultados contarán, posteriormente, con un indicador, por lo cual se deberá contemplar únicamente los resultados que puedan ser medidos.»</blockquote>
+      </figure>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV (consideraciones).</p>
+    </div>
+    <span class="pie">35 / 39</span>
+  </section>
+
+  <!-- 36 · cierre: la justificación técnica de una intervención, en tres partes (destino por decidir) -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <h2 class="titulo">Justificar una intervención exige demostrar la causa, la intervención y el cambio esperado</h2>
+      <div class="columnas" style="--n: 3">
+        <div><span class="n">1</span><div><h3>La causa</h3><p>Qué relación causal se refuerza, cuánto explica frente a las demás y con qué evidencia se sostiene.</p></div></div>
+        <div><span class="n">2</span><div><h3>La intervención</h3><p>Cómo se buscaron las intervenciones, qué evidencia hay de su eficacia y por qué se elige esta y no otras.</p></div></div>
+        <div><span class="n">3</span><div><h3>El cambio</h3><p>Cómo la intervención se vuelve producto, qué resultados produce y qué supuestos debe cumplir la cadena.</p></div></div>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículos 11 a 13 y Anexos I y II.</p>
+    </div>
+    <span class="pie">36 / 39</span>
+  </section>
+
+  <!-- 34 · la justificación, apartados 1 a 3 -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <h2 class="titulo">Primero se justifica la causa elegida y la eficacia de las intervenciones que la afectan</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Apartado</th><th scope="col">Qué debe demostrar</th><th scope="col">Base</th></tr></thead>
+          <tbody>
+            <tr><td><b>1 · Relación causal elegida</b></td><td>Cuál es, cuánto explica frente a las demás y con qué evidencia se sostiene: categoría, diseño, población y alcance.</td><td>Art. 11; Anexos I y II</td></tr>
+            <tr><td><b>2 · Búsqueda de intervenciones</b></td><td>Cómo se buscó: términos clave, bases de datos o repositorios y criterios de inclusión. Qué eficaces no se hacen y qué vigentes no son eficaces.</td><td>Anexo I; art. 8.1.a</td></tr>
+            <tr><td><b>3 · Eficacia de cada intervención</b></td><td>Categoría de la evidencia, tamaño y magnitud del efecto, convergencia entre estudios y semejanza entre la población estudiada y la propia.</td><td>Anexo I; art. 12; RP1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01; el alcance de la población, del informe del RP1, GEP201 (2026).</p>
+    </div>
+    <span class="pie">37 / 39</span>
+  </section>
+
+  <!-- 35 · la justificación, apartados 4 a 6 -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <h2 class="titulo">Luego se justifica la selección, el producto con sus resultados y los supuestos de la cadena</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Apartado</th><th scope="col">Qué debe demostrar</th><th scope="col">Base</th></tr></thead>
+          <tbody>
+            <tr><td><b>4 · Selección y jerarquía</b></td><td>Qué intervenciones se eligen y en qué orden, según su eficacia y su costo efectividad, y por qué se concentra el esfuerzo en pocas.</td><td>Art. 12; Anexo II, III</td></tr>
+            <tr><td><b>5 · Producto y resultados</b></td><td>Cómo las intervenciones se agrupan en productos (sujeto, resultado y atributo de calidad) y qué resultado inmediato, intermedio y final se espera.</td><td>Art. 13; Anexo II, IV</td></tr>
+            <tr><td><b>6 · Supuestos y límites</b></td><td>Qué debe cumplirse entre pasos, cuál es el más frágil, qué pregunta de evidencia deja abierta y qué no permite afirmar la evidencia.</td><td>Curso: teoría de cambio</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01. El apartado 6 es criterio del curso (sesión 9 y Taller PpR, día 2).</p>
+    </div>
+    <span class="pie">38 / 39</span>
+  </section>
+
+  <!-- 36 · la regla de redacción de la justificación -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <h2 class="titulo">Cada apartado sintetiza las ideas fuerza de la evidencia y su referencia: no compila citas</h2>
+      <figure class="cita-sola">
+        <figcaption class="kicker">Directiva, Anexo II</figcaption>
+        <blockquote>«La descripción de las relaciones de causalidad debe sintetizar las ideas fuerza de las evidencias recogidas, las cuales deberán estar referenciadas. Por lo mismo, esta sección <b>no deberá ser, por ningún motivo, un compilatorio de citas</b>.»</blockquote>
+      </figure>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, secciones II y III. Énfasis añadido.</p>
+    </div>
+    <span class="pie">39 / 39</span>
+  </section>
+
+</main>
+<div id="present-hint" class="present-hint" aria-hidden="true">← → para avanzar · Esc para salir</div>
+<script data-bv="nucleo/deck.js" data-version="1.0.0">
+/* base-visual · núcleo · motor de decks (JS) — v1.0.0 (la 1.0; sin cambios desde la v0.1.1)
+   Sale del motor de dia1 (Taller). Suma: enlace directo (#12), deslizar con el
+   dedo, revelado paso a paso (.step), botón de tema recordado y aviso para
+   lectores de pantalla. Sin JS, todo se lee en columna (nada se oculta).
+   v0.1.1: el deck es claro por defecto, aunque el sistema esté en oscuro (la PC
+   del aula no debe cambiar las diapositivas; revisión, P1). El oscuro, solo si
+   la persona lo elige con el botón, y queda recordado. */
+(function () {
+  'use strict';
+  var raiz = document.documentElement;
+  raiz.classList.add('js');
+
+  // tema: claro, salvo que la persona haya elegido el oscuro
+  var guardado = null;
+  try { guardado = localStorage.getItem('bv-tema'); } catch (e) {}
+  raiz.setAttribute('data-theme', guardado === 'dark' ? 'dark' : 'light');
+  function temaActual() {
+    return raiz.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+  var botonTema = document.getElementById('theme-btn');
+  function rotularTema() {
+    if (botonTema) botonTema.textContent = temaActual() === 'dark' ? 'Tema claro' : 'Tema oscuro';
+  }
+  if (botonTema) {
+    botonTema.addEventListener('click', function () {
+      var t = temaActual() === 'dark' ? 'light' : 'dark';
+      raiz.setAttribute('data-theme', t);
+      try { localStorage.setItem('bv-tema', t); } catch (e) {}
+      rotularTema();
+    });
+    rotularTema();
+  }
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  if (!slides.length) return;
+  var idx = 0, presenting = false, reloj = null;
+  var aviso = document.getElementById('present-hint');
+  var estado = document.createElement('p');
+  estado.className = 'visualmente-oculto';
+  estado.setAttribute('aria-live', 'polite');
+  document.body.appendChild(estado);
+  slides.forEach(function (s, i) { s.setAttribute('aria-label', 'Diapositiva ' + (i + 1) + ' de ' + slides.length); });
+
+  function pasos(s) { return Array.prototype.slice.call(s.querySelectorAll('.step')); }
+
+  function mostrar(i, completa) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function (s, j) { s.classList.toggle('active', j === idx); });
+    pasos(slides[idx]).forEach(function (p) { p.classList.toggle('visto', !!completa); });
+    if (presenting) {
+      estado.textContent = 'Diapositiva ' + (idx + 1) + ' de ' + slides.length;
+      try { history.replaceState(null, '', '#' + (idx + 1)); } catch (e) {}
+    }
+  }
+  function siguiente() {
+    var falta = pasos(slides[idx]).filter(function (p) { return !p.classList.contains('visto'); })[0];
+    if (falta) falta.classList.add('visto'); else if (idx < slides.length - 1) mostrar(idx + 1, false);
+  }
+  function anterior() {
+    var vistos = pasos(slides[idx]).filter(function (p) { return p.classList.contains('visto'); });
+    if (vistos.length) vistos[vistos.length - 1].classList.remove('visto'); else if (idx > 0) mostrar(idx - 1, true);
+  }
+
+  function escalar() {
+    raiz.style.setProperty('--present-scale', Math.min(innerWidth / 1280, innerHeight / 720));
+  }
+  function avisar() {
+    if (!aviso) return;
+    aviso.classList.add('show');
+    clearTimeout(reloj);
+    reloj = setTimeout(function () { aviso.classList.remove('show'); }, 2600);
+  }
+  function entrar() {
+    presenting = true;
+    document.body.classList.add('presenting');
+    mostrar(idx, false);
+    escalar();
+    avisar();
+    if (raiz.requestFullscreen) raiz.requestFullscreen().catch(function () {});
+  }
+  function salir() {
+    presenting = false;
+    document.body.classList.remove('presenting');
+    if (aviso) aviso.classList.remove('show');
+    if (document.fullscreenElement) document.exitFullscreen().catch(function () {});
+    slides[idx].scrollIntoView({ block: 'start' });
+  }
+
+  addEventListener('resize', function () { if (presenting) escalar(); });
+  document.addEventListener('fullscreenchange', function () { if (!document.fullscreenElement && presenting) salir(); });
+  document.addEventListener('keydown', function (e) {
+    if (!presenting) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'ArrowDown' || k === 'PageDown' || k === ' ') { e.preventDefault(); siguiente(); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp') { e.preventDefault(); anterior(); }
+    else if (k === 'Home') { e.preventDefault(); mostrar(0, false); }
+    else if (k === 'End') { e.preventDefault(); mostrar(slides.length - 1, true); }
+    else if (k === 'Escape') { salir(); }
+  });
+  // toque o clic: el tercio izquierdo retrocede, el resto avanza
+  document.addEventListener('click', function (e) {
+    if (!presenting || e.target.closest('a, button')) return;
+    if (e.clientX < innerWidth / 3) anterior(); else siguiente();
+  });
+  // deslizar con el dedo
+  var x0 = null;
+  document.addEventListener('touchstart', function (e) { if (presenting) x0 = e.changedTouches[0].clientX; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    if (!presenting || x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    x0 = null;
+    if (Math.abs(dx) > 50) { e.preventDefault(); if (dx < 0) siguiente(); else anterior(); }
+  });
+
+  var botonPresentar = document.getElementById('present-btn');
+  if (botonPresentar) botonPresentar.addEventListener('click', entrar);
+
+  // enlace directo: #12 abre la diapositiva 12 (en lectura, se desplaza hasta ella)
+  var m = /^#(\d+)$/.exec(location.hash);
+  if (m) {
+    idx = Math.max(0, Math.min(slides.length - 1, parseInt(m[1], 10) - 1));
+    slides[idx].scrollIntoView({ block: 'start' });
+  }
+})();
+</script>
+<script data-bv="nucleo/red.js" data-version="1.2.0">
+/* base-visual · núcleo · la red (JS) — v1.2.0 (Etapa 3: la red de causas, decisión 3 de JP del 2026-10-15)
+   Dibuja las flechas de cada .red a partir de su lista de relaciones: ul.relaciones > li, con data-de y
+   data-a (los id de dos .nodo de la misma red). La lista se escribe una vez y sirve dos veces: es la
+   fuente de las flechas y lo que lee un lector de pantalla; sin JS, se ve debajo del dibujo.
+   - Las flechas van en un SVG detrás de las cajas, en las coordenadas sin escalar de la .red: sirven
+     igual con la escala del proyector (transform) y con el zoom de una página.
+   - Cada flecha sale del lado de su caja que mira a la otra y apunta al lado que la recibe; si varias
+     salen de la misma caja, cada una sale a la altura que mira a su destino (no se amontonan).
+   - Las clases del li pasan a la flecha: fuerte, debil, sin-evidencia y camino (componentes.css).
+   - La punta mide 12 px (17 la fuerte), y menos si la flecha es corta (en el celular).
+   - Pone .con-flechas en la red (la lista pasa a ser solo para el lector de pantalla) y la redibuja al
+     cambiar de tamaño (ResizeObserver; una red oculta se dibuja al aparecer) y al cargar las fuentes.
+   Viene de exploraciones/2026-10-15-composicion/fuente/red.js, sin los rótulos en la mitad de la flecha
+   (data-etiqueta): la leyenda los reemplazó (pedido de JP, ronda 1). */
+(function () {
+  'use strict';
+  var NS = 'http://www.w3.org/2000/svg';
+  var CLASES = ['fuerte', 'debil', 'sin-evidencia', 'camino'];
+
+  function limitar(v, a, b) { return Math.max(a, Math.min(b, v)); }
+
+  // los dos extremos de la flecha de la caja a a la b: [x1, y1, x2, y2]
+  function extremos(a, b) {
+    var sepX = Math.max(b.x - (a.x + a.w), a.x - (b.x + b.w));
+    var sepY = Math.max(b.y - (a.y + a.h), a.y - (b.y + b.h));
+    if (sepX >= sepY) {
+      var ma = Math.min(12, a.h / 3), mb = Math.min(12, b.h / 3);
+      var y1 = limitar(b.y + b.h / 2, a.y + ma, a.y + a.h - ma);
+      var y2 = limitar(a.y + a.h / 2, b.y + mb, b.y + b.h - mb);
+      return b.x > a.x ? [a.x + a.w, y1, b.x, y2] : [a.x, y1, b.x + b.w, y2];
+    }
+    var na = Math.min(12, a.w / 3), nb = Math.min(12, b.w / 3);
+    var x1 = limitar(b.x + b.w / 2, a.x + na, a.x + a.w - na);
+    var x2 = limitar(a.x + a.w / 2, b.x + nb, b.x + b.w - nb);
+    return b.y > a.y ? [x1, a.y + a.h, x2, b.y] : [x1, a.y, x2, b.y + b.h];
+  }
+
+  function dibujar(red) {
+    var base = red.getBoundingClientRect();
+    var W = red.offsetWidth, H = red.offsetHeight;
+    if (!base.width || !W) return;  // oculta: otra diapositiva al proyectar
+    var k = base.width / W;         // la escala con que se ve (transform o zoom)
+    var svg = red.querySelector(':scope > svg.flechas');
+    if (!svg) {
+      svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('class', 'flechas');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('focusable', 'false');
+      red.insertBefore(svg, red.firstChild);
+    }
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+    function caja(el) {
+      var r = el.getBoundingClientRect();
+      return { x: (r.left - base.left) / k, y: (r.top - base.top) / k, w: r.width / k, h: r.height / k };
+    }
+    Array.prototype.forEach.call(red.querySelectorAll(':scope > .relaciones > li[data-de][data-a]'), function (li) {
+      var de = document.getElementById(li.getAttribute('data-de'));
+      var a = document.getElementById(li.getAttribute('data-a'));
+      if (!de || !a || !red.contains(de) || !red.contains(a)) return;
+      var p = extremos(caja(de), caja(a));
+      var dx = p[2] - p[0], dy = p[3] - p[1], largo = Math.sqrt(dx * dx + dy * dy) || 1;
+      var ux = dx / largo, uy = dy / largo;
+      var clases = CLASES.filter(function (c) { return li.classList.contains(c); });
+      var grueso = clases.indexOf('fuerte') >= 0;
+      var L = Math.min(grueso ? 17 : 12, largo * 0.45), M = L * (grueso ? 9 / 17 : 0.5);  // largo y media anchura de la punta
+      var g = document.createElementNS(NS, 'g');
+      g.setAttribute('class', ['flecha'].concat(clases).join(' '));
+      var linea = document.createElementNS(NS, 'line');
+      linea.setAttribute('x1', p[0].toFixed(1)); linea.setAttribute('y1', p[1].toFixed(1));
+      linea.setAttribute('x2', (p[2] - ux * (L - 1)).toFixed(1)); linea.setAttribute('y2', (p[3] - uy * (L - 1)).toFixed(1));
+      var bx = p[2] - ux * L, by = p[3] - uy * L;
+      var punta = document.createElementNS(NS, 'path');
+      punta.setAttribute('class', 'punta');
+      punta.setAttribute('d', 'M' + p[2].toFixed(1) + ',' + p[3].toFixed(1) +
+        ' L' + (bx - uy * M).toFixed(1) + ',' + (by + ux * M).toFixed(1) +
+        ' L' + (bx + uy * M).toFixed(1) + ',' + (by - ux * M).toFixed(1) + ' Z');
+      g.appendChild(linea);
+      g.appendChild(punta);
+      svg.appendChild(g);
+    });
+  }
+
+  var redes = Array.prototype.slice.call(document.querySelectorAll('.red'));
+  if (!redes.length) return;
+  redes.forEach(function (r) { r.classList.add('con-flechas'); });
+  function todas() { redes.forEach(dibujar); }
+  if ('ResizeObserver' in window) {
+    var ro = new ResizeObserver(function (entradas) { entradas.forEach(function (e) { dibujar(e.target); }); });
+    redes.forEach(function (r) { ro.observe(r); });
+  } else {
+    addEventListener('resize', todas);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(todas);
+  addEventListener('load', todas);
+  todas();
+})();
+</script>
+</body>
+</html>
