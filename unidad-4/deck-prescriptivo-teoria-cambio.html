@@ -1024,6 +1024,74 @@ body.presenting .slide.active {
   /* propio de este deck, solo con tokens (var(--…)): el relleno de la página y, si hace falta, una
      composición que el núcleo no trae, con un comentario que diga qué prueba (se anota en
      base-visual/pendientes.md como candidata al núcleo) */
+
+  /* Intervalos (candidata al núcleo, 2026-10-20): un efecto con su intervalo (meta-análisis) o el rango de varios
+     estudios, a escala y con su eje. Prueba: cómo luce la evidencia causal y qué tan firme es. */
+  .intervalos { --min: 0; --max: 1.5; --cols: 12em minmax(0, 1fr) 12.5em; font-size: var(--size-body); line-height: var(--leading-tight); }
+  .intervalos .grupo { margin: var(--space-2) 0 var(--space-1); color: var(--ink); font-weight: 700; }
+  .intervalos .grupo span { color: var(--ink-soft); font-weight: 400; }
+  .intervalos .fila { display: grid; grid-template-columns: var(--cols); gap: var(--space-3); align-items: center; padding: var(--space-1) 0; border-top: 1px solid var(--line); }
+  .intervalos .rotulo { margin: 0; color: var(--ink-soft); }
+  .intervalos .dato { margin: 0; font-size: var(--size-body); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .intervalos .dato b { color: var(--ink); }
+  .intervalos .pista { position: relative; height: 1.5em; }
+  .intervalos .pista::before { content: ""; position: absolute; z-index: 2; top: 0; bottom: 0; left: calc((var(--ref, 1) - var(--min)) / (var(--max) - var(--min)) * 100%); border-left: 2px solid var(--ink); }
+  .intervalos .rango { position: absolute; top: 50%; height: .5em; transform: translateY(-50%); left: calc((var(--lo) - var(--min)) / (var(--max) - var(--min)) * 100%); width: calc((var(--hi) - var(--lo)) / (var(--max) - var(--min)) * 100%); background: var(--mark); border-radius: var(--radius); }
+  .intervalos .punto { position: absolute; z-index: 1; top: 50%; left: calc((var(--est) - var(--min)) / (var(--max) - var(--min)) * 100%); width: .2em; height: 1.2em; transform: translate(-50%, -50%); background: var(--ink); }
+  .intervalos .fila.destacada .rango { background: var(--accent); }
+  .intervalos .fila.destacada .dato b { color: var(--accent-ink); }
+  .intervalos.rangos .pista::before { display: none; }
+  .intervalos.rangos .rango { height: 1em; }
+  .intervalos .eje { display: grid; grid-template-columns: var(--cols); gap: var(--space-3); margin: var(--space-1) 0 0; font-size: var(--size-body); color: var(--ink-faint); }
+  .intervalos .eje .escala { position: relative; grid-column: 2; display: block; height: 1.4em; }
+  .grafico-campo > .intervalos { grid-column: 1 / 13; }
+  .grafico-campo > .lectura.abajo { grid-column: 1 / 13; margin-top: var(--space-3); }
+  .intervalos .eje .marca { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; font-family: var(--font-mono); font-size: var(--size-meta); }
+
+  /* Título y nota de un gráfico (candidata al núcleo, 2026-10-21): el gráfico se entiende solo, sin la explicación oral. */
+  .grafico-campo > .grafico-titulo { grid-column: 1 / 13; margin: 0 0 var(--space-2); font-weight: 700; font-size: var(--size-body); line-height: var(--leading-tight); max-width: none; }
+  .grafico-campo > .grafico-nota { grid-column: 1 / 13; margin: var(--space-1) 0 0; font-size: var(--size-meta); line-height: var(--leading); color: var(--ink-soft); max-width: none; }
+  /* Un cuerpo que usa todo el ancho del pad (consignas de actividad): el corte de línea lo decide el contenedor. */
+  .cuerpo.ancho { max-width: none; }
+  .grafico-campo > .grafico-titulo span { display: block; font-weight: 400; color: var(--ink-soft); }
+
+  /* Agrupación (candidata al núcleo, 2026-10-21): varias intervenciones que se juntan en un producto.
+     Prueba: qué comparten (sujeto y resultado) para ser un solo producto. */
+  .agrupa { display: grid; grid-template-columns: minmax(0, 1fr) var(--space-5) minmax(0, 1.2fr); column-gap: var(--space-3); row-gap: var(--space-3); align-items: stretch; }
+  .agrupa .encabezado { margin: 0; font-family: var(--font-mono); font-size: var(--size-meta); color: var(--ink-faint); text-transform: uppercase; letter-spacing: .06em; }
+  .agrupa .intervenciones { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); align-content: center; }
+  .agrupa .intervenciones li { padding: var(--space-2) var(--space-3); border: 1px solid var(--line); border-radius: var(--radius); font-size: var(--size-body); line-height: var(--leading-tight); }
+  .agrupa .llave { border: 2px solid var(--ink); border-left: 0; border-radius: 0 var(--radius) var(--radius) 0; }
+  .agrupa .producto { padding: var(--space-3); border: 2px solid var(--ink); border-radius: var(--radius); display: grid; align-content: center; gap: var(--space-1); }
+  .agrupa .producto p { margin: 0; }
+  .agrupa .producto .nombre { font-weight: 700; font-size: var(--size-body); line-height: var(--leading-tight); }
+  .agrupa .producto .detalle { font-size: var(--size-meta); color: var(--ink-soft); line-height: var(--leading); }
+
+  /* Redacción (candidata al núcleo, 2026-10-21): una oración partida en sus elementos, cada uno con su rótulo.
+     Prueba: qué elementos componen un buen producto y un buen resultado. */
+  .redaccion { display: grid; grid-template-columns: 7em repeat(3, minmax(0, 1fr)); column-gap: var(--space-3); row-gap: var(--space-5); align-items: start; }
+  .redaccion .tipo { margin: 0; font-family: var(--font-mono); font-size: var(--size-meta); color: var(--ink-faint); text-transform: uppercase; letter-spacing: .06em; padding-top: var(--space-2); }
+  .redaccion .parte { border-top: 3px solid var(--ink); padding-top: var(--space-2); }
+  .redaccion .parte p { margin: 0; }
+  .redaccion .texto { font-size: var(--size-body); line-height: var(--leading-tight); font-weight: 700; }
+  .redaccion .rotulo { margin-top: var(--space-1) !important; font-family: var(--font-mono); font-size: var(--size-meta); color: var(--ink-soft); }
+
+  /* Marca de posición del código QR del ticket (se reemplaza con ensamblar.py qr <url>). */
+  .qr-pend { margin: var(--space-4) 0 0; padding: var(--space-5); border: 2px dashed var(--line); width: fit-content; color: var(--ink-soft); }
+
+  /* Escalera (candidata al núcleo, 2026-10-21): peldaños de una escala ordinal con su etiqueta y, debajo, un ejemplo que se revela.
+     Prueba: qué compara una evidencia y hasta dónde sostiene una causa. */
+  .escalera { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: var(--space-2); row-gap: var(--space-1); align-items: end; font-size: var(--size-meta); line-height: var(--leading-tight); }
+  .escalera .leyenda { grid-row: 1; grid-column: 1 / 7; margin: 0; display: flex; align-items: center; gap: .55em; font-weight: 700; color: var(--ink); }
+  .escalera .leyenda .muestra { display: inline-block; width: 1.6em; height: 1em; background: color-mix(in srgb, var(--ink) 9%, var(--paper)); border: 1px solid var(--line); }
+  .escalera .peldano.compara { background: color-mix(in srgb, var(--ink) 9%, var(--paper)); }
+  .escalera .peldano { grid-row: 2; grid-column: var(--col); min-height: calc(var(--size-body) * (4.6 + var(--n) * 1.1)); padding: var(--space-2); border: 1px solid var(--line); border-top: 4px solid var(--ink); display: flex; flex-direction: column; gap: var(--space-1); }
+  .escalera .peldano p { margin: 0; }
+  .escalera .num, .escalera .cat { font-family: var(--font-mono); color: var(--ink-soft); }
+  .escalera .nombre { font-weight: 700; color: var(--ink); }
+  .escalera .ej { grid-row: 3; grid-column: var(--col); margin: var(--space-1) 0 0; color: var(--ink-soft); }
+  .escalera .firmeza { grid-row: 4; grid-column: 1 / 7; margin: var(--space-2) 0 0; padding-top: var(--space-2); border-top: 1px solid var(--line); font-size: var(--size-body); }
+  tr.corte td { border-top: 2px solid var(--ink); }
   body { margin: 0; padding: var(--space-5); background: var(--paper); color: var(--ink); font-family: var(--font-text); }
   @media (max-width: 720px) { body { padding: var(--space-3); } }
 </style>
@@ -1040,63 +1108,101 @@ body.presenting .slide.active {
   </div>
 </header>
 <main class="deck" data-escala="sala">
-
   <!-- 1 · portada -->
   <section class="slide portada">
     <div class="pad">
       <p class="kicker">GEP201 <span class="sub">· Unidad IV · Sesión 9</span></p>
-      <h2 class="titulo xl">Una teoría de cambio pide presupuesto solo por las relaciones causales que se sostienen con evidencia</h2>
+      <h2 class="titulo xl">Una teoría de cambio sustenta el presupuesto en las relaciones causales que cuentan con evidencia</h2>
       <p class="fuente">Gestión Financiera del Estado · 21 de octubre de 2026</p>
     </div>
-    <span class="pie">01 / 39</span>
+    <span class="pie">01 / 44</span>
   </section>
 
-  <!-- 2 · agenda: el arco de la sesión (solo títulos) -->
+  <!-- 2 · agenda: el arco de la sesión -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Hoy</p>
-      <h2 class="titulo">Primero se valora el respaldo de las causas, después se interviene y al final se justifica el presupuesto</h2>
+      <h2 class="titulo">Se valora el respaldo de las causas, se buscan intervenciones costo efectivas y se pide presupuesto para ellas</h2>
       <ol class="cuerpo">
         <li><b>Valorar el respaldo de las relaciones causales</b></li>
         <li><b>De la causa a la intervención</b></li>
         <li><b>La teoría de cambio y lo que sigue para el RP3</b></li>
       </ol>
     </div>
-    <span class="pie">02 / 39</span>
+    <span class="pie">02 / 44</span>
   </section>
 
-  <!-- 3 · calendario: las fechas hasta el RP3 -->
+  <!-- 3 · calendario: RP2, RP3 y TF -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Apertura</p>
-      <h2 class="titulo">Hoy no hay entregas: el RP2 se entrega el lunes 26 y se presenta el miércoles 28</h2>
+      <h2 class="titulo">Tres fechas ordenan lo que sigue: el RP2 el 26 de octubre, el RP3 el 11 de noviembre y el TF el 25</h2>
       <div class="tabla-contenedor">
         <table class="tabla">
           <thead><tr><th scope="col">Fecha</th><th scope="col">Qué pasa</th></tr></thead>
           <tbody>
-            <tr><td><b>Lun 26 oct</b></td><td>RP2: entrega en PAIDEIA, hasta las 23:59</td></tr>
-            <tr><td><b>Mié 28 oct</b></td><td>CL2 sobre Barber (2013), 20 minutos, y después el oral del RP2</td></tr>
-            <tr><td><b>Vie 30 oct</b></td><td>Coevaluación del RP2: último día</td></tr>
-            <tr><td><b>Mié 11 nov</b></td><td>RP3: entrega y oral</td></tr>
+            <tr><td><b>Lun 26 oct</b></td><td>RP2: entrega en PAIDEIA hasta las 23:59. Coevaluación hasta el viernes 30</td></tr>
+            <tr><td><b>Mié 28 oct</b></td><td>CL2 sobre Barber (2013), 20 minutos, y oral del RP2</td></tr>
+            <tr><td><b>Mié 11 nov</b></td><td>RP3 «Intervención e indicadores»: Word hasta las 17:00 y oral breve. Hoy vemos qué pide</td></tr>
+            <tr><td><b>Mié 25 nov</b></td><td>Trabajo final: tres secciones, una por RP, con presentadores sorteados. Diapositivas antes de la clase; Word hasta las 23:59</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="fuente">Calendario del curso, GEP201 2026-2.</p>
+      <p class="fuente">Calendario del curso, GEP201 2026-2. Hoy no hay entregas.</p>
     </div>
-    <span class="pie">03 / 39</span>
+    <span class="pie">03 / 44</span>
   </section>
 
   <!-- 4 · divisor de la parte 1 -->
-  <section class="slide divisor" style="--parte: 1; --partes: 3">
+  <section class="slide divisor" style="--parte: 1; --partes: 4">
     <span class="pestana" aria-hidden="true">1</span>
     <div class="pad">
       <p class="kicker">Parte 1</p>
       <h2 class="titulo xl">Valorar el respaldo de las relaciones causales</h2>
     </div>
-    <span class="pie">04 / 39</span>
+    <span class="pie">04 / 44</span>
   </section>
 
-  <!-- 5 · definición formal: el diseño se basa en la causalidad y la evidencia -->
+  <!-- 5 · ejercicio: ¿es evidencia de reducción? (se vota y se revela) -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">¿Cuáles de estas afirmaciones son evidencia de que las cámaras de velocidad reducen las muertes?</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Afirmación</th><th scope="col">¿Es evidencia de reducción?</th></tr></thead>
+          <tbody>
+            <tr><td>«Desde que hay cámaras, la ciudad se siente más segura.»</td><td><span class="etiqueta critica step">No</span> <span class="step">Es una opinión.</span></td></tr>
+            <tr><td>«En 2024, 22&nbsp;388 siniestros se registraron por exceso de velocidad.»</td><td><span class="etiqueta critica step">No</span> <span class="step">Cuenta casos, no efectos.</span></td></tr>
+            <tr><td>«En un tramo con cámaras, los choques bajaron 30&nbsp;% en un año.»</td><td><span class="etiqueta alerta step">No alcanza</span> <span class="step">Sin comparación, pudo ser otra causa.</span></td></tr>
+            <tr><td>«35 estudios con grupo de control hallaron menos choques cerca de las cámaras.»</td><td><span class="etiqueta buena step">Sí</span> <span class="step">Compara con un control.</span></td></tr>
+            <tr><td>«El fabricante asegura que sus cámaras salvan vidas.»</td><td><span class="etiqueta critica step">No</span> <span class="step">Sin datos ni comparación.</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">Afirmaciones 1, 3 y 5: ilustrativas, elaboración propia. Afirmación 2: ONSV (2025), siniestros de 2024. Afirmación 4: Wilson et al. (2010), Cochrane Database of Systematic Reviews, CD004607.</p>
+    </div>
+    <span class="pie">05 / 44</span>
+  </section>
+
+  <!-- 6 · el fundamento: qué habría pasado sin la intervención -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">Para decir que algo produce un efecto hay que saber qué habría pasado sin ese algo</h2>
+      <p class="cuerpo ancho">Los choques bajaron 30&nbsp;% en un tramo con cámaras. ¿Fueron las cámaras? Hay otras explicaciones posibles:</p>
+      <div class="tarjetas" style="--n: 3; --filas: 3">
+        <div class="tarjeta"><p class="kicker">Otra explicación 1</p><p class="nombre">Había menos tráfico</p><p>Un año con menos viajes baja los choques, con o sin cámaras.</p></div>
+        <div class="tarjeta"><p class="kicker">Otra explicación 2</p><p class="nombre">Se eligió el peor tramo</p><p>Los tramos con más choques suelen bajar solos al año siguiente.</p></div>
+        <div class="tarjeta"><p class="kicker">Otra explicación 3</p><p class="nombre">Cambió otra cosa</p><p>Más patrullaje, una campaña, una obra: el cambio no viene solo.</p></div>
+      </div>
+      <p class="cuerpo ancho destacado">Para saberlo hay que comparar con un tramo parecido que no recibió cámaras.</p>
+      <p class="fuente">Ejemplo ilustrativo, basado en razonamiento.</p>
+    </div>
+    <span class="pie">06 / 44</span>
+  </section>
+
+  <!-- 7 · la Directiva exige la mejor evidencia -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
@@ -1108,213 +1214,281 @@ body.presenting .slide.active {
       <p class="cuerpo">En el diagrama del modelo, cada relación causal entre un factor y su efecto se dibuja como una flecha.</p>
       <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículos 6.1 y 11.1.</p>
     </div>
-    <span class="pie">05 / 39</span>
+    <span class="pie">07 / 44</span>
   </section>
 
-  <!-- 6 · definición formal: categorías de evidencia -->
+  <!-- 8 · la escalera de la comparación, con las afirmaciones del voto -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
-      <h2 class="titulo">La Directiva clasifica la evidencia según su capacidad de sustentar relaciones causales</h2>
+      <h2 class="titulo">La evidencia causal empieza al comparar con un grupo; la Directiva la ordena en tres categorías</h2>
+      <div class="escalera">
+        <p class="leyenda"><span class="muestra" aria-hidden="true"></span>Compara con un grupo</p>
+        <div class="peldano" style="--n: 0; --col: 1"><p class="num">Peldaño 0</p><p class="nombre">Opinión o anécdota</p><p class="cat">No es evidencia</p></div>
+        <div class="peldano" style="--n: 1; --col: 2"><p class="num">Peldaño 1</p><p class="nombre">Cuenta lo que hay</p><p class="cat">Magnitud</p></div>
+        <div class="peldano" style="--n: 2; --col: 3"><p class="num">Peldaño 2</p><p class="nombre">Antes y después</p><p class="cat">Sin comparación</p></div>
+        <div class="peldano compara" style="--n: 3; --col: 4"><p class="num">Peldaño 3</p><p class="nombre">Compara con otros casos</p><p class="cat">Categoría 3</p></div>
+        <div class="peldano compara" style="--n: 4; --col: 5"><p class="num">Peldaño 4</p><p class="nombre">Arma un grupo comparable</p><p class="cat">Categoría 2</p></div>
+        <div class="peldano compara" style="--n: 5; --col: 6"><p class="num">Peldaño 5</p><p class="nombre">Sortea quién recibe</p><p class="cat">Categoría 1</p></div>
+        <p class="ej step" style="--col: 1">«Con las cámaras la ciudad se siente más segura»</p>
+        <p class="ej step" style="--col: 2">«22&nbsp;388 siniestros por exceso de velocidad»</p>
+        <p class="ej step" style="--col: 3">«Los choques bajaron 30&nbsp;% en un año»</p>
+        <p class="ej step" style="--col: 4">«35 estudios con grupo de control hallaron menos choques»</p>
+        <p class="firmeza"><b>Juntar varios estudios no es otro peldaño:</b> un meta-análisis o una revisión dicen cuántos estudios hay y si coinciden.</p>
+      </div>
+      <p class="fuente">Peldaños: elaboración propia. Categorías: MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo I (adaptado de Stegenga, 2013). Afirmaciones: las de la diapositiva 5.</p>
+    </div>
+    <span class="pie">08 / 44</span>
+  </section>
+
+  <!-- 9 · los peldaños 3 a 5: cómo arma la comparación cada diseño -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">Del peldaño 3 al 5, cada diseño arma la comparación de una forma distinta</h2>
       <div class="tabla-contenedor">
         <table class="tabla">
-          <thead><tr><th scope="col">Categoría</th><th scope="col">Diseños de estudio</th><th scope="col">Qué dice la Directiva</th></tr></thead>
+          <thead><tr><th scope="col">Peldaño y diseño</th><th scope="col">Cómo compara</th><th scope="col">Qué dice la Directiva</th></tr></thead>
           <tbody>
-            <tr><td><b>1</b></td><td>Meta-análisis y estudios experimentales</td><td>Se prioriza: permiten inferir relaciones robustas de causalidad directa.</td></tr>
-            <tr><td><b>2</b></td><td>Estudios cuasi-experimentales: regresión discontinua, diferencias en diferencias, «matching»</td><td>Ofrecen una aproximación robusta a relaciones de causa y efecto.</td></tr>
-            <tr><td><b>3</b></td><td>Estudios observacionales: cohortes, casos y controles, análisis multivariado</td><td>Se toma en cuenta la evidencia observacional.</td></tr>
-            <tr><td><b>Complementaria</b></td><td>Revisiones sistemáticas sin meta-análisis y estudios de caso con comparación sistemática</td><td>Se pueden incorporar; se mira la cantidad de estudios, su convergencia y el tamaño y la magnitud del efecto.</td></tr>
+            <tr><td><b>3 · Observacional</b></td><td>Observa lo que ocurrió, sin asignar la intervención: cohortes, casos y controles, análisis multivariado.</td><td>Categoría 3: se toma en cuenta.</td></tr>
+            <tr><td><b>4 · Cuasi-experimental</b></td><td>Arma un grupo parecido sin azar: diferencias en diferencias, regresión discontinua, «matching».</td><td>Categoría 2: aproximación robusta a causa y efecto.</td></tr>
+            <tr><td><b>5 · Experimental</b></td><td>Sortea quién recibe la intervención, así los grupos son parecidos.</td><td>Categoría 1: se prioriza.</td></tr>
+            <tr><td><b>Varios estudios juntos</b></td><td>Meta-análisis: combina sus resultados en un efecto. Revisión sin meta-análisis: los resume.</td><td>La categoría es la de los estudios que junta; se mira cuántos hay y si coinciden.</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo I (adaptado de Stegenga, 2013). Resumen propio.</p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo I (adaptado de Stegenga, 2013). Descripciones de los diseños: elaboración propia, basadas en razonamiento.</p>
     </div>
-    <span class="pie">06 / 39</span>
+    <span class="pie">09 / 44</span>
   </section>
 
-  <!-- 7 · las tres preguntas de control -->
+  <!-- 10 · peldaño 1: una cifra que cuenta -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
-      <h2 class="titulo">Una relación causal se sostiene si su evidencia es del tipo que necesita y cubre a quienes nombra</h2>
-      <div class="columnas" style="--n: 3">
-        <div><span class="n">1</span><div><h3>¿Qué evidencia necesita?</h3><p>La relación afirma que un factor produce un efecto: pide evidencia causal, no solo una cifra.</p></div></div>
-        <div><span class="n">2</span><div><h3>¿Qué evidencia trae?</h3><p>Magnitud dice cuánto y a quién; mecanismo, cómo ocurre; causa, que un diseño permite atribuir el efecto.</p></div></div>
-        <div><span class="n">3</span><div><h3>¿A quiénes cubre?</h3><p>Un distrito no es una región, primaria no es secundaria y una muestra pequeña no es la población.</p></div></div>
+      <h2 class="titulo">Una cifra oficial cuenta los siniestros por la causa que anota la policía; no demuestra qué los produce</h2>
+      <div class="grafico-campo">
+        <p class="grafico-titulo">Siniestros de tránsito en el Perú en 2024, según la causa registrada por la policía<span>Número de siniestros; total: 86&nbsp;757</span></p>
+        <dl class="barras" style="--valor-ancho: 5em"><dt>Imprudencia del conductor</dt><dd style="--v: 1.000"><span class="barra"></span><span class="valor">24 594</span></dd><dt>Exceso de velocidad</dt><dd style="--v: 0.910"><span class="barra destacada"></span><span class="valor">22 388</span></dd><dt>Otras causas</dt><dd style="--v: 0.900"><span class="barra"></span><span class="valor">22 137</span></dd><dt>Sin causa identificada o sin certeza</dt><dd style="--v: 0.476"><span class="barra"></span><span class="valor">11 709</span></dd><dt>Ebriedad del conductor</dt><dd style="--v: 0.241"><span class="barra"></span><span class="valor">5 929</span></dd></dl>
+        <p class="lectura"><b>El 25,8&nbsp;% se registró como exceso de velocidad.</b> Es el peldaño 1: cuenta, no compara. Aun así, ¿quién anota la causa? ¿En qué se distingue «imprudencia» de «exceso de velocidad»?</p>
       </div>
-      <p class="fuente">Orientaciones comunes del informe del RP1, GEP201 (2026).</p>
+      <p class="fuente">ONSV (2025). Histórico de siniestros de tránsito 2008-2025 (preliminar), hoja «Causas por región»; datos de los Anuarios Estadísticos de la PNP. Causas agrupadas por elaboración propia. Un siniestro tiene una sola causa anotada.</p>
     </div>
-    <span class="pie">07 / 39</span>
+    <span class="pie">10 / 44</span>
   </section>
 
-  <!-- 8 · la escala de respaldo -->
+  <!-- 11 · peldaño 3 con varios estudios: el rango de las cámaras -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
-      <h2 class="titulo">El respaldo tiene cuatro niveles: no sostenerse con esta evidencia no es lo mismo que ser falsa</h2>
+      <h2 class="titulo">Peldaño 3: 35 estudios con control hallaron menos choques cerca de las cámaras, de 8 a 49&nbsp;%</h2>
+      <div class="grafico-campo">
+        <p class="grafico-titulo">Reducción observada tras instalar cámaras de velocidad, según lo que se midió<span>Porcentaje de menos, del estudio con menor reducción al de mayor</span></p>
+        <div class="intervalos rangos" style="--max: 60" role="img" aria-label="Rango de la reducción observada con cámaras de velocidad: choques cerca de las cámaras, de 8 a 49 por ciento; choques con muertos o heridos graves cerca, de 11 a 44; muertes y heridos graves en áreas más amplias, de 17 a 58."><div class="fila"><p class="rotulo">Choques, cerca de las cámaras</p><div class="pista" style="--lo: 8; --hi: 49"><span class="rango"></span></div><p class="dato"><b>8 a 49 %</b> menos</p></div><div class="fila destacada"><p class="rotulo">Muertos o heridos graves, cerca</p><div class="pista" style="--lo: 11; --hi: 44"><span class="rango"></span></div><p class="dato"><b>11 a 44 %</b> menos</p></div><div class="fila"><p class="rotulo">Muertos o heridos graves, áreas amplias</p><div class="pista" style="--lo: 17; --hi: 58"><span class="rango"></span></div><p class="dato"><b>17 a 58 %</b> menos</p></div><div class="eje"><span class="escala" aria-hidden="true"><span class="marca" style="left: 0%">0</span><span class="marca" style="left: 33.33%">20 %</span><span class="marca" style="left: 66.67%">40 %</span><span class="marca" style="left: 100%">60 %</span></span></div></div>
+        <p class="lectura abajo"><b>Todos los estudios van en la misma dirección</b>: menos choques y menos víctimas graves. Pero con tamaños muy distintos: los autores resumieron los estudios sin combinarlos y no fijaron un efecto total.</p>
+      </div>
+      <p class="fuente">Wilson et al. (2010), Cochrane Database of Systematic Reviews, CD004607: 35 estudios con grupo de control, de calidad moderada como mucho, ninguno de un país de ingreso bajo. Gráfico de elaboración propia con los rangos de su resumen.</p>
+    </div>
+    <span class="pie">11 / 44</span>
+  </section>
+
+  <!-- 12 · peldaño 5: el efecto de capacitar a conductores, en porcentajes -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">Peldaño 5: 24 ensayos con sorteo; capacitar a conductores bajó las infracciones, no los choques</h2>
+      <div class="grafico-campo">
+        <p class="grafico-titulo">Cambio entre conductores capacitados y no capacitados, según lo que se midió<span>Porcentaje; menos de 0 es una reducción</span></p>
+        <div class="intervalos" style="--min: -8; --max: 4; --ref: 0" role="img" aria-label="Cambio al capacitar a conductores, con su rango probable. Infracciones: 4 por ciento menos, entre 6 y 2 por ciento menos. Choques: 2 por ciento menos, entre 4 por ciento menos y 1 por ciento más. El 0 es igual que no capacitar."><div class="fila"><p class="rotulo">Infracciones · 19 ensayos</p><div class="pista" style="--lo: -6; --hi: -2; --est: -4"><span class="rango"></span><span class="punto"></span></div><p class="dato"><b>4 %</b> menos (entre −6 y −2)</p></div><div class="fila destacada"><p class="rotulo">Choques · 15 ensayos</p><div class="pista" style="--lo: -4; --hi: 1; --est: -2"><span class="rango"></span><span class="punto"></span></div><p class="dato"><b>2 %</b> menos (entre −4 y +1)</p></div><div class="eje"><span class="escala" aria-hidden="true"><span class="marca" style="left: 0%">−8 %</span><span class="marca" style="left: 33.33%">−4 %</span><span class="marca" style="left: 66.67%">0, igual que no capacitar</span><span class="marca" style="left: 100%">+4 %</span></span></div></div>
+        <p class="grafico-nota">La barra es el rango donde probablemente está el efecto real. Si toca el 0, el resultado podría ser azar.</p>
+        <p class="lectura abajo"><b>Los choques no bajaron de forma segura</b>: su barra toca el 0. Lo que sí mejoró, las infracciones, no llevó a menos choques.</p>
+      </div>
+      <p class="fuente">Ker et al. (2003), Cochrane Database of Systematic Reviews, CD003734: 23 de los 24 ensayos son de Estados Unidos. Porcentajes calculados de las razones de riesgo de su resumen (0,96 y 0,98); gráfico de elaboración propia.</p>
+    </div>
+    <span class="pie">12 / 44</span>
+  </section>
+
+  <!-- 13 · repaso con la clase: ¿en qué peldaño estaba cada evidencia? -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">¿En qué peldaño está cada evidencia?</h2>
+      <ul class="cuerpo ancho">
+        <li><b>Cifra de la policía:</b> el 25,8&nbsp;% de los siniestros se registró como exceso de velocidad.</li>
+        <li><b>Cámaras:</b> 35 estudios con control hallaron de 8 a 49&nbsp;% menos choques cerca de las cámaras.</li>
+        <li><b>Capacitación:</b> 24 ensayos con sorteo: 4&nbsp;% menos infracciones y 2&nbsp;% menos choques, que podría ser azar.</li>
+      </ul>
+      <div class="escalera">
+        <p class="leyenda"><span class="muestra" aria-hidden="true"></span>Compara con un grupo</p>
+        <div class="peldano" style="--n: 0; --col: 1"><p class="num">Peldaño 0</p><p class="nombre">Opinión o anécdota</p><p class="cat">No es evidencia</p></div>
+        <div class="peldano" style="--n: 1; --col: 2"><p class="num">Peldaño 1</p><p class="nombre">Cuenta lo que hay</p><p class="cat">Magnitud</p></div>
+        <div class="peldano" style="--n: 2; --col: 3"><p class="num">Peldaño 2</p><p class="nombre">Antes y después</p><p class="cat">Sin comparación</p></div>
+        <div class="peldano compara" style="--n: 3; --col: 4"><p class="num">Peldaño 3</p><p class="nombre">Compara con otros casos</p><p class="cat">Categoría 3</p></div>
+        <div class="peldano compara" style="--n: 4; --col: 5"><p class="num">Peldaño 4</p><p class="nombre">Arma un grupo comparable</p><p class="cat">Categoría 2</p></div>
+        <div class="peldano compara" style="--n: 5; --col: 6"><p class="num">Peldaño 5</p><p class="nombre">Sortea quién recibe</p><p class="cat">Categoría 1</p></div>
+        <p class="ej step" style="--col: 2">Siniestros por causa (ONSV)</p>
+        <p class="ej step" style="--col: 4">Cámaras de velocidad (35 estudios)</p>
+        <p class="ej step" style="--col: 6">Capacitar conductores (24 ensayos)</p>
+      </div>
+      <p class="fuente">Elaboración propia, con las evidencias de las diapositivas 10, 11 y 12.</p>
+    </div>
+    <span class="pie">13 / 44</span>
+  </section>
+
+  <!-- 14 · tres preguntas y cuatro niveles -->
+  <section class="slide">
+    <div class="pad densa">
+      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
+      <h2 class="titulo">Tres preguntas llevan a uno de cuatro niveles de respaldo</h2>
+      <div class="columnas" style="--n: 3">
+        <div><span class="n">1</span><div><h3>¿Cuenta o explica?</h3><p>Describe un problema o dice que un factor produce un efecto.</p></div></div>
+        <div><span class="n">2</span><div><h3>¿Con quién compara?</h3><p>El peldaño de la escalera: ¿hay un grupo con el que comparar?</p></div></div>
+        <div><span class="n">3</span><div><h3>¿A quiénes alcanza y cuántos coinciden?</h3><p>La población que cubre, cuántos estudios hay y si van en la misma dirección.</p></div></div>
+      </div>
       <div class="tabla-contenedor">
         <table class="tabla">
-          <thead><tr><th scope="col">N.º</th><th scope="col">Nivel</th><th scope="col">Cuándo</th></tr></thead>
+          <thead><tr><th scope="col">Nivel</th><th scope="col">Cuándo</th></tr></thead>
           <tbody>
-            <tr><td class="num">1</td><td><b>Se sostiene</b></td><td>La evidencia es del tipo que la relación necesita y cubre a la población de la que habla.</td></tr>
-            <tr><td class="num">2</td><td><b>Se sostiene con matiz</b></td><td>Apoya en parte: otra población, solo el mecanismo o solo la asociación. Se mantiene declarando su alcance.</td></tr>
-            <tr><td class="num">3</td><td><b>Es solo hipótesis</b></td><td>Es plausible, pero la evidencia no permite afirmarla. Se dice qué la confirmaría.</td></tr>
-            <tr class="destacada"><td class="num">4</td><td><b>No se sostiene con esta evidencia</b></td><td>La evidencia no tiene relación lógica con lo que se afirma. La relación puede ser cierta.</td></tr>
+            <tr><td><b>1 · Se sostiene</b></td><td>Compara con un grupo, los estudios coinciden y cubren a la población de la que se habla.</td></tr>
+            <tr><td><b>2 · Con matiz</b></td><td>Compara con un grupo, pero con un límite que se declara: otra población, un diseño observacional o un efecto que no se puede fijar.</td></tr>
+            <tr class="corte"><td><b>3 · Solo hipótesis</b></td><td>No compara, pero trata del tema: una cifra, un mecanismo, un antes y después.</td></tr>
+            <tr><td><b>4 · No se sostiene</b></td><td>La evidencia no tiene relación lógica con lo que se afirma, como una opinión.</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="fuente">Elaboración propia, a partir del informe del RP1, GEP201 (2026).</p>
+      <p class="cuerpo ancho">Escala del curso, no de la Directiva. El nivel califica la evidencia; no dice si la relación es verdadera.</p>
+      <p class="fuente">Preguntas y niveles: elaboración propia, a partir del informe del RP1, GEP201 (2026). Directiva N.º 0001-2026-EF/50.01, Anexo I (MEF, 2026): clasifica el tipo de evidencia.</p>
     </div>
-    <span class="pie">08 / 39</span>
+    <span class="pie">14 / 44</span>
   </section>
 
-  <!-- 9 · una valoración modelada, con un caso ajeno a Altamar -->
+  <!-- 14 · valoración modelada con las cámaras, con los datos a la vista -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
-      <h2 class="titulo">Valorar es graduar y reparar: esta relación trae una asociación y pide una causa</h2>
-      <div class="columnas" style="--n: 3">
-        <div><span class="n">1</span><div><h3>La relación</h3><p>Menos hierro en la dieta aumenta la anemia en niños de 6 a 12 meses. La evidencia: una encuesta a 40 hogares de un distrito, donde los niños con anemia comen menos alimentos con hierro.</p></div></div>
-        <div><span class="n">2</span><div><h3>El nivel</h3><p>Es solo hipótesis. La relación pide una causa y la evidencia trae una asociación, de 40 hogares de un solo distrito.</p></div></div>
-        <div><span class="n">3</span><div><h3>La reparación</h3><p>Subiría de nivel con una evaluación que compare niños con y sin más hierro en la dieta, o con una encuesta que cubra toda la región.</p></div></div>
+      <h2 class="titulo">¿Qué nivel de respaldo merece la relación «las cámaras reducen las muertes y los heridos graves»?</h2>
+      <p class="cuerpo ancho"><b>Los datos:</b> 35 estudios con control, de 11 a 44&nbsp;% menos muertos y heridos graves cerca de las cámaras, ninguno de un país de ingreso bajo.</p>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Pregunta</th><th scope="col">Para las cámaras</th></tr></thead>
+          <tbody>
+            <tr><td><b>1 · ¿Cuenta o explica?</b></td><td><span class="step">Explica: dice que un factor, las cámaras, produce un efecto.</span></td></tr>
+            <tr><td><b>2 · ¿Con quién compara?</b></td><td><span class="step">Con otros tramos sin cámaras: peldaño 3, resumido sin combinar los estudios.</span></td></tr>
+            <tr><td><b>3 · ¿A quiénes alcanza y cuántos coinciden?</b></td><td><span class="step">A países de ingreso alto y medio, no bajo. Los 35 van en la misma dirección, con efectos muy distintos.</span></td></tr>
+          </tbody>
+        </table>
       </div>
-      <p class="fuente">Caso y cifras ilustrativos. Elaboración propia.</p>
+      <p class="cuerpo ancho destacado step">Nivel 2, con matiz: compara con otros tramos, pero ninguno es de ingreso bajo y el efecto va de 11 a 44&nbsp;%. Subiría con un estudio en una carretera peruana, con tramos de control, que dé un efecto con el cual fijar una meta.</p>
+      <p class="fuente">Valoración propia, con los resultados de Wilson et al. (2010), Cochrane Database of Systematic Reviews, CD004607.</p>
     </div>
-    <span class="pie">09 / 39</span>
+    <span class="pie">15 / 44</span>
   </section>
 
-  <!-- 10 · actividad: Altamar en tríos -->
+  <!-- 15 · actividad en grupos: la consigna -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Actividad en trío <span class="sub">· 13 minutos</span></p>
-      <h2 class="titulo">Valoren el respaldo de las cinco relaciones causales de Altamar y digan cómo las repararían</h2>
-      <ol class="cuerpo">
-        <li><b>Qué nivel de la escala merece cada relación</b></li>
-        <li><b>Por qué no alcanza, en una frase</b></li>
-        <li><b>Cómo la repararían: qué evidencia la subiría de nivel</b></li>
+      <p class="kicker">Actividad en grupos <span class="sub">· 10 minutos</span></p>
+      <h2 class="titulo">Valoren dos relaciones causales con la escalera y las tres preguntas, como hicimos con las cámaras</h2>
+      <p class="cuerpo ancho"><b>Objetivo.</b> Practicar con evidencia real lo que hicimos con las cámaras: graduar el respaldo de una relación causal y decir cómo se repararía.</p>
+      <p class="cuerpo ancho"><b>Cómo trabajamos.</b> Cada grupo recibe una hoja con dos relaciones y su evidencia. Trabajan juntos; después cada grupo defiende su nivel ante la clase.</p>
+      <ol class="cuerpo ancho">
+        <li><b>¿En qué peldaño está la evidencia? ¿A quiénes alcanza y cuántos estudios coinciden?</b></li>
+        <li><b>Decidan el nivel y escriban por qué no alcanza, en una frase</b></li>
+        <li><b>Escriban qué la subiría de nivel: otro peldaño o más alcance</b></li>
       </ol>
-      <p class="cuerpo destacado">Recuerden: «no se sostiene con esta evidencia» no es lo mismo que «es falsa».</p>
+      <p class="cuerpo ancho destacado">Pueden usar la tarjeta con la escalera y los niveles.</p>
     </div>
-    <span class="pie">10 / 39</span>
+    <span class="pie">16 / 44</span>
   </section>
 
-  <!-- 11 · las cinco relaciones causales de Altamar (sin la clave) -->
+  <!-- 17 · plenario: las dos relaciones, sin la evidencia (está en la hoja) -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Parte 1 <span class="sub">· Valorar el respaldo</span></p>
-      <h2 class="titulo">¿Qué nivel de respaldo merece cada relación causal de Altamar?</h2>
-      <div class="tabla-contenedor">
-        <table class="tabla">
-          <thead><tr><th scope="col">Relación causal</th><th scope="col">Evidencia que trae</th></tr></thead>
-          <tbody>
-            <tr><td><b>1 · La pobreza del hogar aumenta la deserción</b></td><td>Encuesta de hogares representativa por departamento: la deserción del quintil más pobre triplica la del más rico. Evaluación experimental de transferencias en secundaria rural de otro país de la región: redujo la deserción.</td></tr>
-            <tr><td><b>2 · La distancia a la escuela aumenta la deserción</b></td><td>Censo escolar: donde el traslado promedio pasa de una hora, la deserción es el doble.</td></tr>
-            <tr><td><b>3 · El trabajo en la cosecha aumenta la deserción</b></td><td>Estudio de caso en una comunidad, con 25 entrevistas: los jóvenes dejan la escuela para trabajar en la cosecha.</td></tr>
-            <tr><td><b>4 · El embarazo adolescente aumenta la deserción</b></td><td>Desde 2022 la región ejecuta un programa de prevención del embarazo adolescente, «lo que confirma que es una causa importante».</td></tr>
-            <tr><td><b>5 · El acoso escolar no es una causa de la deserción</b></td><td>Encuesta a 40 estudiantes de dos colegios urbanos de la capital regional: ninguno reportó acoso.</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="fuente">Caso ficticio, con cifras ilustrativas. Elaboración propia.</p>
-    </div>
-    <span class="pie">11 / 39</span>
-  </section>
-
-  <!-- 12 · plenario -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Plenario <span class="sub">· 10 minutos</span></p>
+      <p class="kicker">Plenario <span class="sub">· 6 minutos</span></p>
       <h2 class="titulo">Voten el nivel de cada relación causal y discutan solo donde la clase se dividió</h2>
-      <ol class="cuerpo">
-        <li><b>Voto a mano alzada, relación por relación</b></li>
+      <ul class="cuerpo ancho">
+        <li><b>Relación 1:</b> usar casco reduce el riesgo de morir de los motociclistas que se accidentan</li>
+        <li><b>Relación 2:</b> el alcohol es una causa menor de los siniestros de tránsito</li>
+      </ul>
+      <ol class="cuerpo ancho">
+        <li><b>Votan a mano alzada y a la vez, relación por relación</b></li>
         <li><b>Se discuten solo las que dividieron a la clase</b></li>
-        <li><b>El sorteo elige quién justifica cada voto</b></li>
+        <li><b>El sorteo elige quién justifica cada voto con la escalera y las tres preguntas</b></li>
       </ol>
     </div>
-    <span class="pie">12 / 39</span>
+    <span class="pie">17 / 44</span>
   </section>
 
-  <!-- 13 · actividad: volver a lo propio -->
+  <!-- 18 · lo propio: una relación del modelo del RP2 -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Actividad en trío <span class="sub">· 9 minutos</span></p>
-      <h2 class="titulo">Valoren la relación causal más débil de sus avances y escriban cómo la repararían</h2>
-      <ol class="cuerpo">
-        <li><b>Elijan la relación causal más débil de su modelo explicativo</b></li>
-        <li><b>Valoren su respaldo con la escala</b></li>
-        <li><b>Escriban qué evidencia la subiría de nivel</b></li>
+      <p class="kicker">Actividad en grupos <span class="sub">· 8 minutos</span></p>
+      <h2 class="titulo">Tomen una relación causal del modelo que desarrollan para el RP2 y valoren su respaldo</h2>
+      <p class="cuerpo ancho"><b>Lo que ya hicieron.</b> En la sesión 8, en «La causa en el banquillo», analizaron los factores de su modelo y los otros grupos los objetaron.</p>
+      <ol class="cuerpo ancho">
+        <li><b>Escriban como relación causal el factor que más pesa en su modelo</b></li>
+        <li><b>Si ya tiene un estudio: valoren su respaldo con las tres preguntas</b></li>
+        <li><b>Si no: escriban qué evidencia necesitan y dónde la buscarían</b></li>
       </ol>
-      <p class="cuerpo destacado">La relación que reparen hoy es la que seguirán desarrollando en sus entregas.</p>
+      <p class="cuerpo ancho destacado">Es el siguiente paso de su RP2, que se entrega el lunes.</p>
     </div>
-    <span class="pie">13 / 39</span>
+    <span class="pie">18 / 44</span>
   </section>
 
-  <!-- 14 · ticket individual -->
+  <!-- 19 · ticket individual por QR (el código se inserta con la URL del formulario) -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Ticket individual <span class="sub">· 3 minutos</span></p>
-      <h2 class="titulo">Den un ejemplo de una afirmación que podría ser cierta y, aun así, no sostenerse con su evidencia</h2>
-      <p class="cuerpo">Por escrito y de forma individual.</p>
+      <p class="kicker">Ticket individual <span class="sub">· durante el receso</span></p>
+      <h2 class="titulo">Escriban un ejemplo de una afirmación que podría ser cierta y, aun así, no sostenerse con su evidencia</h2>
+      <div class="qr-campo">
+        <div><p class="cuerpo ancho">Desde el celular, sin nombre. Al volver, leemos dos.</p></div>
+        <svg class="qr" viewBox="0 0 41 41" role="img" aria-label="Código QR hacia docs.google.com/forms/d/e/1FAIpQLScV6f_zNEZ_pL3oa7FK3j0fCuA2Jm9bnDVG9deZphPTphKjIw/viewform" shape-rendering="crispEdges" style="--qr-modulos: 41"><path fill="currentColor" d="M0,0h7v1h-7zM9,0h1v1h-1zM11,0h1v1h-1zM13,0h1v1h-1zM15,0h1v1h-1zM18,0h1v1h-1zM22,0h1v1h-1zM25,0h1v1h-1zM28,0h1v1h-1zM32,0h1v1h-1zM34,0h7v1h-7zM0,1h1v1h-1zM6,1h1v1h-1zM8,1h1v1h-1zM11,1h1v1h-1zM13,1h1v1h-1zM16,1h2v1h-2zM20,1h1v1h-1zM22,1h1v1h-1zM24,1h1v1h-1zM26,1h1v1h-1zM28,1h1v1h-1zM30,1h1v1h-1zM34,1h1v1h-1zM40,1h1v1h-1zM0,2h1v1h-1zM2,2h3v1h-3zM6,2h1v1h-1zM8,2h4v1h-4zM13,2h2v1h-2zM16,2h3v1h-3zM21,2h4v1h-4zM26,2h2v1h-2zM31,2h1v1h-1zM34,2h1v1h-1zM36,2h3v1h-3zM40,2h1v1h-1zM0,3h1v1h-1zM2,3h3v1h-3zM6,3h1v1h-1zM8,3h2v1h-2zM11,3h1v1h-1zM14,3h3v1h-3zM19,3h1v1h-1zM22,3h1v1h-1zM24,3h2v1h-2zM28,3h2v1h-2zM31,3h2v1h-2zM34,3h1v1h-1zM36,3h3v1h-3zM40,3h1v1h-1zM0,4h1v1h-1zM2,4h3v1h-3zM6,4h1v1h-1zM10,4h1v1h-1zM13,4h1v1h-1zM16,4h3v1h-3zM20,4h2v1h-2zM23,4h1v1h-1zM26,4h3v1h-3zM32,4h1v1h-1zM34,4h1v1h-1zM36,4h3v1h-3zM40,4h1v1h-1zM0,5h1v1h-1zM6,5h1v1h-1zM10,5h2v1h-2zM14,5h1v1h-1zM17,5h1v1h-1zM20,5h1v1h-1zM22,5h1v1h-1zM24,5h3v1h-3zM28,5h1v1h-1zM32,5h1v1h-1zM34,5h1v1h-1zM40,5h1v1h-1zM0,6h7v1h-7zM8,6h1v1h-1zM10,6h1v1h-1zM12,6h1v1h-1zM14,6h1v1h-1zM16,6h1v1h-1zM18,6h1v1h-1zM20,6h1v1h-1zM22,6h1v1h-1zM24,6h1v1h-1zM26,6h1v1h-1zM28,6h1v1h-1zM30,6h1v1h-1zM32,6h1v1h-1zM34,6h7v1h-7zM8,7h1v1h-1zM11,7h6v1h-6zM20,7h1v1h-1zM22,7h2v1h-2zM26,7h1v1h-1zM30,7h1v1h-1zM0,8h1v1h-1zM6,8h1v1h-1zM8,8h1v1h-1zM11,8h2v1h-2zM14,8h1v1h-1zM17,8h1v1h-1zM24,8h4v1h-4zM29,8h1v1h-1zM33,8h2v1h-2zM37,8h3v1h-3zM1,9h2v1h-2zM5,9h1v1h-1zM8,9h1v1h-1zM11,9h1v1h-1zM13,9h1v1h-1zM16,9h5v1h-5zM22,9h2v1h-2zM25,9h3v1h-3zM30,9h2v1h-2zM34,9h3v1h-3zM2,10h1v1h-1zM6,10h2v1h-2zM9,10h1v1h-1zM11,10h4v1h-4zM17,10h2v1h-2zM20,10h1v1h-1zM22,10h1v1h-1zM24,10h1v1h-1zM26,10h2v1h-2zM29,10h1v1h-1zM32,10h2v1h-2zM35,10h1v1h-1zM3,11h1v1h-1zM5,11h1v1h-1zM7,11h7v1h-7zM18,11h1v1h-1zM20,11h1v1h-1zM27,11h2v1h-2zM30,11h3v1h-3zM35,11h3v1h-3zM0,12h1v1h-1zM2,12h2v1h-2zM6,12h3v1h-3zM11,12h2v1h-2zM14,12h2v1h-2zM17,12h1v1h-1zM21,12h1v1h-1zM24,12h2v1h-2zM28,12h2v1h-2zM32,12h1v1h-1zM34,12h2v1h-2zM39,12h2v1h-2zM0,13h5v1h-5zM8,13h2v1h-2zM16,13h1v1h-1zM21,13h3v1h-3zM26,13h3v1h-3zM30,13h1v1h-1zM32,13h1v1h-1zM34,13h1v1h-1zM36,13h5v1h-5zM0,14h2v1h-2zM3,14h5v1h-5zM9,14h1v1h-1zM11,14h2v1h-2zM14,14h3v1h-3zM20,14h1v1h-1zM22,14h1v1h-1zM24,14h2v1h-2zM27,14h2v1h-2zM30,14h1v1h-1zM33,14h1v1h-1zM36,14h2v1h-2zM39,14h1v1h-1zM3,15h3v1h-3zM7,15h2v1h-2zM12,15h1v1h-1zM15,15h1v1h-1zM18,15h1v1h-1zM20,15h1v1h-1zM22,15h3v1h-3zM26,15h1v1h-1zM28,15h1v1h-1zM30,15h4v1h-4zM35,15h4v1h-4zM40,15h1v1h-1zM0,16h1v1h-1zM2,16h1v1h-1zM6,16h2v1h-2zM11,16h1v1h-1zM13,16h1v1h-1zM16,16h2v1h-2zM20,16h3v1h-3zM24,16h1v1h-1zM26,16h1v1h-1zM29,16h1v1h-1zM31,16h1v1h-1zM33,16h1v1h-1zM35,16h1v1h-1zM37,16h2v1h-2zM40,16h1v1h-1zM0,17h3v1h-3zM4,17h1v1h-1zM7,17h1v1h-1zM10,17h1v1h-1zM14,17h3v1h-3zM18,17h2v1h-2zM21,17h1v1h-1zM23,17h1v1h-1zM28,17h1v1h-1zM30,17h7v1h-7zM40,17h1v1h-1zM1,18h4v1h-4zM6,18h1v1h-1zM9,18h1v1h-1zM12,18h1v1h-1zM16,18h4v1h-4zM23,18h1v1h-1zM27,18h1v1h-1zM31,18h1v1h-1zM35,18h2v1h-2zM40,18h1v1h-1zM0,19h1v1h-1zM2,19h3v1h-3zM8,19h1v1h-1zM10,19h1v1h-1zM12,19h2v1h-2zM19,19h3v1h-3zM24,19h1v1h-1zM26,19h1v1h-1zM28,19h1v1h-1zM31,19h1v1h-1zM33,19h2v1h-2zM36,19h2v1h-2zM40,19h1v1h-1zM2,20h2v1h-2zM5,20h2v1h-2zM9,20h1v1h-1zM11,20h3v1h-3zM15,20h2v1h-2zM18,20h1v1h-1zM21,20h3v1h-3zM25,20h6v1h-6zM32,20h1v1h-1zM35,20h1v1h-1zM38,20h2v1h-2zM1,21h1v1h-1zM3,21h1v1h-1zM7,21h3v1h-3zM11,21h2v1h-2zM15,21h2v1h-2zM21,21h6v1h-6zM29,21h4v1h-4zM35,21h2v1h-2zM0,22h1v1h-1zM2,22h1v1h-1zM5,22h2v1h-2zM9,22h1v1h-1zM11,22h3v1h-3zM16,22h2v1h-2zM22,22h1v1h-1zM24,22h4v1h-4zM29,22h1v1h-1zM32,22h1v1h-1zM36,22h1v1h-1zM1,23h3v1h-3zM5,23h1v1h-1zM7,23h5v1h-5zM13,23h1v1h-1zM15,23h1v1h-1zM18,23h3v1h-3zM23,23h1v1h-1zM26,23h1v1h-1zM31,23h2v1h-2zM34,23h4v1h-4zM39,23h2v1h-2zM1,24h1v1h-1zM3,24h1v1h-1zM6,24h2v1h-2zM13,24h4v1h-4zM20,24h1v1h-1zM23,24h2v1h-2zM27,24h2v1h-2zM32,24h1v1h-1zM34,24h1v1h-1zM38,24h3v1h-3zM0,25h2v1h-2zM4,25h2v1h-2zM8,25h1v1h-1zM13,25h1v1h-1zM15,25h7v1h-7zM23,25h1v1h-1zM27,25h1v1h-1zM30,25h2v1h-2zM36,25h2v1h-2zM39,25h2v1h-2zM0,26h7v1h-7zM8,26h1v1h-1zM10,26h4v1h-4zM15,26h3v1h-3zM20,26h1v1h-1zM22,26h1v1h-1zM25,26h1v1h-1zM27,26h2v1h-2zM30,26h1v1h-1zM32,26h5v1h-5zM0,27h2v1h-2zM5,27h1v1h-1zM9,27h1v1h-1zM11,27h1v1h-1zM13,27h1v1h-1zM19,27h1v1h-1zM23,27h1v1h-1zM27,27h2v1h-2zM31,27h1v1h-1zM34,27h1v1h-1zM36,27h3v1h-3zM1,28h1v1h-1zM4,28h7v1h-7zM15,28h1v1h-1zM17,28h1v1h-1zM19,28h1v1h-1zM22,28h1v1h-1zM25,28h3v1h-3zM31,28h1v1h-1zM37,28h4v1h-4zM0,29h1v1h-1zM2,29h1v1h-1zM4,29h2v1h-2zM7,29h2v1h-2zM10,29h2v1h-2zM13,29h2v1h-2zM20,29h1v1h-1zM22,29h2v1h-2zM25,29h1v1h-1zM27,29h2v1h-2zM30,29h3v1h-3zM35,29h2v1h-2zM0,30h3v1h-3zM4,30h3v1h-3zM8,30h1v1h-1zM11,30h2v1h-2zM14,30h4v1h-4zM20,30h2v1h-2zM23,30h1v1h-1zM26,30h3v1h-3zM31,30h1v1h-1zM33,30h1v1h-1zM40,30h1v1h-1zM0,31h1v1h-1zM2,31h2v1h-2zM5,31h1v1h-1zM11,31h1v1h-1zM15,31h1v1h-1zM19,31h2v1h-2zM23,31h1v1h-1zM27,31h2v1h-2zM30,31h2v1h-2zM34,31h2v1h-2zM0,32h1v1h-1zM2,32h2v1h-2zM5,32h2v1h-2zM9,32h2v1h-2zM12,32h2v1h-2zM16,32h1v1h-1zM19,32h1v1h-1zM21,32h3v1h-3zM25,32h4v1h-4zM31,32h6v1h-6zM38,32h2v1h-2zM8,33h2v1h-2zM12,33h1v1h-1zM15,33h1v1h-1zM17,33h1v1h-1zM23,33h2v1h-2zM26,33h2v1h-2zM29,33h4v1h-4zM36,33h2v1h-2zM39,33h1v1h-1zM0,34h7v1h-7zM10,34h2v1h-2zM15,34h3v1h-3zM21,34h1v1h-1zM25,34h5v1h-5zM31,34h2v1h-2zM34,34h1v1h-1zM36,34h3v1h-3zM0,35h1v1h-1zM6,35h1v1h-1zM11,35h1v1h-1zM17,35h4v1h-4zM22,35h1v1h-1zM27,35h1v1h-1zM32,35h1v1h-1zM36,35h2v1h-2zM39,35h2v1h-2zM0,36h1v1h-1zM2,36h3v1h-3zM6,36h1v1h-1zM9,36h1v1h-1zM11,36h2v1h-2zM14,36h1v1h-1zM16,36h2v1h-2zM19,36h4v1h-4zM27,36h1v1h-1zM31,36h7v1h-7zM0,37h1v1h-1zM2,37h3v1h-3zM6,37h1v1h-1zM9,37h1v1h-1zM11,37h3v1h-3zM15,37h1v1h-1zM17,37h2v1h-2zM20,37h1v1h-1zM22,37h1v1h-1zM25,37h1v1h-1zM27,37h2v1h-2zM31,37h2v1h-2zM35,37h1v1h-1zM40,37h1v1h-1zM0,38h1v1h-1zM2,38h3v1h-3zM6,38h1v1h-1zM9,38h2v1h-2zM13,38h4v1h-4zM25,38h6v1h-6zM32,38h5v1h-5zM0,39h1v1h-1zM6,39h1v1h-1zM9,39h1v1h-1zM11,39h2v1h-2zM15,39h1v1h-1zM17,39h4v1h-4zM23,39h2v1h-2zM28,39h1v1h-1zM33,39h2v1h-2zM36,39h3v1h-3zM40,39h1v1h-1zM0,40h7v1h-7zM8,40h1v1h-1zM10,40h2v1h-2zM15,40h1v1h-1zM18,40h2v1h-2zM22,40h1v1h-1zM24,40h3v1h-3zM28,40h2v1h-2zM35,40h3v1h-3z"/></svg>
+      </div>
     </div>
-    <span class="pie">14 / 39</span>
+    <span class="pie">19 / 44</span>
   </section>
 
-  <!-- 15 · divisor de la parte 2 -->
-  <section class="slide divisor" style="--parte: 2; --partes: 3">
+  <!-- 20 · divisor de la parte 2 -->
+  <section class="slide divisor" style="--parte: 2; --partes: 4">
     <span class="pestana" aria-hidden="true">2</span>
     <div class="pad">
       <p class="kicker">Parte 2</p>
       <h2 class="titulo xl">De la causa a la intervención</h2>
     </div>
-    <span class="pie">15 / 39</span>
+    <span class="pie">20 / 44</span>
   </section>
 
-  <!-- 16 · puente: el modelo explicativo del curso con el camino que tiene evidencia -->
+  <!-- 21 · puente: qué se hace con el nivel de respaldo -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
-      <h2 class="titulo">Solo se interviene sobre una relación causal que se sostiene con evidencia</h2>
-      <figure class="red" style="--n: 3; --plantilla: auto auto minmax(0, 1fr)">
-        <p class="cabecera" style="--col: 1" aria-hidden="true">Prácticas de cuidado</p>
-        <p class="cabecera" style="--col: 2" aria-hidden="true">Infecciones y dieta</p>
-        <p class="cabecera" style="--col: 3" aria-hidden="true">Condición de interés</p>
-        <div class="nodo camino" id="d16-lav" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">↓ Lavado de manos</p><p class="detalle">Madres de niños menores de 24 meses</p></div>
-        <div class="nodo" id="d16-lac" style="--col: 1; --fila: 3" aria-hidden="true"><p class="nombre">↓ Lactancia materna exclusiva</p><p class="detalle">Madres de niños menores de 6 meses</p></div>
-        <div class="nodo sin-evidencia" id="d16-hie" style="--col: 1; --fila: 4" aria-hidden="true"><p class="nombre">↓ Hierro y zinc en la dieta</p><p class="detalle">Madres de niños de 6 a 12 meses</p></div>
-        <div class="nodo camino" id="d16-dia" style="--col: 2; --fila: 2" aria-hidden="true"><p class="nombre">↑ Diarrea aguda</p><p class="detalle">Niños de 6 a 24 meses</p></div>
-        <div class="nodo" id="d16-die" style="--col: 2; --fila: 4" aria-hidden="true"><p class="nombre">↓ Calidad de la dieta</p><p class="detalle">Niños de 6 a 12 meses</p></div>
-        <div class="nodo final camino" id="d16-dci" style="--col: 3; --fila: 2; --filas: 3" aria-hidden="true"><p class="nombre">↑ Desnutrición crónica</p><p class="detalle">Niños menores de 60 meses</p></div>
-        <p class="leyenda" style="--col: 3; --fila: 5"><span><span class="muestra" aria-hidden="true"></span>Con evidencia</span><span><span class="muestra fuerte" aria-hidden="true"></span>Pesa más</span><span><span class="muestra sin-evidencia" aria-hidden="true"></span>Sin evidencia</span><span><span class="muestra camino" aria-hidden="true"></span>Camino elegido</span></p>
-        <ul class="relaciones">
-          <li data-de="d16-lav" data-a="d16-dia" class="camino">Menos lavado de manos (madres de niños menores de 24 meses) → más diarrea aguda (con evidencia; camino elegido)</li>
-          <li data-de="d16-lac" data-a="d16-dia">Menos lactancia materna exclusiva (madres de niños menores de 6 meses) → más diarrea aguda (con evidencia)</li>
-          <li data-de="d16-hie" data-a="d16-die" class="sin-evidencia">Menos hierro y zinc en la dieta → peor calidad de la dieta (se buscó evidencia y no se encontró)</li>
-          <li data-de="d16-dia" data-a="d16-dci" class="fuerte camino">Más diarrea aguda → más desnutrición crónica (la causa que más pesa; camino elegido)</li>
-          <li data-de="d16-die" data-a="d16-dci">Peor calidad de la dieta → más desnutrición crónica (con evidencia)</li>
-        </ul>
-      </figure>
-      <p class="fuente">UNICEF (1990). Strategy for improved nutrition of children and women in developing countries; modelo adaptado en el curso (sesión 5).</p>
-    </div>
-    <span class="pie">16 / 39</span>
-  </section>
-
-  <!-- 17 · predicción: caso del control de precios de medicamentos (sin respuesta revelada) -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
-      <h2 class="titulo">Si el Estado fija un precio máximo a los medicamentos, ¿qué pasa con el acceso de los hogares?</h2>
-      <p class="cuerpo">Voten antes de ver cualquier dato.</p>
-      <div class="tarjetas alternativas" style="--n: 3; --filas: 3">
-        <div class="tarjeta"><p class="kicker">A</p><p class="nombre">Mejora</p><p>Bajan los precios y compran más hogares.</p></div>
-        <div class="tarjeta"><p class="kicker">B</p><p class="nombre">No cambia</p><p>Los hogares ya compraban lo que necesitaban.</p></div>
-        <div class="tarjeta"><p class="kicker">C</p><p class="nombre">Empeora</p><p>Hay menos oferta y cuesta más conseguirlos.</p></div>
+      <h2 class="titulo">Se prioriza intervenir sobre las relaciones causales que cuentan con evidencia que las sostiene</h2>
+      <div class="tarjetas" style="--n: 2; --filas: 3">
+        <div class="tarjeta"><p class="kicker">Niveles 1 y 2</p><p class="nombre">La relación tiene respaldo</p><p>Se busca una intervención que modifique el factor y se justifica con su eficacia, declarando el límite del nivel 2.</p></div>
+        <div class="tarjeta"><p class="kicker">Niveles 3 y 4</p><p class="nombre">La relación tiene respaldo débil</p><p>Primero se refuerza la evidencia: qué la subiría de nivel y dónde se buscaría.</p></div>
       </div>
-      <p class="fuente">Predicción de la clase, basada en razonamiento y sin fuente verificada.</p>
+      <p class="fuente">Elaboración propia, a partir del artículo 12 de la Directiva (MEF, 2026): las intervenciones se seleccionan según la mejor evidencia disponible.</p>
     </div>
-    <span class="pie">17 / 39</span>
+    <span class="pie">21 / 44</span>
   </section>
 
-  <!-- 18 · definición formal: el modelo prescriptivo -->
+  <!-- 22 · predicción: ¿qué intervención no mostró efecto? -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Tres intervenciones para reducir las víctimas en carretera: ¿cuál no mostró efecto en la evidencia?</h2>
+      <p class="cuerpo">Voten antes de ver cualquier dato.</p>
+      <div class="tarjetas alternativas" style="--n: 3; --filas: 4">
+        <div class="tarjeta"><p class="kicker">A</p><p class="nombre">Cámaras de velocidad</p><p>En los tramos de mayor siniestralidad.</p></div>
+        <div class="tarjeta"><p class="kicker">B</p><p class="nombre">Capacitar a conductores</p><p>Cursos para quienes ya tienen licencia.</p><span class="etiqueta critica step">Sin efecto en los choques</span></div>
+        <div class="tarjeta"><p class="kicker">C</p><p class="nombre">Exigir el casco</p><p>A quienes conducen motocicleta.</p></div>
+      </div>
+      <p class="fuente">Predicción de la clase. La evidencia viene de Wilson et al. (2010), Ker et al. (2003) y Liu et al. (2008), Cochrane Database of Systematic Reviews.</p>
+    </div>
+    <span class="pie">22 / 44</span>
+  </section>
+
+  <!-- 23 · definición formal: el modelo prescriptivo -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
@@ -1325,64 +1499,210 @@ body.presenting .slide.active {
       </figure>
       <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 12.</p>
     </div>
-    <span class="pie">18 / 39</span>
+    <span class="pie">23 / 44</span>
   </section>
 
-  <!-- 19 · el modelo prescriptivo: intervención más cadena causal -->
+  <!-- 24 · intervenir: el qué y el a quién -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
       <h2 class="titulo">Intervenir es actuar sobre un factor del modelo explicativo, diciendo qué se hace y a quién</h2>
       <ol class="secuencia" style="--n: 4">
-        <li><p class="kicker">Intervención</p><p class="nombre">Consejería a madres</p><p class="detalle">Madres de niños menores de 24 meses</p></li>
-        <li><p class="kicker">Factor</p><p class="nombre">Más lavado de manos</p><p class="detalle">Madres de niños menores de 24 meses</p></li>
-        <li><p class="kicker">Factor</p><p class="nombre">Menos diarrea aguda</p><p class="detalle">Niños de 6 a 24 meses</p></li>
-        <li><p class="kicker">Condición de interés</p><p class="nombre">Menos desnutrición crónica</p><p class="detalle">Niños menores de 60 meses</p></li>
+        <li><p class="kicker">Intervención</p><p class="nombre">Cámaras de velocidad</p><p class="detalle">Conductores en tramos de alta siniestralidad</p></li>
+        <li><p class="kicker">Factor</p><p class="nombre">Menos exceso de velocidad</p><p class="detalle">Conductores en esos tramos</p></li>
+        <li><p class="kicker">Factor</p><p class="nombre">Menos siniestros graves</p><p class="detalle">Personas que circulan por esos tramos</p></li>
+        <li><p class="kicker">Condición de interés</p><p class="nombre">Menos muertos y heridos graves</p><p class="detalle">Personas que circulan por carreteras</p></li>
       </ol>
-      <p class="fuente">Ejemplo del curso (Canva, sesión 5), con el marco de UNICEF (1990). La eficacia de la intervención no se evalúa aquí.</p>
+      <p class="fuente">Ejemplo ilustrativo del curso. La evidencia de la intervención se valoró en la Parte 1 (Wilson et al., 2010).</p>
     </div>
-    <span class="pie">19 / 39</span>
+    <span class="pie">24 / 44</span>
   </section>
 
-  <!-- 20 · las dos búsquedas sistemáticas -->
+  <!-- 25 · las dos búsquedas, con su pregunta PICO -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
-      <h2 class="titulo">Hay que buscar dos cosas: lo eficaz que no se hace y lo que se hace sin ser eficaz</h2>
+      <h2 class="titulo">Se buscan dos cosas con una pregunta PICO: lo eficaz que no se hace y lo que se hace sin ser eficaz</h2>
       <div class="tarjetas" style="--n: 2; --filas: 4">
-        <div class="tarjeta"><p class="kicker">Búsqueda 1</p><p class="nombre">Intervenciones eficaces</p><p>Qué intervenciones tienen evidencia de que mueven el factor.</p><p>Lo que aparece: eficaces que todavía no se implementan.</p></div>
-        <div class="tarjeta"><p class="kicker">Búsqueda 2</p><p class="nombre">Eficacia de las vigentes</p><p>Qué muestra la evidencia sobre lo que hoy se ejecuta.</p><p>Lo que aparece: vigentes que no son eficaces.</p></div>
+        <div class="tarjeta"><p class="kicker">Búsqueda 1</p><p class="nombre">Intervenciones eficaces</p><p>¿Qué intervención mueve el factor? P: conductores en tramos críticos. I: cualquier medida para bajar la velocidad. C: sin la medida. O: velocidad y siniestros graves.</p><p>Lo que aparece: las cámaras, con 35 estudios.</p></div>
+        <div class="tarjeta"><p class="kicker">Búsqueda 2</p><p class="nombre">Eficacia de las vigentes</p><p>¿Qué muestra la evidencia de lo que ya se ejecuta? P: conductores con licencia. I: capacitación. C: sin capacitación. O: choques.</p><p>Lo que aparece: no redujo los choques de forma segura (2&nbsp;% menos, entre 4&nbsp;% menos y 1&nbsp;% más).</p></div>
       </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 8.1.a y Anexo II, sección III; Canva del curso, sesión 5.</p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 8.1.a y Anexo II, sección III; método PICO de la sesión 8. Ejemplos: Wilson et al. (2010), CD004607; Ker et al. (2003), CD003734.</p>
     </div>
-    <span class="pie">20 / 39</span>
+    <span class="pie">25 / 44</span>
   </section>
 
-  <!-- 21 · priorizar: poco texto a propósito (brief 03) -->
+  <!-- 26 · las candidatas y lo que dice su evidencia -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
-      <h2 class="titulo">Las intervenciones se jerarquizan por su poder explicativo y el esfuerzo se concentra en muy pocas</h2>
-      <p class="cuerpo">Se ordenan de mayor a menor poder explicativo, conforme a la evidencia disponible. <b class="destacado">Muy pocas, bien implementadas.</b></p>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección III; concentrarse en pocas, del Canva del curso (sesión 5).</p>
+      <h2 class="titulo">La evidencia sostiene dos candidatas con límites y descarta una: la capacitación de conductores</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Intervención</th><th scope="col">Qué dice la evidencia</th><th scope="col">Lectura</th></tr></thead>
+          <tbody>
+            <tr><td><b>Cámaras de velocidad</b></td><td>35 estudios con control: de 11 a 44&nbsp;% menos choques con muertos o heridos graves cerca de las cámaras.</td><td>Candidata, con límite: el efecto no se puede fijar.</td></tr>
+            <tr><td><b>Exigir el casco</b></td><td>Meta-análisis de estudios observacionales: 42&nbsp;% menos riesgo de morir con casco.</td><td>Candidata, con límite: es observacional y mide el casco, no cómo lograr que se use.</td></tr>
+            <tr class="destacada"><td><b>Capacitar a conductores</b></td><td>Meta-análisis de 24 ensayos con sorteo: choques entre 4&nbsp;% menos y 1&nbsp;% más.</td><td>Descartada: no redujo los choques.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="fuente">Wilson et al. (2010), CD004607; Liu et al. (2008), CD004333; Ker et al. (2003), CD003734, Cochrane Database of Systematic Reviews. Aquí solo se compara la eficacia; la selección final también pesa el costo efectividad (artículo 12).</p>
     </div>
-    <span class="pie">21 / 39</span>
+    <span class="pie">26 / 44</span>
   </section>
 
-  <!-- 22 · divisor de la parte 3 -->
-  <section class="slide divisor" style="--parte: 3; --partes: 3">
+  <!-- 27 · jerarquizar: el peso del factor, con los límites de la cifra -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 2 <span class="sub">· De la causa a la intervención</span></p>
+      <h2 class="titulo">Las intervenciones se jerarquizan por el peso del factor que atacan y el esfuerzo se concentra en muy pocas</h2>
+      <div class="grafico-campo">
+        <p class="grafico-titulo">Peso de dos factores en los siniestros de 2024<span>Porcentaje de siniestros registrados con esa causa</span></p>
+        <dl class="barras" style="--valor-ancho: 5em"><dt>Exceso de velocidad</dt><dd style="--v: 1.000"><span class="barra destacada"></span><span class="valor">25,8 %</span></dd><dt>Ebriedad del conductor</dt><dd style="--v: 0.264"><span class="barra"></span><span class="valor">6,8 %</span></dd></dl>
+        <p class="lectura"><b>Velocidad pesa casi cuatro veces lo que ebriedad.</b> Es una cifra de magnitud, con los límites que vimos: ordena, no demuestra. Muy pocas intervenciones, bien implementadas.</p>
+      </div>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección III; concentrarse en pocas, del Canva del curso (sesión 5). Cifras: ONSV (2025), siniestros de 2024.</p>
+    </div>
+    <span class="pie">27 / 44</span>
+  </section>
+
+  <!-- 28 · divisor de la parte 3 -->
+  <section class="slide divisor" style="--parte: 3; --partes: 4">
     <span class="pestana" aria-hidden="true">3</span>
     <div class="pad">
       <p class="kicker">Parte 3</p>
       <h2 class="titulo xl">La teoría de cambio</h2>
     </div>
-    <span class="pie">22 / 39</span>
+    <span class="pie">28 / 44</span>
   </section>
 
-  <!-- 23 · definición formal: la teoría de cambio -->
+  <!-- 30 · las categorías de la teoría de cambio -->
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">La teoría de cambio es el argumento para pedir presupuesto: dice qué se entrega y qué cambia en cada paso</h2>
+      <ol class="secuencia" style="--n: 4">
+        <li><p class="kicker">Producto</p><p class="nombre">Lo que se entrega</p><p class="detalle">Bienes o servicios que recibe la población y que financia el presupuesto</p></li>
+        <li><p class="kicker">Resultado inmediato</p><p class="nombre">Lo que cambia en quien lo recibe</p><p class="detalle">Una conducta o una práctica</p></li>
+        <li><p class="kicker">Resultado intermedio</p><p class="nombre">Lo que cambia en los factores</p><p class="detalle">Las causas de la condición de interés</p></li>
+        <li><p class="kicker">Resultado final</p><p class="nombre">Lo que cambia en la condición</p><p class="detalle">El problema que motivó el programa</p></li>
+      </ol>
+      <p class="fuente">Elaboración propia, con el artículo 4, literales b y c, de la Directiva N.º 0001-2026-EF/50.01 (MEF, 2026) y la cadena de resultados del curso (Directiva 2020).</p>
+    </div>
+    <span class="pie">29 / 44</span>
+  </section>
+
+  <!-- 33 · el diseño completo: productos y tres niveles de resultados -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">La teoría de cambio ordena el programa en productos y tres niveles de resultados</h2>
+      <figure class="red" style="--n: 4; --plantilla: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.1fr) minmax(0, .85fr)">
+        <p class="cabecera" style="--col: 1" aria-hidden="true">Productos</p>
+        <p class="cabecera" style="--col: 2" aria-hidden="true">Resultados inmediatos</p>
+        <p class="cabecera" style="--col: 3" aria-hidden="true">Resultados intermedios</p>
+        <p class="cabecera" style="--col: 4" aria-hidden="true">Resultado final</p>
+        <div class="nodo" id="d33-fis" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">Fiscalización electrónica de la velocidad</p><p class="detalle">Conductores en tramos críticos</p></div>
+        <div class="nodo" id="d33-cas" style="--col: 1; --fila: 3" aria-hidden="true"><p class="nombre">Control y orientación sobre el casco</p><p class="detalle">Motociclistas</p></div>
+        <div class="nodo" id="d33-vel" style="--col: 2; --fila: 2" aria-hidden="true"><p class="nombre">↓ Velocidad de circulación</p><p class="detalle">Conductores en tramos críticos</p></div>
+        <div class="nodo" id="d33-uso" style="--col: 2; --fila: 3" aria-hidden="true"><p class="nombre">↑ Uso del casco</p><p class="detalle">Motociclistas</p></div>
+        <div class="nodo" id="d33-sin" style="--col: 3; --fila: 2" aria-hidden="true"><p class="nombre">↓ Siniestros graves por velocidad</p><p class="detalle">Personas en tramos críticos</p></div>
+        <div class="nodo" id="d33-cab" style="--col: 3; --fila: 3" aria-hidden="true"><p class="nombre">↓ Lesiones graves en la cabeza</p><p class="detalle">Motociclistas que se accidentan</p></div>
+        <div class="nodo final" id="d33-fin" style="--col: 4; --fila: 2; --filas: 2" aria-hidden="true"><p class="nombre">↓ Muertos y heridos graves</p><p class="detalle">Personas que circulan por carreteras</p></div>
+        <ul class="relaciones">
+          <li data-de="d33-fis" data-a="d33-vel">Fiscalización electrónica de la velocidad → menos velocidad de circulación de los conductores en tramos críticos</li>
+          <li data-de="d33-cas" data-a="d33-uso">Control y orientación sobre el casco → más uso del casco en motociclistas</li>
+          <li data-de="d33-vel" data-a="d33-sin">Menos velocidad de circulación → menos siniestros graves por velocidad</li>
+          <li data-de="d33-uso" data-a="d33-cab">Más uso del casco → menos lesiones graves en la cabeza de los motociclistas que se accidentan</li>
+          <li data-de="d33-sin" data-a="d33-fin">Menos siniestros graves por velocidad → menos muertos y heridos graves</li>
+          <li data-de="d33-cab" data-a="d33-fin">Menos lesiones graves en la cabeza → menos muertos y heridos graves</li>
+        </ul>
+      </figure>
+      <p class="fuente">Ejemplo ilustrativo del curso, con las intervenciones de la Parte 2. Niveles de resultado según la Directiva 2020.</p>
+    </div>
+    <span class="pie">30 / 44</span>
+  </section>
+
+  <!-- 35 · los supuestos entre pasos, con un caso real de supuesto roto -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">Entre dos pasos hay un supuesto, y el más frágil decide si el producto llega a cambiar algo</h2>
+      <ol class="secuencia" style="--n: 4">
+        <li><p class="kicker">Producto</p><p class="nombre">Capacitar a conductores con licencia</p>
+            <p class="supuesto"><span class="kicker">Supuesto</span> Aplican lo aprendido al manejar</p></li>
+        <li><p class="kicker">Resultado inmediato</p><p class="nombre">Menos infracciones</p><p class="detalle">4&nbsp;% menos: sí bajaron</p>
+            <p class="supuesto fragil"><span class="kicker">Supuesto frágil</span> Quien comete menos infracciones choca menos</p></li>
+        <li><p class="kicker">Resultado intermedio</p><p class="nombre">Menos choques</p><p class="detalle">2&nbsp;% menos: podría ser azar</p></li>
+        <li><p class="kicker">Resultado final</p><p class="nombre">Menos muertos y heridos graves</p><p class="detalle">Choques con heridos: sin reducción</p></li>
+      </ol>
+      <p class="fuente">Ker et al. (2003), Cochrane Database of Systematic Reviews, CD003734. Los supuestos son ilustrativos, basados en razonamiento.</p>
+    </div>
+    <span class="pie">31 / 44</span>
+  </section>
+
+  <!-- 37 · del supuesto frágil a la pregunta PICO -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <h2 class="titulo">De un supuesto frágil nace la pregunta de evidencia, y un estudio puede responderla</h2>
+      <p class="cuerpo destacado">¿Los conductores capacitados, que cometen menos infracciones, tienen menos choques que los no capacitados?</p>
+      <div class="columnas" style="--n: 4">
+        <div><div><h3>P · Quiénes</h3><p>Conductores con licencia.</p></div></div>
+        <div><div><h3>I · Qué reciben</h3><p>Capacitación posterior a la licencia.</p></div></div>
+        <div><div><h3>C · Sin qué</h3><p>Conductores no capacitados.</p></div></div>
+        <div><div><h3>O · Qué cambia</h3><p>Menos choques.</p></div></div>
+      </div>
+      <p class="fuente">Ejemplo con el método PICO de la sesión 8. La respuesta existe: Ker et al. (2003), Cochrane Database of Systematic Reviews, CD003734.</p>
+    </div>
+    <span class="pie">32 / 44</span>
+  </section>
+
+  <!-- 38 · aplicación en grupos -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Actividad en grupos <span class="sub">· 6 minutos</span></p>
+      <h2 class="titulo">Escriban el producto de la intervención que elegirían para su modelo y su supuesto más frágil</h2>
+      <p class="cuerpo ancho"><b>Objetivo.</b> Dar el primer paso de la teoría de cambio de su RP3.</p>
+      <ol class="cuerpo ancho">
+        <li><b>El producto, con sus tres elementos</b></li>
+        <li><b>El resultado inmediato que produce</b></li>
+        <li><b>El supuesto más frágil entre los dos, en una oración</b></li>
+      </ol>
+    </div>
+    <span class="pie">33 / 44</span>
+  </section>
+
+  <!-- 39 · lo que pide el RP3 -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
+      <h2 class="titulo">El RP3 pide la justificación técnica de su intervención y los indicadores del programa</h2>
+      <div class="columnas" style="--n: 2">
+        <div><span class="n">1</span><div><h3>Justificación técnica</h3><p>Seis apartados, de la relación causal elegida a los supuestos de la cadena. El sexto es breve.</p></div></div>
+        <div><span class="n">2</span><div><h3>Indicadores</h3><p>Los de desempeño y los de producción física, según la sección de indicadores del Anexo II de la Directiva.</p></div></div>
+      </div>
+      <p class="cuerpo">Documento en Word. Cierra el miércoles 11 de noviembre a las 17:00, con una oral breve ese día.</p>
+      <p class="fuente">MEF (2026), Directiva N.º 0001-2026-EF/50.01, artículos 11 a 13 y Anexos I y II.</p>
+    </div>
+    <span class="pie">34 / 44</span>
+  </section>
+
+  <!-- 35 · divisor de la sección de relectura -->
+  <section class="slide divisor" style="--parte: 4; --partes: 4">
+    <span class="pestana" aria-hidden="true">4</span>
+    <div class="pad">
+      <p class="kicker">Para releer</p>
+      <h2 class="titulo xl">Definiciones y pautas del RP3</h2>
+    </div>
+    <span class="pie">35 / 44</span>
+  </section>
+
+  <!-- 29 · definición formal: la teoría de cambio -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Para releer</p>
       <h2 class="titulo">La teoría de cambio formula el resultado que se debe lograr y los productos que se entregarán para ello</h2>
       <figure class="cita-sola">
         <figcaption class="kicker">Directiva, artículo 13.1</figcaption>
@@ -1390,133 +1710,72 @@ body.presenting .slide.active {
       </figure>
       <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 13.1.</p>
     </div>
-    <span class="pie">23 / 39</span>
+    <span class="pie">36 / 44</span>
   </section>
 
-  <!-- 24 · definición formal: producto y resultado específico -->
+  <!-- 31 · los productos agrupan intervenciones: la agrupación a la vista -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
-      <h2 class="titulo">La teoría de cambio es el argumento para pedir presupuesto: dice qué se entrega y qué cambia</h2>
-      <div class="tarjetas" style="--filas: 2">
-        <figure class="tarjeta cita"><figcaption class="kicker">Producto, artículo 4, literal c</figcaption><blockquote>«Conjunto articulado de bienes y/o servicios que recibe la población beneficiaria con el objetivo de generar un cambio. Los productos son la consecuencia de haber realizado, según las especificaciones técnicas, las actividades correspondientes en la magnitud y el tiempo previsto.»</blockquote></figure>
-        <figure class="tarjeta cita"><figcaption class="kicker">Resultado específico, artículo 4, literal b</figcaption><blockquote>«Representa el cambio que se debe lograr en la condición de interés.»</blockquote></figure>
-      </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 4, literales b y c.</p>
-    </div>
-    <span class="pie">24 / 39</span>
-  </section>
-
-  <!-- 25 · de las intervenciones a los productos -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <p class="kicker">Para releer</p>
       <h2 class="titulo">Los productos agrupan las intervenciones que comparten sujeto y resultado</h2>
-      <div class="tabla-contenedor">
-        <table class="tabla">
-          <thead><tr><th scope="col">Intervenciones</th><th scope="col">Producto</th></tr></thead>
-          <tbody>
-            <tr><td>Consejería a madres, sesión educativa y sesión demostrativa</td><td><b>Producto 1.</b> Consejería y sesiones a madres de niños menores de 12 meses</td></tr>
-            <tr><td>Vacuna contra el rotavirus y vacuna contra el neumococo</td><td><b>Producto 2.</b> Vacunación de niños menores de 12 meses</td></tr>
-          </tbody>
-        </table>
+      <div class="agrupa">
+        <p class="encabezado">Intervenciones</p><span aria-hidden="true"></span><p class="encabezado">Producto</p>
+        <ul class="intervenciones"><li>Cámaras fijas en tramos críticos</li><li>Radares móviles</li></ul>
+        <span class="llave" aria-hidden="true"></span>
+        <div class="producto"><p class="kicker">Producto 1</p><p class="nombre">Fiscalización electrónica de la velocidad</p><p class="detalle">Mismo sujeto: conductores en tramos críticos. Mismo resultado: menos velocidad.</p></div>
+        <ul class="intervenciones"><li>Control del uso del casco</li><li>Campañas sobre el uso del casco</li></ul>
+        <span class="llave" aria-hidden="true"></span>
+        <div class="producto"><p class="kicker">Producto 2</p><p class="nombre">Control y orientación sobre el uso del casco</p><p class="detalle">Mismo sujeto: motociclistas. Mismo resultado: más uso del casco.</p></div>
       </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 13.2 y Anexo II, sección IV (Tabla 1). Ejemplo del curso (Canva, sesión 5).</p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 13.2 y Anexo II, sección IV (Tabla 1). Ejemplo ilustrativo del curso.</p>
     </div>
-    <span class="pie">25 / 39</span>
+    <span class="pie">37 / 44</span>
   </section>
 
-  <!-- 26 · cómo se redactan un producto y un resultado -->
+  <!-- 32 · cómo se redactan un producto y un resultado: los tres elementos a la vista -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
-      <h2 class="titulo">Producto y resultado se redactan con tres elementos cada uno</h2>
-      <div class="tarjetas" style="--n: 2; --filas: 4">
-        <div class="tarjeta"><p class="kicker">Producto</p><p class="nombre">Bien o servicio, atributo y población</p><p>El bien o servicio que brinda la entidad, el atributo de calidad que se garantiza y la población o el entorno que lo recibe.</p><p>Ejemplo: distribución de agua potable de forma oportuna a la población en el ámbito rural.</p></div>
-        <div class="tarjeta"><p class="kicker">Resultado</p><p class="nombre">Dirección, condición y población</p><p>La dirección del cambio (incrementar, reducir o mantener), la condición que se desea cambiar y la población o el entorno.</p><p>Ejemplo: incremento del acceso a agua potable de calidad de la población en el ámbito rural.</p></div>
+      <p class="kicker">Para releer</p>
+      <h2 class="titulo">Un buen producto y un buen resultado se redactan con tres elementos cada uno</h2>
+      <div class="redaccion">
+        <p class="tipo">Producto</p>
+        <div class="parte"><p class="texto">Fiscalización electrónica de la velocidad</p><p class="rotulo">Bien o servicio</p></div>
+        <div class="parte"><p class="texto">con la sanción notificada a tiempo</p><p class="rotulo">Atributo de calidad</p></div>
+        <div class="parte"><p class="texto">a conductores en tramos de alta siniestralidad</p><p class="rotulo">Población</p></div>
+        <p class="tipo">Resultado</p>
+        <div class="parte"><p class="texto">Reducción</p><p class="rotulo">Dirección del cambio</p></div>
+        <div class="parte"><p class="texto">de la velocidad de circulación</p><p class="rotulo">Condición que cambia</p></div>
+        <div class="parte"><p class="texto">de los conductores en tramos de alta siniestralidad</p><p class="rotulo">Población</p></div>
       </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV.</p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV. Ejemplo ilustrativo del curso.</p>
     </div>
-    <span class="pie">26 / 39</span>
+    <span class="pie">38 / 44</span>
   </section>
 
-  <!-- 27 · el diseño completo: productos y tres niveles de resultados -->
+  <!-- 34 · equivalencia entre las dos directivas -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
-      <h2 class="titulo">La teoría de cambio ordena el programa en productos y tres niveles de resultados</h2>
-      <figure class="red" style="--n: 4; --plantilla: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, .85fr)">
-        <p class="cabecera" style="--col: 1" aria-hidden="true">Productos</p>
-        <p class="cabecera" style="--col: 2" aria-hidden="true">Resultados inmediatos</p>
-        <p class="cabecera" style="--col: 3" aria-hidden="true">Resultados intermedios</p>
-        <p class="cabecera" style="--col: 4" aria-hidden="true">Resultado final</p>
-        <div class="nodo" id="d27-vac" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">Vacunas</p><p class="detalle">Niños menores de 12 meses</p></div>
-        <div class="nodo" id="d27-cre" style="--col: 1; --fila: 3" aria-hidden="true"><p class="nombre">Consejería y sesiones en el CRED</p><p class="detalle">Madres de niños menores de 12 meses</p></div>
-        <div class="nodo" id="d27-lav" style="--col: 2; --fila: 2" aria-hidden="true"><p class="nombre">↑ Lavado de manos</p><p class="detalle">Madres de niños menores de 24 meses</p></div>
-        <div class="nodo" id="d27-lac" style="--col: 2; --fila: 3" aria-hidden="true"><p class="nombre">↑ Lactancia materna exclusiva</p><p class="detalle">Madres de niños menores de 6 meses</p></div>
-        <div class="nodo" id="d27-pre" style="--col: 2; --fila: 4" aria-hidden="true"><p class="nombre">↑ Preparación adecuada de alimentos</p><p class="detalle">Madres de niños de 6 a 24 meses</p></div>
-        <div class="nodo" id="d27-dia" style="--col: 3; --fila: 2" aria-hidden="true"><p class="nombre">↓ Diarrea e infecciones respiratorias</p><p class="detalle">Niños menores de 24 meses</p></div>
-        <div class="nodo" id="d27-die" style="--col: 3; --fila: 4" aria-hidden="true"><p class="nombre">↑ Calidad de la dieta</p><p class="detalle">Niños de 6 a 24 meses</p></div>
-        <div class="nodo final" id="d27-dci" style="--col: 4; --fila: 2; --filas: 3" aria-hidden="true"><p class="nombre">↓ Desnutrición crónica</p><p class="detalle">Niños menores de 60 meses</p></div>
-        <ul class="relaciones">
-          <li data-de="d27-vac" data-a="d27-dia">Más vacunas (niños menores de 12 meses) → menos diarrea e infecciones respiratorias (con evidencia)</li>
-          <li data-de="d27-cre" data-a="d27-lav">Más consejería y sesiones en el CRED → más lavado de manos (con evidencia)</li>
-          <li data-de="d27-cre" data-a="d27-lac">Más consejería y sesiones en el CRED → más lactancia materna exclusiva (con evidencia)</li>
-          <li data-de="d27-cre" data-a="d27-pre">Más consejería y sesiones en el CRED → mejor preparación de alimentos (con evidencia)</li>
-          <li data-de="d27-lav" data-a="d27-dia">Más lavado de manos → menos diarrea e infecciones respiratorias (con evidencia)</li>
-          <li data-de="d27-lac" data-a="d27-dia">Más lactancia materna exclusiva → menos diarrea e infecciones respiratorias (con evidencia)</li>
-          <li data-de="d27-pre" data-a="d27-die">Mejor preparación de alimentos → mejor calidad de la dieta (con evidencia)</li>
-          <li data-de="d27-dia" data-a="d27-dci">Menos diarrea e infecciones respiratorias → menos desnutrición crónica (con evidencia)</li>
-          <li data-de="d27-die" data-a="d27-dci">Mejor calidad de la dieta → menos desnutrición crónica (con evidencia)</li>
-        </ul>
-      </figure>
-      <p class="fuente">Canva del curso, sesión 5, con el marco de UNICEF (1990). Niveles de resultado según la Directiva 2020.</p>
-    </div>
-    <span class="pie">27 / 39</span>
-  </section>
-
-  <!-- 28 · equivalencia entre las dos directivas -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
-      <h2 class="titulo">El curso ordena los resultados por su cadena causal; la Directiva 2026 los ordena por su plazo</h2>
+      <p class="kicker">Para releer</p>
+      <h2 class="titulo">La Directiva 2026 ajusta los nombres y el orden de los resultados, pero la cadena causal sigue siendo la misma</h2>
       <div class="tabla-contenedor">
         <table class="tabla">
           <thead><tr><th scope="col">Qué se compara</th><th scope="col">Directiva 2020 (la del curso)</th><th scope="col">Directiva 2026</th></tr></thead>
           <tbody>
             <tr><td><b>Niveles</b></td><td>Inmediato, intermedio y final</td><td>Inicial, intermedio y final</td></tr>
             <tr class="destacada"><td><b>Cómo se ordenan</b></td><td>Por su posición en la cadena causal</td><td>Por su plazo y la influencia de la entidad</td></tr>
-            <tr><td><b>¿Un programa puede tener un resultado final?</b></td><td>Sí</td><td>«Por ningún motivo»</td></tr>
+            <tr><td><b>Resultado específico del programa</b></td><td>—</td><td>PPoR: un resultado intermedio. PPI: uno inicial. Nunca uno final</td></tr>
           </tbody>
         </table>
       </div>
       <p class="fuente">MEF (2020), Directiva N.º 0005-2020-EF/50.01, Anexo II, n.º 5.2; MEF (2026), Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV.</p>
     </div>
-    <span class="pie">28 / 39</span>
+    <span class="pie">39 / 44</span>
   </section>
 
-  <!-- 29 · los supuestos entre pasos -->
+  <!-- 36 · tres cosas que se confunden -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
-      <h2 class="titulo">Entre dos pasos hay un supuesto, y el más frágil decide si el producto llega a cambiar algo</h2>
-      <ol class="secuencia" style="--n: 4">
-        <li><p class="kicker">Producto</p><p class="nombre">Consejería a madres</p><p class="detalle">Lo que el presupuesto financia</p>
-            <p class="supuesto fragil"><span class="kicker">Supuesto frágil</span> Las madres aplican la consejería en casa</p></li>
-        <li><p class="kicker">Resultado inmediato</p><p class="nombre">Más lavado de manos</p>
-            <p class="supuesto"><span class="kicker">Supuesto</span> Hay agua y jabón en el hogar</p></li>
-        <li><p class="kicker">Resultado intermedio</p><p class="nombre">Menos diarrea aguda</p></li>
-        <li><p class="kicker">Resultado final</p><p class="nombre">Menos desnutrición crónica</p></li>
-      </ol>
-      <p class="fuente">Ejemplo del curso (Canva, sesión 5). Los supuestos son ilustrativos.</p>
-    </div>
-    <span class="pie">29 / 39</span>
-  </section>
-
-  <!-- 30 · tres cosas que se confunden -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
+      <p class="kicker">Para releer</p>
       <h2 class="titulo">Un supuesto frágil no es una causa ni un vacío de información</h2>
       <div class="tarjetas" style="--n: 3; --filas: 3">
         <div class="tarjeta"><p class="kicker">No es</p><p class="nombre">Una causa</p><p>Las causas van en el modelo explicativo y explican la condición de interés.</p></div>
@@ -1525,108 +1784,13 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Taller en Presupuesto por Resultados (EGPP, PUCP, 2026), día 2.</p>
     </div>
-    <span class="pie">30 / 39</span>
+    <span class="pie">40 / 44</span>
   </section>
 
-  <!-- 31 · del supuesto frágil a la pregunta PICO -->
+  <!-- 40 · la justificación, apartados 1 a 3 -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Parte 3 <span class="sub">· La teoría de cambio</span></p>
-      <h2 class="titulo">De un supuesto frágil nace la pregunta de evidencia, y un estudio puede responderla</h2>
-      <p class="cuerpo destacado">¿Las madres que reciben la consejería lavan más las manos en casa que las que no la reciben?</p>
-      <div class="columnas" style="--n: 4">
-        <div><div><h3>P · Quiénes</h3><p>Madres de niños menores de 24 meses.</p></div></div>
-        <div><div><h3>I · Qué reciben</h3><p>Consejería sobre lavado de manos.</p></div></div>
-        <div><div><h3>C · Sin qué</h3><p>Madres que no reciben la consejería.</p></div></div>
-        <div><div><h3>O · Qué cambia</h3><p>Más lavado de manos en el hogar.</p></div></div>
-      </div>
-      <p class="fuente">Ejemplo ilustrativo, con el método PICO de la sesión 8.</p>
-    </div>
-    <span class="pie">31 / 39</span>
-  </section>
-
-  <!-- 32 · aplicación en grupos -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Actividad en grupo <span class="sub">· 8 minutos</span></p>
-      <h2 class="titulo">Tomen el producto de su relación causal reparada y marquen su supuesto más frágil en una oración</h2>
-      <ol class="cuerpo">
-        <li><b>El producto prioritario de su relación causal reparada</b></li>
-        <li><b>El resultado inmediato que produce</b></li>
-        <li><b>El supuesto más frágil, en una oración</b></li>
-      </ol>
-      <p class="cuerpo destacado">Es el primer borrador de su teoría de cambio.</p>
-    </div>
-    <span class="pie">32 / 39</span>
-  </section>
-
-  <!-- 33 · lo que pide el RP3 según la consigna de PAIDEIA -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
-      <h2 class="titulo">El RP3 pide los indicadores del programa y el análisis de su implementación</h2>
-      <div class="columnas" style="--n: 2">
-        <div><span class="n">1</span><div><h3>Indicadores</h3><p>Los de desempeño y los de producción física, según la sección de indicadores del Anexo II de la Directiva.</p></div></div>
-        <div><span class="n">2</span><div><h3>Implementación</h3><p>El análisis de la implementación, según las pautas del trabajo final en lo referido a implementación.</p></div></div>
-      </div>
-      <p class="cuerpo">Documento en Word. Cierra el miércoles 11 de noviembre a las 17:00.</p>
-      <p class="fuente">Consigna del RP3 en PAIDEIA; MEF (2026), Directiva N.º 0001-2026-EF/50.01, Anexo II, sección VI.</p>
-    </div>
-    <span class="pie">33 / 39</span>
-  </section>
-
-  <!-- 34 · indicadores de desempeño y de producción física -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
-      <h2 class="titulo">El desempeño mide resultados y productos; la producción física mide lo que se entrega</h2>
-      <div class="tabla-contenedor">
-        <table class="tabla">
-          <thead><tr><th scope="col">Indicador</th><th scope="col">Qué mide</th><th scope="col">Dónde se define</th></tr></thead>
-          <tbody>
-            <tr><td><b>Desempeño</b></td><td>«La evolución de un resultado, la eficacia de un producto o la eficiencia de la línea de producción a partir de la relación de dos o más variables.»</td><td>Resultado y producto: nombre y justificación (Tabla 5)</td></tr>
-            <tr><td><b>Producción física</b></td><td>«La cantidad de bienes y/o servicios provistos, en términos de una unidad de medida establecida.»</td><td>Producto (Tabla 6) y actividad (Tabla 7): unidad de medida y atributos para la medición</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 4, literales h e i, y Anexo II, sección VI. Los textos entre comillas están abreviados.</p>
-    </div>
-    <span class="pie">34 / 39</span>
-  </section>
-
-  <!-- 35 · la teoría de cambio solo incluye resultados medibles -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Para el 11 de noviembre</span></p>
-      <h2 class="titulo">La teoría de cambio solo puede incluir resultados que se puedan medir</h2>
-      <figure class="cita-sola">
-        <figcaption class="kicker">Directiva, Anexo II, sección IV</figcaption>
-        <blockquote>«Todos los resultados contarán, posteriormente, con un indicador, por lo cual se deberá contemplar únicamente los resultados que puedan ser medidos.»</blockquote>
-      </figure>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, sección IV (consideraciones).</p>
-    </div>
-    <span class="pie">35 / 39</span>
-  </section>
-
-  <!-- 36 · cierre: la justificación técnica de una intervención, en tres partes (destino por decidir) -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
-      <h2 class="titulo">Justificar una intervención exige demostrar la causa, la intervención y el cambio esperado</h2>
-      <div class="columnas" style="--n: 3">
-        <div><span class="n">1</span><div><h3>La causa</h3><p>Qué relación causal se refuerza, cuánto explica frente a las demás y con qué evidencia se sostiene.</p></div></div>
-        <div><span class="n">2</span><div><h3>La intervención</h3><p>Cómo se buscaron las intervenciones, qué evidencia hay de su eficacia y por qué se elige esta y no otras.</p></div></div>
-        <div><span class="n">3</span><div><h3>El cambio</h3><p>Cómo la intervención se vuelve producto, qué resultados produce y qué supuestos debe cumplir la cadena.</p></div></div>
-      </div>
-      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículos 11 a 13 y Anexos I y II.</p>
-    </div>
-    <span class="pie">36 / 39</span>
-  </section>
-
-  <!-- 34 · la justificación, apartados 1 a 3 -->
-  <section class="slide">
-    <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <p class="kicker">Para releer</p>
       <h2 class="titulo">Primero se justifica la causa elegida y la eficacia de las intervenciones que la afectan</h2>
       <div class="tabla-contenedor">
         <table class="tabla">
@@ -1640,13 +1804,13 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01; el alcance de la población, del informe del RP1, GEP201 (2026).</p>
     </div>
-    <span class="pie">37 / 39</span>
+    <span class="pie">41 / 44</span>
   </section>
 
-  <!-- 35 · la justificación, apartados 4 a 6 -->
+  <!-- 41 · la justificación, apartados 4 a 6 -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <p class="kicker">Para releer</p>
       <h2 class="titulo">Luego se justifica la selección, el producto con sus resultados y los supuestos de la cadena</h2>
       <div class="tabla-contenedor">
         <table class="tabla">
@@ -1654,19 +1818,19 @@ body.presenting .slide.active {
           <tbody>
             <tr><td><b>4 · Selección y jerarquía</b></td><td>Qué intervenciones se eligen y en qué orden, según su eficacia y su costo efectividad, y por qué se concentra el esfuerzo en pocas.</td><td>Art. 12; Anexo II, III</td></tr>
             <tr><td><b>5 · Producto y resultados</b></td><td>Cómo las intervenciones se agrupan en productos (sujeto, resultado y atributo de calidad) y qué resultado inmediato, intermedio y final se espera.</td><td>Art. 13; Anexo II, IV</td></tr>
-            <tr><td><b>6 · Supuestos y límites</b></td><td>Qué debe cumplirse entre pasos, cuál es el más frágil, qué pregunta de evidencia deja abierta y qué no permite afirmar la evidencia.</td><td>Curso: teoría de cambio</td></tr>
+            <tr><td><b>6 · Supuestos y límites</b></td><td>Qué debe cumplirse entre pasos, cuál es el más frágil y qué pregunta de evidencia deja abierta. Es breve: hasta media página.</td><td>Curso: teoría de cambio</td></tr>
           </tbody>
         </table>
       </div>
       <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01. El apartado 6 es criterio del curso (sesión 9 y Taller PpR, día 2).</p>
     </div>
-    <span class="pie">38 / 39</span>
+    <span class="pie">42 / 44</span>
   </section>
 
-  <!-- 36 · la regla de redacción de la justificación -->
+  <!-- 42 · la regla de redacción de la justificación -->
   <section class="slide">
     <div class="pad">
-      <p class="kicker">Cierre <span class="sub">· Lo que hoy se construye</span></p>
+      <p class="kicker">Para releer</p>
       <h2 class="titulo">Cada apartado sintetiza las ideas fuerza de la evidencia y su referencia: no compila citas</h2>
       <figure class="cita-sola">
         <figcaption class="kicker">Directiva, Anexo II</figcaption>
@@ -1674,7 +1838,27 @@ body.presenting .slide.active {
       </figure>
       <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, Anexo II, secciones II y III. Énfasis añadido.</p>
     </div>
-    <span class="pie">39 / 39</span>
+    <span class="pie">43 / 44</span>
+  </section>
+
+  <!-- 43 · indicadores de desempeño y de producción física -->
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Para releer</p>
+      <h2 class="titulo">El desempeño mide resultados y productos; la producción física mide lo que se entrega</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">Indicador</th><th scope="col">Qué mide</th><th scope="col">Dónde se define</th></tr></thead>
+          <tbody>
+            <tr><td><b>Desempeño</b></td><td>«La evolución de un resultado, la eficacia de un producto o la eficiencia de la línea de producción a partir de la relación de dos o más variables.»</td><td>Resultado y producto: nombre y justificación (Tabla 5)</td></tr>
+            <tr><td><b>Producción física</b></td><td>«La cantidad de bienes y/o servicios provistos, en términos de una unidad de medida establecida.»</td><td>Producto (Tabla 6) y actividad (Tabla 7): unidad de medida y atributos para la medición</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cuerpo ancho">La teoría de cambio incluye únicamente resultados que puedan medirse, porque todos tendrán un indicador.</p>
+      <p class="fuente">MEF (2026). Directiva N.º 0001-2026-EF/50.01, artículo 4, literales h e i, y Anexo II, secciones IV y VI. Los textos entre comillas están abreviados.</p>
+    </div>
+    <span class="pie">44 / 44</span>
   </section>
 
 </main>
