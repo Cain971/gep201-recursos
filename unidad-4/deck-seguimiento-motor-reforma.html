@@ -1104,13 +1104,17 @@ body.presenting .slide.active {
   .apiladas dt { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
   .apiladas dt.destacada { color: var(--ink); font-weight: 500; }
   .apiladas dd { display: flex; align-items: center; height: 1.8em; margin: 0 var(--valor-ancho, 10.5em) 0 0; }
-  .apiladas .parte { flex: none; height: 100%; width: calc(var(--p) / var(--escala, 19) * 100%); background: var(--mark); }
-  .apiladas .parte.muni { background: var(--accent); }
+  /* cada parte lleva su número adentro y el total va afuera; en el celular la parte azul no alcanza para
+     su número, así que ahí se ocultan los de adentro y el valor de afuera dice la suma completa */
+  .apiladas .parte { flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box; height: 100%; width: calc(var(--p) / var(--escala, 19) * 100%); background: var(--line); border: 1px solid var(--mark); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .apiladas .parte.muni { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .apiladas .valor { flex: none; margin-left: .7em; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .apiladas dt.destacada + dd .valor { color: var(--ink); font-weight: 500; }
+  .apiladas .suma { display: none; }
+  .apiladas dt.destacada + dd .valor, .apiladas dt.destacada + dd .n { font-weight: 500; }
+  @media (max-width: 720px) { .apiladas .n { display: none; } .apiladas .suma { display: inline; } }
   .leyenda-apiladas { margin: 0; font-family: var(--font-mono); font-size: var(--size-body); color: var(--ink-soft); }
-  .leyenda-apiladas .muestra { display: inline-block; width: 1em; height: 1em; margin-right: .35em; vertical-align: -.15em; background: var(--mark); }
-  .leyenda-apiladas .muestra.muni { margin-left: 1.2em; background: var(--accent); }
+  .leyenda-apiladas .muestra { display: inline-block; box-sizing: border-box; width: 1em; height: 1em; margin-right: .35em; vertical-align: -.15em; background: var(--line); border: 1px solid var(--mark); }
+  .leyenda-apiladas .muestra.muni { margin-left: 1.2em; background: var(--accent); border-color: var(--accent); }
 </style>
 </head>
 <body>
@@ -1414,10 +1418,10 @@ body.presenting .slide.active {
         <div class="marco">
           <p class="leyenda-apiladas"><span class="muestra" aria-hidden="true"></span>Tesoro (IGV)<span class="muestra muni" aria-hidden="true"></span>Municipalidades (IPM)</p>
           <dl class="apiladas" style="--escala: 19">
-            <dt>2008</dt><dd><span class="parte" style="--p: 17"></span><span class="parte muni" style="--p: 2"></span><span class="valor">17 + 2 = 19&nbsp;%</span></dd>
-            <dt>2025</dt><dd><span class="parte" style="--p: 16"></span><span class="parte muni" style="--p: 2"></span><span class="valor">16 + 2 = 18&nbsp;%</span></dd>
-            <dt class="destacada">2026</dt><dd><span class="parte" style="--p: 15.5"></span><span class="parte muni" style="--p: 2.5"></span><span class="valor">15,5 + 2,5 = 18&nbsp;%</span></dd>
-            <dt>2029</dt><dd><span class="parte" style="--p: 14"></span><span class="parte muni" style="--p: 4"></span><span class="valor">14 + 4 = 18&nbsp;%</span></dd>
+            <dt>2008</dt><dd><span class="parte" style="--p: 17"><span class="n">17</span></span><span class="parte muni" style="--p: 2"><span class="n">2</span></span><span class="valor"><span class="suma">17 + 2 </span>= 19&nbsp;%</span></dd>
+            <dt>2025</dt><dd><span class="parte" style="--p: 16"><span class="n">16</span></span><span class="parte muni" style="--p: 2"><span class="n">2</span></span><span class="valor"><span class="suma">16 + 2 </span>= 18&nbsp;%</span></dd>
+            <dt class="destacada">2026</dt><dd><span class="parte" style="--p: 15.5"><span class="n">15,5</span></span><span class="parte muni" style="--p: 2.5"><span class="n">2,5</span></span><span class="valor"><span class="suma">15,5 + 2,5 </span>= 18&nbsp;%</span></dd>
+            <dt>2029</dt><dd><span class="parte" style="--p: 14"><span class="n">14</span></span><span class="parte muni" style="--p: 4"><span class="n">4</span></span><span class="valor"><span class="suma">14 + 4 </span>= 18&nbsp;%</span></dd>
           </dl>
         </div>
         <p class="lectura"><b>Hasta 2025 se movió el total; desde 2026 se mueve la frontera.</b> Los 2,5 puntos de hoy son unos S/&nbsp;11&nbsp;000 millones del FONCOMUN para las 1&nbsp;892 municipalidades. Y el IPM se cobra con el IGV… y se devuelve con él.</p>
