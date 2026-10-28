@@ -1103,15 +1103,14 @@ body.presenting .slide.active {
   .apiladas { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .8em .9em; align-items: center; margin: var(--space-3) 0 0; font-family: var(--font-mono); font-size: var(--size-body); }
   .apiladas dt { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
   .apiladas dt.destacada { color: var(--ink); font-weight: 500; }
-  .apiladas dd { display: flex; align-items: center; height: 1.8em; margin: 0 var(--valor-ancho, 10.5em) 0 0; }
-  /* cada parte lleva su número adentro y el total va afuera; en el celular la parte azul no alcanza para
-     su número, así que ahí se ocultan los de adentro y el valor de afuera dice la suma completa */
-  .apiladas .parte { flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box; height: 100%; width: calc(var(--p) / var(--escala, 19) * 100%); background: var(--line); border: 1px solid var(--mark); color: var(--ink); font-variant-numeric: tabular-nums; }
+  .apiladas dd { display: flex; align-items: center; height: 1.8em; margin: 0; }
+  /* cada parte lleva su número adentro; en el celular la parte azul no alcanza para su número, así que
+     ahí se ocultan los de adentro y la suma va afuera, en la punta */
+  .apiladas .parte { flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box; height: 100%; width: calc(var(--p) / var(--escala, 18) * 100%); background: var(--line); border: 1px solid var(--mark); color: var(--ink); font-variant-numeric: tabular-nums; }
   .apiladas .parte.muni { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-  .apiladas .valor { flex: none; margin-left: .7em; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .apiladas .suma { display: none; }
+  .apiladas .valor { display: none; flex: none; margin-left: .7em; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .apiladas dt.destacada + dd .valor, .apiladas dt.destacada + dd .n { font-weight: 500; }
-  @media (max-width: 720px) { .apiladas .n { display: none; } .apiladas .suma { display: inline; } }
+  @media (max-width: 720px) { .apiladas dd { margin-right: var(--valor-ancho, 8em); } .apiladas .n { display: none; } .apiladas .valor { display: inline; } }
   .leyenda-apiladas { margin: 0; font-family: var(--font-mono); font-size: var(--size-body); color: var(--ink-soft); }
   .leyenda-apiladas .muestra { display: inline-block; box-sizing: border-box; width: 1em; height: 1em; margin-right: .35em; vertical-align: -.15em; background: var(--line); border: 1px solid var(--mark); }
   .leyenda-apiladas .muestra.muni { margin-left: 1.2em; background: var(--accent); border-color: var(--accent); }
@@ -1135,7 +1134,7 @@ body.presenting .slide.active {
       <h2 class="titulo xl">Un sistema de seguimiento cambia conductas solo si su dato llega a quien puede y quiere decidir</h2>
       <p class="fuente">Gestión Financiera del Estado · 28 de octubre de 2026</p>
     </div>
-    <span class="pie">01 / 28</span>
+    <span class="pie">01 / 29</span>
   </section>
 
   <section class="slide">
@@ -1148,10 +1147,10 @@ body.presenting .slide.active {
         <li><span class="fila"><span class="que">¿Funcionó? Seguir no es evaluar</span><span class="guia" aria-hidden="true"></span><span class="folio">10</span></span></li>
         <li><span class="fila"><span class="que">Cuando el motor falla</span><span class="guia" aria-hidden="true"></span><span class="folio">14</span></span></li>
         <li><span class="fila"><span class="que">Y en el Perú</span><span class="guia" aria-hidden="true"></span><span class="folio">18</span></span></li>
-        <li><span class="fila"><span class="que">Para releer</span><span class="guia" aria-hidden="true"></span><span class="folio">26</span></span></li>
+        <li><span class="fila"><span class="que">Para releer</span><span class="guia" aria-hidden="true"></span><span class="folio">27</span></span></li>
       </ol>
     </div>
-    <span class="pie">02 / 28</span>
+    <span class="pie">02 / 29</span>
   </section>
 
   <!-- Parte 1 · Hay escuelas, pero el servicio no llega -->
@@ -1161,7 +1160,7 @@ body.presenting .slide.active {
       <p class="kicker">Parte 1</p>
       <h2 class="titulo xl">Hay escuelas, pero el servicio no llega</h2>
     </div>
-    <span class="pie">03 / 28</span>
+    <span class="pie">03 / 29</span>
   </section>
 
   <section class="slide">
@@ -1175,7 +1174,7 @@ body.presenting .slide.active {
       <p class="cuerpo">Un aula con los niños sentados en el piso y otra con las carpetas apiladas, sin usar.</p>
       <p class="fuente">Barber, M. (2013). <i>The good news from Pakistan</i>. Reform, p. 33. Traducción propia.</p>
     </div>
-    <span class="pie">04 / 28</span>
+    <span class="pie">04 / 29</span>
   </section>
 
   <section class="slide">
@@ -1195,7 +1194,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Chaudhury, N., Hammer, J., Kremer, M., Muralidharan, K. y Rogers, F. H. (2006). Missing in action. <i>Journal of Economic Perspectives, 20</i>(1), cuadro 1 y <span style="white-space: nowrap">pp. 92-93</span>. Primarias públicas, visitas sin aviso en 2002-2003.</p>
     </div>
-    <span class="pie">05 / 28</span>
+    <span class="pie">05 / 29</span>
   </section>
 
   <!-- Parte 2 · El motor: medir, decidir, actuar -->
@@ -1205,7 +1204,7 @@ body.presenting .slide.active {
       <p class="kicker">Parte 2</p>
       <h2 class="titulo xl">El motor: medir, decidir, actuar</h2>
     </div>
-    <span class="pie">06 / 28</span>
+    <span class="pie">06 / 29</span>
   </section>
 
   <section class="slide">
@@ -1225,7 +1224,7 @@ body.presenting .slide.active {
       </ol>
       <p class="fuente">Barber, M. (2013). <i>The good news from Pakistan</i>. Reform, <span style="white-space: nowrap">pp. 41-45</span> y <span style="white-space: nowrap">56-63</span>.</p>
     </div>
-    <span class="pie">07 / 28</span>
+    <span class="pie">07 / 29</span>
   </section>
 
   <section class="slide">
@@ -1245,7 +1244,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Callen, M., Gulzar, S., Hasanain, A., Khan, M. Y. y Rezaee, A. (2020). Data and policy decisions. <i>Journal of Development Economics, 146</i>, resumen y <span style="white-space: nowrap">pp. 1-2</span>.</p>
     </div>
-    <span class="pie">08 / 28</span>
+    <span class="pie">08 / 29</span>
   </section>
 
   <section class="slide">
@@ -1258,7 +1257,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Barber, M. (2013). <i>The good news from Pakistan</i>. Reform, p. 60. Traducción propia.</p>
     </div>
-    <span class="pie">09 / 28</span>
+    <span class="pie">09 / 29</span>
   </section>
 
   <!-- Parte 3 · ¿Funcionó? Seguir no es evaluar -->
@@ -1268,7 +1267,7 @@ body.presenting .slide.active {
       <p class="kicker">Parte 3</p>
       <h2 class="titulo xl">¿Funcionó? Seguir no es evaluar</h2>
     </div>
-    <span class="pie">10 / 28</span>
+    <span class="pie">10 / 29</span>
   </section>
 
   <section class="slide">
@@ -1283,7 +1282,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Barber, M. (2013). <i>The good news from Pakistan</i>. Reform, p. 16, figura 3 (datos de la PMIU).</p>
     </div>
-    <span class="pie">11 / 28</span>
+    <span class="pie">11 / 29</span>
   </section>
 
   <section class="slide">
@@ -1296,7 +1295,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Barber (2013), p. 16; Duflo, E., Hanna, R. y Ryan, S. P. (2012). Incentives work. <i>American Economic Review, 102</i>(4), resumen.</p>
     </div>
-    <span class="pie">12 / 28</span>
+    <span class="pie">12 / 29</span>
   </section>
 
   <section class="slide">
@@ -1309,7 +1308,7 @@ body.presenting .slide.active {
       </figure>
       <p class="fuente">Barber, M. (2013). <i>The good news from Pakistan</i>. Reform, p. 22. Traducción propia.</p>
     </div>
-    <span class="pie">13 / 28</span>
+    <span class="pie">13 / 29</span>
   </section>
 
   <!-- Parte 4 · Cuando el motor falla -->
@@ -1319,7 +1318,7 @@ body.presenting .slide.active {
       <p class="kicker">Parte 4</p>
       <h2 class="titulo xl">Cuando el motor falla</h2>
     </div>
-    <span class="pie">14 / 28</span>
+    <span class="pie">14 / 29</span>
   </section>
 
   <section class="slide">
@@ -1333,7 +1332,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Banerjee, Duflo y Glennerster (2008), <i>JEEA, 6</i>(2-3), resumen; Callen et al. (2023), <i>Journal of Public Economics, 218</i>, resumen e introducción; Barber (2013), p. 29.</p>
     </div>
-    <span class="pie">15 / 28</span>
+    <span class="pie">15 / 29</span>
   </section>
 
   <section class="slide">
@@ -1348,7 +1347,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Bevan, G. y Hood, C. (2006). What's measured is what matters. <i>Public Administration, 84</i>(3), <span style="white-space: nowrap">pp. 522-523</span>.</p>
     </div>
-    <span class="pie">16 / 28</span>
+    <span class="pie">16 / 29</span>
   </section>
 
   <section class="slide">
@@ -1362,7 +1361,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Bevan, G. y Hood, C. (2006). <i>Public Administration, 84</i>(3), <span style="white-space: nowrap">pp. 521-522</span>, citando a Nove (1958). Traducción propia.</p>
     </div>
-    <span class="pie">17 / 28</span>
+    <span class="pie">17 / 29</span>
   </section>
 
   <!-- Parte 5 · Y en el Perú -->
@@ -1372,7 +1371,7 @@ body.presenting .slide.active {
       <p class="kicker">Parte 5</p>
       <h2 class="titulo xl">Y en el Perú</h2>
     </div>
-    <span class="pie">18 / 28</span>
+    <span class="pie">18 / 29</span>
   </section>
 
   <section class="slide">
@@ -1392,7 +1391,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Barber (2013), <span style="white-space: nowrap">pp. 41-45</span> y <span style="white-space: nowrap">56-63</span>; MINEDU (2016), presentaciones de la Secretaría de Planificación Estratégica sobre el Semáforo Escuela.</p>
     </div>
-    <span class="pie">19 / 28</span>
+    <span class="pie">19 / 29</span>
   </section>
 
   <section class="slide">
@@ -1407,28 +1406,29 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">MineduLAB (2018). Entrega de retroalimentación con Semáforo Escuela. <i>Evidencias MineduLAB</i>, N.º 08. MINEDU.</p>
     </div>
-    <span class="pie">20 / 28</span>
+    <span class="pie">20 / 29</span>
   </section>
 
   <section class="slide">
     <div class="pad">
       <p class="kicker">Parte 5 <span class="sub">· El Programa de Incentivos</span></p>
-      <h2 class="titulo">El 18&nbsp;% de cada compra tiene dos dueños: el Tesoro y las municipalidades</h2>
+      <h2 class="titulo">El 18&nbsp;% de cada compra tiene dos dueños, y la parte de las municipalidades crece</h2>
       <div class="grafico-campo">
         <div class="marco">
           <p class="leyenda-apiladas"><span class="muestra" aria-hidden="true"></span>Tesoro (IGV)<span class="muestra muni" aria-hidden="true"></span>Municipalidades (IPM)</p>
-          <dl class="apiladas" style="--escala: 19">
-            <dt>2008</dt><dd><span class="parte" style="--p: 17"><span class="n">17</span></span><span class="parte muni" style="--p: 2"><span class="n">2</span></span><span class="valor"><span class="suma">17 + 2 </span>= 19&nbsp;%</span></dd>
-            <dt>2025</dt><dd><span class="parte" style="--p: 16"><span class="n">16</span></span><span class="parte muni" style="--p: 2"><span class="n">2</span></span><span class="valor"><span class="suma">16 + 2 </span>= 18&nbsp;%</span></dd>
-            <dt class="destacada">2026</dt><dd><span class="parte" style="--p: 15.5"><span class="n">15,5</span></span><span class="parte muni" style="--p: 2.5"><span class="n">2,5</span></span><span class="valor"><span class="suma">15,5 + 2,5 </span>= 18&nbsp;%</span></dd>
-            <dt>2029</dt><dd><span class="parte" style="--p: 14"><span class="n">14</span></span><span class="parte muni" style="--p: 4"><span class="n">4</span></span><span class="valor"><span class="suma">14 + 4 </span>= 18&nbsp;%</span></dd>
+          <dl class="apiladas" style="--escala: 18">
+            <dt>2025</dt><dd><span class="parte" style="--p: 16"><span class="n">16</span></span><span class="parte muni" style="--p: 2"><span class="n">2</span></span><span class="valor">16 + 2</span></dd>
+            <dt class="destacada">2026</dt><dd><span class="parte" style="--p: 15.5"><span class="n">15,5</span></span><span class="parte muni" style="--p: 2.5"><span class="n">2,5</span></span><span class="valor">15,5 + 2,5</span></dd>
+            <dt>2027</dt><dd><span class="parte" style="--p: 15"><span class="n">15</span></span><span class="parte muni" style="--p: 3"><span class="n">3</span></span><span class="valor">15 + 3</span></dd>
+            <dt>2028</dt><dd><span class="parte" style="--p: 14.5"><span class="n">14,5</span></span><span class="parte muni" style="--p: 3.5"><span class="n">3,5</span></span><span class="valor">14,5 + 3,5</span></dd>
+            <dt>2029</dt><dd><span class="parte" style="--p: 14"><span class="n">14</span></span><span class="parte muni" style="--p: 4"><span class="n">4</span></span><span class="valor">14 + 4</span></dd>
           </dl>
         </div>
-        <p class="lectura"><b>Hasta 2025 se movió el total; desde 2026 se mueve la frontera.</b> Los 2,5 puntos de hoy son unos S/&nbsp;11&nbsp;000 millones del FONCOMUN para las 1&nbsp;892 municipalidades. Y el IPM se cobra con el IGV… y se devuelve con él.</p>
+        <p class="lectura"><b>El total no cambia: cambia el reparto.</b> La parte municipal se duplica, de 2 a 4 puntos, y la del Tesoro baja de 16 a 14. Hoy, 2,5 puntos son unos S/&nbsp;11&nbsp;000 millones del FONCOMUN para las 1&nbsp;892 municipalidades. El IPM se cobra con el IGV… y se devuelve con él.</p>
       </div>
-      <p class="fuente">Ley 28033 (2003), Ley 29666 (2011) y Ley 32387 (2025); TUO de la Ley de Tributación Municipal (DS 156-2004-EF), art. 76; FONCOMUN: MEF, notas de prensa de febrero y del 4-mar-2026, y Consulta Amigable.</p>
+      <p class="fuente">Ley 32387 (2025); TUO de la Ley de Tributación Municipal (DS 156-2004-EF), arts. 76 y 86; FONCOMUN: MEF, notas de prensa de febrero y del 4-mar-2026, y Consulta Amigable.</p>
     </div>
-    <span class="pie">21 / 28</span>
+    <span class="pie">21 / 29</span>
   </section>
 
   <section class="slide">
@@ -1436,18 +1436,39 @@ body.presenting .slide.active {
       <p class="kicker">Parte 5 <span class="sub">· El Programa de Incentivos</span></p>
       <h2 class="titulo">¿En qué paso el Estado paga dos veces el mismo sol?</h2>
       <ol class="secuencia" style="--n: 4">
-        <li><p class="kicker">1 · La compra</p><p class="nombre">El exportador paga S/&nbsp;190 de impuestos por sus insumos</p>
-            <p class="detalle">En 2008: 170 de IGV y 20 de IPM</p></li>
-        <li><p class="kicker">2 · El reparto</p><p class="nombre">Los S/&nbsp;20 del IPM entran al FONCOMUN</p>
+        <li><p class="kicker">1 · La compra</p><p class="nombre">El exportador paga S/&nbsp;180 de impuesto por S/&nbsp;1&nbsp;000 de insumos</p>
+            <p class="detalle">155 de IGV y 25 de IPM. Su proveedor los entrega a la SUNAT</p></li>
+        <li><p class="kicker">2 · El reparto</p><p class="nombre">Los S/&nbsp;25 del IPM entran al FONCOMUN</p>
             <p class="detalle">Y se reparten a las municipalidades</p></li>
-        <li><p class="kicker">3 · La devolución</p><p class="nombre">SUNAT le devuelve los S/&nbsp;190 al exportador</p>
-            <p class="detalle">La exportación no paga IGV: recupera lo pagado en insumos</p></li>
-        <li><p class="kicker">4 · Las cuentas</p><p class="nombre">Las municipalidades reciben su FONCOMUN completo</p>
-            <p class="detalle">Calculado sobre todo el IPM recaudado</p></li>
+        <li><p class="kicker">3 · La exportación</p><p class="nombre">Vende al exterior sin IGV</p>
+            <p class="detalle">El impuesto se cobra donde se consume. Sin IGV en sus ventas, no tiene de dónde descontar los 180</p></li>
+        <li><p class="kicker">4 · La devolución</p><p class="nombre">La SUNAT le devuelve los S/&nbsp;180</p>
+            <p class="detalle">Saldo a favor del exportador, con los 25 del IPM</p></li>
       </ol>
-      <p class="fuente">TUO de la Ley de Tributación Municipal (DS 156-2004-EF), art. 76; DS 107-2008-EF, art. 1 i). Cifras ilustrativas (IGV 17&nbsp;% e IPM 2&nbsp;%, tasas de 2008).</p>
+      <p class="fuente">TUO de la Ley del IGV (DS 055-99-EF), arts. 33-35; DS 107-2008-EF, art. 1 i). Cifras ilustrativas con las tasas de 2026 (en 2008 eran 17&nbsp;+&nbsp;2: la lógica es la misma).</p>
     </div>
-    <span class="pie">22 / 28</span>
+    <span class="pie">22 / 29</span>
+  </section>
+
+  <section class="slide">
+    <div class="pad">
+      <p class="kicker">Parte 5 <span class="sub">· El Programa de Incentivos</span></p>
+      <h2 class="titulo">Los S/&nbsp;25 del IPM entraron una vez y salieron dos</h2>
+      <div class="tabla-contenedor">
+        <table class="tabla">
+          <thead><tr><th scope="col">La cuenta del Estado</th><th scope="col" class="num">Tesoro</th><th scope="col" class="num">Municipalidades</th></tr></thead>
+          <tbody>
+            <tr><td><b>Entra</b> el impuesto de los insumos</td><td class="num">+155</td><td class="num">+25</td></tr>
+            <tr><td><b>Sale</b> la devolución al exportador, que paga el Tesoro</td><td class="num">−180</td><td class="num">0</td></tr>
+            <tr class="destacada"><td><b>Saldo sin descuento</b></td><td class="num">−25</td><td class="num">+25</td></tr>
+            <tr><td><b>Saldo descontando del FONCOMUN</b> el IPM devuelto (desde 2008)</td><td class="num">0</td><td class="num">0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="cuerpo">Una exportación no deja impuesto en el Perú: el saldo correcto es cero. El doble pago aparece solo cuando hay devolución, sobre todo al exportador: en el mercado interno, cada empresa descuenta de sus ventas lo que pagó en insumos y no le sobra nada que devolver.</p>
+      <p class="fuente">Elaboración propia con cifras ilustrativas (tasas de 2026). DS 107-2008-EF, art. 2: la devolución del IPM se hace «como concepto IGV» y, desde agosto de 2008, se descuenta del FONCOMUN antes de repartirlo.</p>
+    </div>
+    <span class="pie">23 / 29</span>
   </section>
 
   <section class="slide">
@@ -1456,7 +1477,7 @@ body.presenting .slide.active {
       <h2 class="titulo">El Estado no se ahorró ese dinero: lo condicionó a metas</h2>
       <ol class="secuencia" style="--n: 4">
         <li><p class="kicker">Setiembre de 2008</p><p class="nombre">El IPM devuelto se descuenta del FONCOMUN</p>
-            <p class="detalle">Antes de repartir: 2 de cada 19 soles devueltos</p></li>
+            <p class="detalle">Antes de repartir: la parte del IPM (en 2008, 2 de cada 19 soles devueltos)</p></li>
         <li><p class="kicker">Marzo de 2009</p><p class="nombre">La Ley 29332 crea el Plan de Incentivos</p>
             <p class="detalle">Con un monto igual al descontado</p></li>
         <li><p class="kicker">Enero de 2010</p><p class="nombre">Cada municipalidad recupera su parte si cumple sus metas</p>
@@ -1467,7 +1488,7 @@ body.presenting .slide.active {
       </ol>
       <p class="fuente">DS 107-2008-EF, art. 2; Ley 29332 (2009), art. 1; DU 119-2009; DS 003-2010-EF (<i>El Peruano</i>, 12-ene-2010), art. 4.</p>
     </div>
-    <span class="pie">23 / 28</span>
+    <span class="pie">24 / 29</span>
   </section>
 
   <section class="slide">
@@ -1477,7 +1498,7 @@ body.presenting .slide.active {
       <p class="cuerpo">Tiene meta, dato verificable y consecuencia automática. En Punjab, el dato llegaba a una reunión que podía resolver problemas.</p>
       <p class="cuerpo destacado">¿Qué podría hacer una municipalidad para cumplir la meta sin mejorar su gestión?</p>
     </div>
-    <span class="pie">24 / 28</span>
+    <span class="pie">25 / 29</span>
   </section>
 
   <section class="slide">
@@ -1488,7 +1509,7 @@ body.presenting .slide.active {
         <svg class="qr" viewBox="0 0 37 37" role="img" aria-label="Código QR hacia cain971.github.io/gep201-recursos/unidad-4/lectura-barber-punjab.html" shape-rendering="crispEdges" style="--qr-modulos: 37"><path fill="currentColor" d="M0,0h7v1h-7zM10,0h2v1h-2zM15,0h1v1h-1zM18,0h2v1h-2zM21,0h1v1h-1zM23,0h1v1h-1zM25,0h4v1h-4zM30,0h7v1h-7zM0,1h1v1h-1zM6,1h1v1h-1zM10,1h1v1h-1zM12,1h1v1h-1zM15,1h2v1h-2zM20,1h1v1h-1zM23,1h1v1h-1zM25,1h3v1h-3zM30,1h1v1h-1zM36,1h1v1h-1zM0,2h1v1h-1zM2,2h3v1h-3zM6,2h1v1h-1zM9,2h1v1h-1zM11,2h1v1h-1zM13,2h1v1h-1zM16,2h3v1h-3zM20,2h1v1h-1zM23,2h2v1h-2zM28,2h1v1h-1zM30,2h1v1h-1zM32,2h3v1h-3zM36,2h1v1h-1zM0,3h1v1h-1zM2,3h3v1h-3zM6,3h1v1h-1zM10,3h2v1h-2zM13,3h1v1h-1zM16,3h1v1h-1zM18,3h1v1h-1zM20,3h1v1h-1zM23,3h1v1h-1zM26,3h2v1h-2zM30,3h1v1h-1zM32,3h3v1h-3zM36,3h1v1h-1zM0,4h1v1h-1zM2,4h3v1h-3zM6,4h1v1h-1zM10,4h1v1h-1zM12,4h1v1h-1zM14,4h1v1h-1zM17,4h2v1h-2zM23,4h1v1h-1zM26,4h2v1h-2zM30,4h1v1h-1zM32,4h3v1h-3zM36,4h1v1h-1zM0,5h1v1h-1zM6,5h1v1h-1zM8,5h1v1h-1zM10,5h1v1h-1zM13,5h4v1h-4zM18,5h2v1h-2zM21,5h2v1h-2zM24,5h2v1h-2zM27,5h2v1h-2zM30,5h1v1h-1zM36,5h1v1h-1zM0,6h7v1h-7zM8,6h1v1h-1zM10,6h1v1h-1zM12,6h1v1h-1zM14,6h1v1h-1zM16,6h1v1h-1zM18,6h1v1h-1zM20,6h1v1h-1zM22,6h1v1h-1zM24,6h1v1h-1zM26,6h1v1h-1zM28,6h1v1h-1zM30,6h7v1h-7zM9,7h1v1h-1zM12,7h1v1h-1zM14,7h1v1h-1zM16,7h2v1h-2zM20,7h2v1h-2zM23,7h1v1h-1zM26,7h3v1h-3zM0,8h1v1h-1zM3,8h1v1h-1zM5,8h2v1h-2zM8,8h3v1h-3zM12,8h1v1h-1zM16,8h4v1h-4zM21,8h1v1h-1zM25,8h2v1h-2zM28,8h2v1h-2zM31,8h1v1h-1zM0,9h2v1h-2zM3,9h1v1h-1zM5,9h1v1h-1zM7,9h2v1h-2zM11,9h2v1h-2zM14,9h4v1h-4zM20,9h1v1h-1zM24,9h2v1h-2zM28,9h3v1h-3zM33,9h2v1h-2zM36,9h1v1h-1zM3,10h2v1h-2zM6,10h2v1h-2zM10,10h1v1h-1zM12,10h4v1h-4zM19,10h4v1h-4zM30,10h1v1h-1zM33,10h1v1h-1zM35,10h2v1h-2zM2,11h3v1h-3zM8,11h1v1h-1zM10,11h4v1h-4zM16,11h1v1h-1zM18,11h2v1h-2zM21,11h2v1h-2zM24,11h2v1h-2zM29,11h2v1h-2zM0,12h1v1h-1zM2,12h1v1h-1zM4,12h1v1h-1zM6,12h1v1h-1zM8,12h5v1h-5zM15,12h3v1h-3zM20,12h2v1h-2zM23,12h3v1h-3zM29,12h2v1h-2zM35,12h2v1h-2zM1,13h2v1h-2zM5,13h1v1h-1zM9,13h3v1h-3zM13,13h1v1h-1zM16,13h1v1h-1zM19,13h1v1h-1zM22,13h1v1h-1zM24,13h1v1h-1zM28,13h4v1h-4zM34,13h3v1h-3zM1,14h1v1h-1zM3,14h1v1h-1zM5,14h2v1h-2zM9,14h1v1h-1zM11,14h1v1h-1zM14,14h1v1h-1zM20,14h2v1h-2zM23,14h3v1h-3zM31,14h2v1h-2zM34,14h1v1h-1zM36,14h1v1h-1zM2,15h1v1h-1zM4,15h2v1h-2zM8,15h3v1h-3zM12,15h1v1h-1zM19,15h1v1h-1zM21,15h1v1h-1zM24,15h2v1h-2zM28,15h2v1h-2zM32,15h1v1h-1zM35,15h2v1h-2zM0,16h2v1h-2zM6,16h1v1h-1zM11,16h3v1h-3zM16,16h1v1h-1zM19,16h1v1h-1zM21,16h4v1h-4zM28,16h4v1h-4zM33,16h3v1h-3zM1,17h1v1h-1zM4,17h2v1h-2zM9,17h1v1h-1zM12,17h4v1h-4zM21,17h1v1h-1zM23,17h1v1h-1zM26,17h1v1h-1zM28,17h1v1h-1zM30,17h3v1h-3zM35,17h2v1h-2zM1,18h1v1h-1zM5,18h2v1h-2zM8,18h3v1h-3zM12,18h2v1h-2zM17,18h2v1h-2zM20,18h2v1h-2zM24,18h1v1h-1zM26,18h1v1h-1zM30,18h1v1h-1zM32,18h1v1h-1zM34,18h3v1h-3zM0,19h3v1h-3zM4,19h2v1h-2zM10,19h1v1h-1zM13,19h1v1h-1zM15,19h4v1h-4zM21,19h1v1h-1zM26,19h2v1h-2zM31,19h1v1h-1zM34,19h2v1h-2zM0,20h1v1h-1zM2,20h3v1h-3zM6,20h3v1h-3zM10,20h3v1h-3zM19,20h3v1h-3zM23,20h4v1h-4zM30,20h1v1h-1zM32,20h1v1h-1zM35,20h1v1h-1zM1,21h1v1h-1zM4,21h1v1h-1zM7,21h1v1h-1zM9,21h1v1h-1zM14,21h1v1h-1zM16,21h3v1h-3zM25,21h2v1h-2zM29,21h3v1h-3zM33,21h1v1h-1zM35,21h2v1h-2zM1,22h2v1h-2zM4,22h1v1h-1zM6,22h2v1h-2zM11,22h3v1h-3zM16,22h1v1h-1zM18,22h4v1h-4zM24,22h3v1h-3zM28,22h3v1h-3zM35,22h2v1h-2zM5,23h1v1h-1zM11,23h2v1h-2zM16,23h1v1h-1zM18,23h4v1h-4zM23,23h1v1h-1zM25,23h1v1h-1zM27,23h1v1h-1zM29,23h1v1h-1zM35,23h1v1h-1zM0,24h1v1h-1zM3,24h1v1h-1zM6,24h2v1h-2zM9,24h1v1h-1zM14,24h3v1h-3zM18,24h1v1h-1zM20,24h2v1h-2zM25,24h1v1h-1zM27,24h1v1h-1zM29,24h3v1h-3zM33,24h1v1h-1zM35,24h2v1h-2zM1,25h1v1h-1zM3,25h1v1h-1zM8,25h1v1h-1zM10,25h3v1h-3zM15,25h1v1h-1zM17,25h6v1h-6zM24,25h1v1h-1zM26,25h1v1h-1zM29,25h2v1h-2zM33,25h4v1h-4zM0,26h1v1h-1zM2,26h6v1h-6zM9,26h1v1h-1zM13,26h5v1h-5zM23,26h1v1h-1zM26,26h1v1h-1zM28,26h2v1h-2zM31,26h1v1h-1zM33,26h2v1h-2zM36,26h1v1h-1zM1,27h1v1h-1zM4,27h2v1h-2zM8,27h1v1h-1zM10,27h3v1h-3zM16,27h3v1h-3zM20,27h6v1h-6zM27,27h2v1h-2zM32,27h1v1h-1zM0,28h2v1h-2zM3,28h2v1h-2zM6,28h1v1h-1zM10,28h3v1h-3zM14,28h2v1h-2zM17,28h1v1h-1zM21,28h2v1h-2zM24,28h1v1h-1zM28,28h5v1h-5zM34,28h2v1h-2zM8,29h4v1h-4zM16,29h3v1h-3zM20,29h7v1h-7zM28,29h1v1h-1zM32,29h2v1h-2zM35,29h2v1h-2zM0,30h7v1h-7zM10,30h1v1h-1zM12,30h1v1h-1zM14,30h1v1h-1zM17,30h1v1h-1zM20,30h1v1h-1zM22,30h1v1h-1zM25,30h4v1h-4zM30,30h1v1h-1zM32,30h2v1h-2zM35,30h2v1h-2zM0,31h1v1h-1zM6,31h1v1h-1zM8,31h2v1h-2zM13,31h2v1h-2zM16,31h1v1h-1zM19,31h1v1h-1zM21,31h1v1h-1zM23,31h2v1h-2zM27,31h2v1h-2zM32,31h3v1h-3zM36,31h1v1h-1zM0,32h1v1h-1zM2,32h3v1h-3zM6,32h1v1h-1zM9,32h3v1h-3zM17,32h1v1h-1zM21,32h1v1h-1zM23,32h4v1h-4zM28,32h6v1h-6zM0,33h1v1h-1zM2,33h3v1h-3zM6,33h1v1h-1zM8,33h1v1h-1zM10,33h1v1h-1zM13,33h1v1h-1zM15,33h1v1h-1zM17,33h1v1h-1zM21,33h1v1h-1zM24,33h1v1h-1zM27,33h2v1h-2zM31,33h2v1h-2zM35,33h1v1h-1zM0,34h1v1h-1zM2,34h3v1h-3zM6,34h1v1h-1zM10,34h3v1h-3zM14,34h1v1h-1zM16,34h5v1h-5zM24,34h5v1h-5zM31,34h2v1h-2zM35,34h2v1h-2zM0,35h1v1h-1zM6,35h1v1h-1zM9,35h1v1h-1zM14,35h2v1h-2zM20,35h2v1h-2zM23,35h1v1h-1zM25,35h2v1h-2zM28,35h1v1h-1zM31,35h1v1h-1zM33,35h1v1h-1zM0,36h7v1h-7zM8,36h1v1h-1zM11,36h4v1h-4zM17,36h1v1h-1zM21,36h2v1h-2zM25,36h1v1h-1zM27,36h3v1h-3zM35,36h2v1h-2z"/></svg>
       </div>
     </div>
-    <span class="pie">25 / 28</span>
+    <span class="pie">26 / 29</span>
   </section>
 
   <!-- Parte 6 · Para releer -->
@@ -1498,7 +1519,7 @@ body.presenting .slide.active {
       <p class="kicker">Parte 6</p>
       <h2 class="titulo xl">Para releer</h2>
     </div>
-    <span class="pie">26 / 28</span>
+    <span class="pie">27 / 29</span>
   </section>
 
   <section class="slide">
@@ -1517,7 +1538,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">DS 107-2008-EF, considerandos y <span style="white-space: nowrap">arts. 1-2</span>; Ley 29332, art. 1; DS 003-2010-EF (<i>El Peruano</i>, 12-ene-2010), <span style="white-space: nowrap">arts. 2-4</span>.</p>
     </div>
-    <span class="pie">27 / 28</span>
+    <span class="pie">28 / 29</span>
   </section>
 
   <section class="slide">
@@ -1537,7 +1558,7 @@ body.presenting .slide.active {
       </div>
       <p class="fuente">Bevan, G. y Hood, C. (2006). <i>Public Administration, 84</i>(3), <span style="white-space: nowrap">pp. 522-523</span>. Traducción propia.</p>
     </div>
-    <span class="pie">28 / 28</span>
+    <span class="pie">29 / 29</span>
   </section>
 </main>
 <div id="present-hint" class="present-hint" aria-hidden="true">← → para avanzar · Esc para salir</div>
