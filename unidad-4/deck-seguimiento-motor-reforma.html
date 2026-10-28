@@ -1097,6 +1097,20 @@ body.presenting .slide.active {
      base-visual/pendientes.md como candidata al núcleo) */
   body { margin: 0; padding: var(--space-5); background: var(--paper); color: var(--ink); font-family: var(--font-text); }
   @media (max-width: 720px) { body { padding: var(--space-3); } }
+  /* barras apiladas a escala (diapositiva 21): cada fila es un todo (lo que paga el comprador) partido en
+     sus dos dueños, y todas comparten la escala (--escala puntos = 100 % de la pista), así se ven a la vez
+     el total y las partes. Candidata al núcleo (base-visual/pendientes.md). */
+  .apiladas { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .8em .9em; align-items: center; margin: var(--space-3) 0 0; font-family: var(--font-mono); font-size: var(--size-body); }
+  .apiladas dt { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .apiladas dt.destacada { color: var(--ink); font-weight: 500; }
+  .apiladas dd { display: flex; align-items: center; height: 1.8em; margin: 0 var(--valor-ancho, 10.5em) 0 0; }
+  .apiladas .parte { flex: none; height: 100%; width: calc(var(--p) / var(--escala, 19) * 100%); background: var(--mark); }
+  .apiladas .parte.muni { background: var(--accent); }
+  .apiladas .valor { flex: none; margin-left: .7em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .apiladas dt.destacada + dd .valor { color: var(--ink); font-weight: 500; }
+  .leyenda-apiladas { margin: 0; font-family: var(--font-mono); font-size: var(--size-body); color: var(--ink-soft); }
+  .leyenda-apiladas .muestra { display: inline-block; width: 1em; height: 1em; margin-right: .35em; vertical-align: -.15em; background: var(--mark); }
+  .leyenda-apiladas .muestra.muni { margin-left: 1.2em; background: var(--accent); }
 </style>
 </head>
 <body>
@@ -1396,18 +1410,19 @@ body.presenting .slide.active {
     <div class="pad">
       <p class="kicker">Parte 5 <span class="sub">· El Programa de Incentivos</span></p>
       <h2 class="titulo">El 18&nbsp;% de cada compra tiene dos dueños: el Tesoro y las municipalidades</h2>
-      <div class="cifra-campo">
-        <div class="cifra-dato">
-          <p class="cifra">11&nbsp;000</p>
-          <p class="cifra-nota"><b>Millones de soles que el FONCOMUN repartirá en 2026 a las 1&nbsp;892 municipalidades: entre la quinta y la cuarta parte de su presupuesto.</b></p>
+      <div class="grafico-campo">
+        <div class="marco">
+          <p class="leyenda-apiladas"><span class="muestra" aria-hidden="true"></span>Tesoro (IGV)<span class="muestra muni" aria-hidden="true"></span>Municipalidades (IPM)</p>
+          <dl class="apiladas" style="--escala: 19">
+            <dt>2008</dt><dd><span class="parte" style="--p: 17"></span><span class="parte muni" style="--p: 2"></span><span class="valor">17 + 2 = 19&nbsp;%</span></dd>
+            <dt>2025</dt><dd><span class="parte" style="--p: 16"></span><span class="parte muni" style="--p: 2"></span><span class="valor">16 + 2 = 18&nbsp;%</span></dd>
+            <dt class="destacada">2026</dt><dd><span class="parte" style="--p: 15.5"></span><span class="parte muni" style="--p: 2.5"></span><span class="valor">15,5 + 2,5 = 18&nbsp;%</span></dd>
+            <dt>2029</dt><dd><span class="parte" style="--p: 14"></span><span class="parte muni" style="--p: 4"></span><span class="valor">14 + 4 = 18&nbsp;%</span></dd>
+          </dl>
         </div>
-        <ol class="razones">
-          <li><b>El IGV</b> 15,5 puntos del 18&nbsp;%. Lo cobra la SUNAT y va al Tesoro.</li>
-          <li><b>El IPM</b> Los otros 2,5 puntos, sobre la misma venta. Se rige por las normas del IGV: se cobra y se devuelve con él.</li>
-          <li><b>El FONCOMUN</b> Recibe el IPM y lo reparte cada mes a todas las municipalidades. La Ley 32387 le pasa medio punto por año: 14&nbsp;+&nbsp;4 en 2029.</li>
-        </ol>
+        <p class="lectura"><b>Hasta 2025 se movió el total; desde 2026 se mueve la frontera.</b> Los 2,5 puntos de hoy son unos S/&nbsp;11&nbsp;000 millones del FONCOMUN para las 1&nbsp;892 municipalidades. Y el IPM se cobra con el IGV… y se devuelve con él.</p>
       </div>
-      <p class="fuente">MEF, notas de prensa de febrero y del 4-mar-2026 (FONCOMUN 2026, DS 029-2026-EF) y Consulta Amigable (gobiernos locales, 2026); Ley 32387 (2025); TUO de la Ley de Tributación Municipal (DS 156-2004-EF), arts. 76 y 86.</p>
+      <p class="fuente">Ley 28033 (2003), Ley 29666 (2011) y Ley 32387 (2025); TUO de la Ley de Tributación Municipal (DS 156-2004-EF), art. 76; FONCOMUN: MEF, notas de prensa de febrero y del 4-mar-2026, y Consulta Amigable.</p>
     </div>
     <span class="pie">21 / 28</span>
   </section>
