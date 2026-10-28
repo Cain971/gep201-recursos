@@ -1114,6 +1114,8 @@ body.presenting .slide.active {
   .leyenda-apiladas { margin: 0; font-family: var(--font-mono); font-size: var(--size-body); color: var(--ink-soft); }
   .leyenda-apiladas .muestra { display: inline-block; box-sizing: border-box; width: 1em; height: 1em; margin-right: .35em; vertical-align: -.15em; background: var(--line); border: 1px solid var(--mark); }
   .leyenda-apiladas .muestra.muni { margin-left: 1.2em; background: var(--accent); border-color: var(--accent); }
+  /* la lectura empieza a la altura de la primera barra, no de la leyenda (alto de la leyenda + margen de las barras) */
+  @media (min-width: 721px) { .grafico-campo > .lectura.junto-barras { margin-top: calc(var(--leading) * 1em + var(--space-3)); } }
 </style>
 </head>
 <body>
@@ -1424,7 +1426,7 @@ body.presenting .slide.active {
             <dt>2029</dt><dd><span class="parte" style="--p: 14"><span class="n">14</span></span><span class="parte muni" style="--p: 4"><span class="n">4</span></span><span class="valor">14 + 4</span></dd>
           </dl>
         </div>
-        <p class="lectura"><b>El total no cambia: cambia el reparto.</b> La parte municipal se duplica, de 2 a 4 puntos, y la del Tesoro baja de 16 a 14. Hoy, 2,5 puntos son unos S/&nbsp;11&nbsp;000 millones del FONCOMUN para las 1&nbsp;892 municipalidades. El IPM se cobra con el IGV… y se devuelve con él.</p>
+        <p class="lectura junto-barras"><b>El total no cambia: cambia el reparto.</b> La parte municipal se duplica, de 2 a 4 puntos, y la del Tesoro baja de 16 a 14. Hoy, 2,5 puntos son unos S/&nbsp;11&nbsp;000 millones del FONCOMUN para las 1&nbsp;892 municipalidades. El IPM se cobra con el IGV… y se devuelve con él.</p>
       </div>
       <p class="fuente">Ley 32387 (2025); TUO de la Ley de Tributación Municipal (DS 156-2004-EF), arts. 76 y 86; FONCOMUN: MEF, notas de prensa de febrero y del 4-mar-2026, y Consulta Amigable.</p>
     </div>
