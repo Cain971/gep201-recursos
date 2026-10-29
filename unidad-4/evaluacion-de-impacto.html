@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es" data-identidad="grilla-modular" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación de impacto · GEP201</title>
+<!-- Construido con base-visual (herramientas/ensamblar.py) desde evaluacion-de-impacto.plantilla.html: no se edita aquí; se edita la plantilla y se vuelve a construir. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style data-bv="nucleo/tokens.css" data-version="1.3.0">
+/* base-visual · núcleo · tokens — v1.3.0 (sin cambio de valores: el ritmo de la escala de sala, en un comentario)
+   El contrato: los componentes y el motor SOLO leen estas variables (PLAN §2.3).
+   Cada identidad (identidades/*.css) redefine los colores, las fuentes, el radio
+   y la sombra; la escala de texto, espacio y movimiento es común.
+   Los valores de color de aquí son un respaldo neutro por si falta la identidad.
+   Papeles del acento (revisión del 2026-09-30, C1):
+   - --accent: lo que no es texto (marcas, rellenos, filetes, foco); basta 3:1.
+   - --accent-ink: el acento como texto. En las identidades que se proyectan
+     llega a 7:1 sobre --surface.
+   Extensiones opcionales (una identidad las define solo si las necesita):
+   - --font-figure: letra de la cifra protagonista (si falta, --font-display).
+   - --action, --on-action, --action-hover: el botón principal (si faltan, tinta
+     sobre papel y el acento al pasar el mouse).
+   - --phase y --slide-edge: borde de color en las diapositivas con la clase .fase.
+   v0.2.0 (exploraciones/2026-10-01-tipografia-escala/): una sola escala de página
+   ×1,25, cuyos pasos son también los pisos del celular en la diapositiva, y
+   --measure de 52ch (65 caracteres medidos a 16 px; los 68ch de antes daban 85).
+   v0.3.0 (exploraciones/2026-10-05-color-contraste/): los estados de la casa son
+   «solo lo que falla lleva color». --good puede ser la tinta sobre un gris neutro
+   (Grilla y Cuentas Claras); --warn avisa y --critical falla, siempre fuera de la
+   familia del acento. --ink-faint puede valer lo mismo que --ink-soft (un solo
+   gris). Muévete conserva su semáforo hasta la Etapa 4. Los respaldos de abajo no
+   cambian: solo rigen si falta la identidad.
+   v0.4.0 (exploraciones/2026-10-09-semaforo-y-acento/): colores de señal, cada
+   color dice una sola cosa. El acento es «mira esto» y «lo que sigue»; el semáforo,
+   verde «cumple», amarillo «en riesgo» y rojo «no cumple». Cada estado tiene el
+   mismo vocabulario que el acento:
+   - --good: la señal plena, lo que no es texto (barras, marcas); basta 3:1;
+   - --good-ink: el estado como texto; en las identidades que se proyectan, 7:1
+     sobre --surface, --paper y su fondo;
+   - --good-soft: el fondo de la etiqueta.
+   Igual para --warn y --critical. Ningún texto va sobre la señal plena.
+   v0.5.0 (exploraciones/2026-10-09-espaciado-ritmo/): el marco de la diapositiva,
+   «un eje y dos ritmos». Los tokens --slide-* NO se definen aquí: los define y los
+   redefine deck.css en .slide .pad (en cqw, así escalan con la diapositiva) y
+   las composiciones los leen. Son parte del contrato:
+   - --slide-line: la unidad del ritmo, una línea del cuerpo (desde la v1.3.0, 20 px × 1,4 = 28 px;
+     en la escala grande, 25 × 1,4 = 35 px);
+   - --slide-gap: entre bloques de evidencia (una línea; media en la .densa);
+   - --slide-gap-head: kicker → título (el título va pegado a su kicker);
+   - --slide-gap-title: título → evidencia (una línea; dos tercios en la .densa);
+   - --slide-gutter: el canal entre columnas (una línea);
+   - --slide-source-gap: relleno sobre la fuente (0: la fuente es solo la fuente);
+     desde la v0.6.0 solo rige donde la fuente sigue en el flujo (el celular);
+   - --slide-pad-top, --slide-pad-x, --slide-pad-bottom: el margen al borde, que fija
+     el eje donde empieza el kicker (7, 8 y 8 cqw; abajo, 5,5 en la .densa).
+   v0.6.0 (exploraciones/2026-10-11-componentes/): sin tokens nuevos. La ficha usa los
+   que ya hay (--surface, --mark, --radius, --shadow y los -soft de los estados).
+   v0.7.0 (exploraciones/2026-10-11-extraccion/): --qr-ink y --qr-paper, el QR del cierre. Son fijos,
+   negro sobre blanco en todas las identidades y en los dos temas (varios lectores no leen un QR
+   invertido): ninguna identidad los redefine.
+   v1.0.0 (formalizar): el contrato queda congelado en nucleo/contrato.json, que lista cada token en su grupo
+   (identidad, común, opcionales, marco, parámetros del autor e internas). Desde aquí, en 1.x esas listas solo
+   crecen: quitar o renombrar un token es de la 2.0. Sus valores sí se pueden afinar. Este archivo no cambia
+   de valores respecto de la v0.7.0. `python herramientas/ensamblar.py contrato` lo comprueba. */
+:root {
+  /* color */
+  --paper: #FAFAF8;        /* fondo de la página */
+  --surface: #FFFFFF;      /* tarjetas, bloques elevados y la diapositiva */
+  --ink: #16181A;          /* texto principal */
+  --ink-soft: #4A4F54;     /* texto secundario */
+  --ink-faint: #5E636A;    /* metadatos, fuentes, pies */
+  --line: #D9DCDF;         /* filetes y bordes finos (decorativos) */
+  --mark: #878C94;         /* marcas secundarias de los gráficos: 3:1 sobre --surface */
+  --accent: #1F4E79;       /* acento racionado: una decisión por bloque */
+  --accent-soft: #E3ECF5;  /* fondo de resaltado */
+  --accent-ink: #163A5C;   /* el acento como texto */
+  --on-accent: #FFFFFF;    /* texto sobre --accent */
+  --good: #1D6B4F;  --good-ink: #1D6B4F;  --good-soft: #E1F0E9;              /* «cumple» */
+  --warn: #8A5A00;  --warn-ink: #8A5A00;  --warn-soft: #F7ECD6;              /* «en riesgo» */
+  --critical: #A8322A;  --critical-ink: #A8322A;  --critical-soft: #F6E1DE;  /* «no cumple» */
+  --backdrop: #000000;     /* alrededor de la diapositiva al proyectar */
+  --qr-ink: #000000;  --qr-paper: #FFFFFF;  /* el QR: fijos, no los redefine ninguna identidad (v0.7.0) */
+
+  /* tipografía */
+  --font-text: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-text);
+  --font-mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --step--1: .8125rem;     /* 13 px: etiquetas y pies; nada baja de 12 px. La escala no
+                              cambia en v0.2.0: sus pasos son los pisos del celular */
+  --step-0: 1rem;          /* cuerpo */
+  --step-1: 1.25rem;
+  --step-2: 1.5625rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+  --step-5: 3.052rem;      /* escala 1,25 */
+  --leading: 1.55;
+  --leading-tight: 1.15;
+  --measure: 52ch;         /* largo de línea: 65 caracteres medidos (45–75) */
+
+  /* tamaños por contexto: los componentes los leen y .slide los redefine en cqw
+     (así cada componente se define una sola vez; revisión, D1) */
+  --size-meta: var(--step--1);      /* kicker, fuente, etiquetas, botones, pie */
+  --size-body: var(--step-0);
+  --size-title: var(--step-3);
+  --size-title-xl: var(--step-4);
+  --size-figure: var(--step-5);
+  --measure-title: 30ch;
+
+  /* espacio y forma */
+  --space-1: .25rem;  --space-2: .5rem;  --space-3: .75rem;  --space-4: 1rem;
+  --space-5: 1.5rem;  --space-6: 2rem;   --space-7: 3rem;    --space-8: 4.5rem;
+  --radius: 4px;
+  --shadow: none;
+  --tap: 44px;             /* objetivo táctil (meta AAA de la casa) */
+
+  /* movimiento */
+  --dur-1: 150ms;
+  --dur-2: 300ms;
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; }
+}
+</style>
+<style data-bv="identidades/grilla-modular.css" data-version="1.0.0">
+/* base-visual · identidad · Grilla modular — v1.0.0 (la 1.0; sin cambios desde la v0.4.0)
+   Fuente: decks de la Unidad III de GEP201 (tokens de diapositiva --s*) y app de
+   evaluación (mismos valores). Exploración: exploraciones/2026-09-22-direcciones-suizas/.
+   Un solo rojo, racionado: significa "mira esto", no "malo" (ficha del 2026-09-22;
+   decisión de JP del 2026-09-30). Por eso --critical ya no repite el acento.
+   Modo oscuro [derivado]: los decks de GEP201 no tienen modo oscuro (sus colores
+   son fijos); se parte del marco oscuro de las páginas de exploración (#16140F…).
+   Los decks se ven claros por defecto (deck.js); el oscuro es para quien lo elige.
+   Ajustados al extraer (2026-09-30): --good #12805F → #027A59 y --warn #B45309 →
+   #AD4D00 (los de la app no llegaban a 4,5:1 sobre sus fondos suaves).
+   v0.1.1, valores provisionales hasta la exploración de color (revisión, C1–C4):
+   --ink-faint a 7:1 (#5A574E → #56534A); --accent-ink, el rojo del texto, ya da
+   7,2:1 (#A32218, el registro del #B01008 de Quarto); --critical, un vino
+   (#8B2241) distinto del bermellón; --mark para las barras secundarias (3:1).
+   --surface es la diapositiva (#FAFAF8) y --paper el marco (#F7F5F0), como en los
+   decks: la superficie es la más clara, igual que en Cuentas Claras.
+   v0.3.0 (exploraciones/2026-10-05-color-contraste/, decisión de JP del 2026-10-05):
+   - Los dos rojos se quedan: el vivo (--accent) para barras y foco, que solo pide
+     3:1, y el oscuro para el texto, afinado a #A12016 para llegar a 7:1 también
+     sobre el papel (antes #A32218, 6,89:1; ΔE 0,006, no se ve).
+   - Estados, «solo lo que falla lleva color»: «cumple» en tinta sobre un gris
+     neutro, «en riesgo» en ámbar y «no cumple» en morado, fuera de la familia del
+     rojo (el rojo significa "mira esto"). Los tres a 7:1 sobre su fondo.
+   - Un solo gris secundario: --ink-faint = --ink-soft. La letra (mono, mayúsculas)
+     ya separa el kicker de la fuente; el token se conserva por contrato.
+   v0.4.0 (exploraciones/2026-10-09-semaforo-y-acento/, decisión de JP del 2026-10-09):
+   colores de señal, cada color dice una sola cosa, como en la señalética de seguridad.
+   - Azul ultramar, «mira esto» y «lo que sigue»: la cifra, la barra destacada, los
+     enlaces y el foco. Reemplaza al rojo como acento.
+   - El semáforo: rojo, «no cumple» (el vivo de antes es su señal, y el de texto se
+     oscurece a #9C150C para llegar a 7:1 sobre su fondo); amarillo dorado, «en
+     riesgo»; verde azulado (h 164), «cumple» y «hecho», que con deuteranopía se
+     separa del rojo (ΔE 0,094; uno amarillento quedaba a 0,036).
+   - Cada estado en tres tokens: la señal plena (--good, para gráficos), su texto
+     (--good-ink, a 7:1 sobre la diapositiva, el papel y su fondo) y su fondo
+     (--good-soft). El amarillo pleno no llega a 3:1 sobre el papel: en un gráfico
+     va con borde o etiqueta.
+   - Papel, tinta, el gris único, filetes y marcas: sin cambios. */
+[data-identidad="grilla-modular"] {
+  --paper: #F7F5F0;  --surface: #FAFAF8;
+  --ink: #0A0A08;  --ink-soft: #3F3D37;  --ink-faint: #3F3D37;
+  --line: #D8D5C9;  --mark: #8C897F;
+  --accent: #2B4CAD;  --accent-soft: #E6EDFC;  --accent-ink: #2B4CAD;  --on-accent: #FFFFFF;
+  --good: #007754;  --good-ink: #005B3F;  --good-soft: #D9F5E7;
+  --warn: #FCC100;  --warn-ink: #654C00;  --warn-soft: #FFEDC5;
+  --critical: #C0281C;  --critical-ink: #9C150C;  --critical-soft: #FDE7E3;
+  --font-text: "Archivo", system-ui, sans-serif;
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --radius: 0px;
+  --shadow: none;
+}
+[data-identidad="grilla-modular"][data-theme="dark"] {
+  --paper: #16140F;  --surface: #1E1B15;
+  --ink: #EFEAE0;  --ink-soft: #CFC7B7;  --ink-faint: #CFC7B7;
+  --line: #332E24;  --mark: #726A59;
+  --accent: #5B85F2;  --accent-soft: #232D45;  --accent-ink: #80A4F8;  --on-accent: #16140F;
+  --good: #00D095;  --good-ink: #65D1A4;  --good-soft: #173629;
+  --warn: #FCC100;  --warn-ink: #DDB659;  --warn-soft: #392D12;
+  --critical: #F06050;  --critical-ink: #FDA295;  --critical-soft: #432622;
+}
+@media (prefers-color-scheme: dark) {
+  [data-identidad="grilla-modular"]:not([data-theme="light"]) {
+    --paper: #16140F;  --surface: #1E1B15;
+    --ink: #EFEAE0;  --ink-soft: #CFC7B7;  --ink-faint: #CFC7B7;
+    --line: #332E24;  --mark: #726A59;
+    --accent: #5B85F2;  --accent-soft: #232D45;  --accent-ink: #80A4F8;  --on-accent: #16140F;
+    --good: #00D095;  --good-ink: #65D1A4;  --good-soft: #173629;
+    --warn: #FCC100;  --warn-ink: #DDB659;  --warn-soft: #392D12;
+    --critical: #F06050;  --critical-ink: #FDA295;  --critical-soft: #432622;
+  }
+}
+</style>
+<style data-bv="nucleo/base.css" data-version="1.0.0">
+/* base-visual · núcleo · base — v1.0.0 (la 1.0; sin cambios desde la v0.2.0)
+   Lo mínimo común a todo producto: documento, texto, enlaces, foco y movimiento.
+   Solo lee tokens. Recoge lo aprendido al corregir docencia (2026-09-30): enlaces
+   subrayados, foco visible, movimiento reducido y contenido visible sin JS.
+   v0.1.1: los enlaces usan el acento de texto, y la numeración y las viñetas van
+   en mono y en tinta (el rojo racionado: la estructura la marca la mono).
+   v0.1.2: body declara su color, su letra y su interlineado, no solo el fondo.
+   Si los hereda de html, cualquier estilo previo sobre body los pisa: el
+   esqueleto de un Artifact pone un color casi negro y 14 px de sistema, y el
+   texto quedaba oscuro sobre fondo oscuro, en otra letra y apretado.
+   v0.2.0 (dimensión 1): la numeración de las listas va en mono, al tamaño de los
+   metadatos (--size-meta) y sin punto: marca la estructura sin competir con el
+   texto (F3; decisión de JP, 2026-10-01). Sin ceros a la izquierda: esos quedan
+   para secuencias reales, como la agenda y el pie («06 / 23»). */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+  font-family: var(--font-text); color: var(--ink); background: var(--paper);
+  line-height: var(--leading);
+}
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-text); font-size: 1rem; line-height: var(--leading); }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: var(--leading-tight); text-wrap: balance; margin: 0 0 var(--space-3); }
+p { margin: 0 0 var(--space-4); max-width: var(--measure); }
+img, svg, video { max-width: 100%; height: auto; }
+code, kbd, samp { font-family: var(--font-mono); font-size: max(12px, .92em); }
+li::marker { font-family: var(--font-mono); color: var(--ink-soft); }
+@counter-style bv-numero { system: extends decimal; suffix: "\2002"; }  /* «1 », sin punto */
+ol { list-style-type: bv-numero; }
+ol > li::marker { font-size: var(--size-meta); }
+::selection { background: var(--accent-soft); color: var(--ink); }
+
+/* enlaces: se distinguen por algo más que el color (WCAG 1.4.1) */
+a { color: var(--accent-ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* movimiento reducido: sin animaciones ni desplazamiento suave */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
+
+/* para lectores de pantalla: presente en el documento, invisible en pantalla */
+.visualmente-oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+<style data-bv="nucleo/componentes.css" data-version="1.4.0">
+/* base-visual · núcleo · componentes — v1.4.0 (Etapa 3: la lista de control, para los recursos)
+   Componentes de páginas Y de diapositivas, con una sola definición: los tamaños
+   salen de los tokens de contexto (--size-*), que .slide redefine en deck.css
+   (revisión del 2026-09-30, D1). Solo leen tokens. Nada baja de 12 px y todo lo
+   táctil mide --tap.
+   Acento racionado (decisión de JP, 2026-09-30): en texto solo lo llevan la cifra,
+   los enlaces, desde la v0.4.0 la etiqueta «en curso» y desde la v0.7.0 el .destacado; la estructura (kicker, etiquetas, numeración, botones) va en
+   tinta y mono, la voz utilitaria (F3).
+   v0.2.0 (exploraciones/2026-10-01-tipografia-escala/): kicker en mono 500 y
+   .05em; títulos en 700 y la cifra en 800; el texto corrido (cuerpo, nota de la
+   cifra y fuente) usa --leading y --measure, que la diapositiva redefine; la cifra,
+   con caja de .85 (los dígitos no tienen descendentes) y unidad en 400.
+   v0.6.0 (exploraciones/2026-10-11-componentes/): la tarjeta pasa a ser una ficha de
+   borde --mark; los grupos de fichas (.tarjetas) miden lo mismo y alinean sus filas;
+   el veredicto y la cita son fichas; las barras llevan el valor en la punta, con
+   --v (0 a 1) en lugar de un ancho en %. La fuente en el pie está en deck.css.
+   v0.7.0 (exploraciones/2026-10-11-extraccion/, revisiones/2026-10-11-extraccion-grupo-d.md):
+   la pregunta (el quiz y el clasificador de los recursos, con nucleo/pregunta.js), las
+   alternativas de una predicción, la cita sola y lo que los decks de GEP201 escribían a mano
+   (el texto de las tablas y de las fichas en la diapositiva, la nota de una lista, el
+   .destacado, las .etiquetas, la fila destacada y el cierre con QR).
+   v0.7.1 (ronda 3 de la misma exploración, decisión de JP): para destacar, se atenúa el resto.
+   El paso actual de las columnas y la fila destacada de una tabla dejan el azul y el fondo
+   celeste: lo importante queda en tinta y lo demás pasa a --ink-soft.
+   v1.1.0 (exploraciones/2026-10-15-cierre-etapa-2/, decisión 1 de JP): el botón secundario y el
+   desplegable llevan el borde de la ficha, --mark (3:1 o más en las tres identidades y los dos
+   temas; --line daba de 1,20 a 1,57:1). --mark para lo que es un objeto; --line, para el filete.
+   v1.2.0 (exploraciones/2026-10-15-composicion/, decisiones 2 y 3 de JP): la secuencia y la red de
+   causas, las dos formas que más se repetían fuera del núcleo (11 de 200 diapositivas en seis decks),
+   con nucleo/red.js para las flechas de la red.
+   v1.3.0 (exploraciones/2026-10-18-lista-con-nota/): la agenda como el índice de un libro (decisión de
+   JP del 2026-10-18) y la lista de la diapositiva en el eje (el número cuelga en el margen).
+   v1.4.0 (revisiones/2026-10-24-recursos-y-apps/): la lista de control de los recursos, compuesta con lo
+   que ya había (el marco de la página está en pagina.css). */
+
+/* F1: la cornisa y la tesis (principios/firma.md) */
+.kicker { font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 var(--space-2); }
+.kicker .sub { color: var(--ink); }
+.titulo { font-family: var(--font-display); font-size: var(--size-title); font-weight: 700; line-height: var(--leading-tight); text-wrap: balance; max-width: var(--measure-title); margin: 0 0 var(--space-3); }
+.titulo.xl { font-size: var(--size-title-xl); }
+.cuerpo { font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); margin: 0 0 var(--space-4); }
+/* la lista del cuerpo (v0.7.0; la .lista de la sesión 8 y la .causes de la sesión 7 de GEP201):
+   un poco de aire entre ítems y, si hace falta, una nota por ítem, debajo, en gris y al
+   tamaño de los metadatos. La numeración es la de base.css (mono, sin punto).
+   <ol class="cuerpo"><li><b>Qué es un programa presupuestal</b> <span class="nota">…</span></li></ol> */
+.cuerpo li + li { margin-top: .35em; }
+.cuerpo li > .nota { display: block; font-size: var(--size-meta); line-height: var(--leading); color: var(--ink-soft); }
+/* v1.3.0: la lista de la diapositiva, en el eje. El texto empezaba 40 px a la derecha de la cornisa
+   (el relleno que el navegador le pone a toda lista); ahora el número o la viñeta cuelga en el margen
+   y el texto empieza donde empiezan la cornisa y el título (medido el 2026-10-18,
+   exploraciones/2026-10-18-lista-con-nota/). Solo la lista suelta en el eje: dentro de una columna o
+   de una ficha, el número no tiene margen donde colgar */
+.slide .pad > :is(ol, ul).cuerpo { padding-left: 0; }
+
+/* la agenda: el índice de un libro (v1.3.0; decisión de JP del 2026-10-18, E1;
+   exploraciones/2026-10-18-lista-con-nota/). Solo el título de cada parte, una guía de puntos y, al
+   final, el folio de la diapositiva donde empieza la parte, con la letra del folio del pie (mono,
+   gris): el «19» del índice es el «19 / 34» del pie. El número de la parte cuelga en el margen y es el
+   de la pestaña de su divisor. Los títulos, un paso más grandes que el cuerpo (1,25), para que la
+   agenda no se vea chica. Los folios los pone `ensamblar.py numerar` desde los divisores (--parte).
+   En el celular, sin guía.
+   <ol class="indice"><li><span class="fila"><span class="que">Del dato a la causa</span>
+     <span class="guia" aria-hidden="true"></span><span class="folio">19</span></span></li>…</ol> */
+ol.indice { margin: 0; padding-left: 0; max-width: none; font-size: calc(var(--size-body) * 1.25); line-height: 1.25; font-weight: 700; }
+.indice > li + li { margin-top: calc(var(--slide-line, var(--space-5)) * .5); }
+.indice > li::marker { font-weight: 500; }
+.indice .fila { display: flex; align-items: baseline; gap: .5em; }
+.indice .que { min-width: 0; }
+.indice .guia { flex: 1 1 2em; min-width: 2em; border-bottom: 2px dotted var(--mark); }
+.indice .folio { flex: none; font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 400; color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+@media (max-width: 720px) {
+  .indice .guia { display: none; }
+  .indice .folio { margin-left: auto; }
+}
+
+/* «mira esto» dentro del texto (v0.7.0; el .hl de la sesión 7 y la .pregunta de la sesión 8):
+   el acento de texto en negrita. Es el azul de «mira esto» (v0.4.0), así que va una vez por
+   diapositiva, como el resto del acento. Una frase: <b class="destacado">…</b>; una línea
+   entera: <p class="cuerpo destacado">…</p> */
+.destacado { color: var(--accent-ink); font-weight: 700; }
+
+/* un grupo de etiquetas (v0.7.0; los .chips de la sesión 7): una fila que se parte
+   <p class="etiquetas"><span class="etiqueta">Grupo 1 · PP 0068</span>…</p> */
+.etiquetas { display: flex; flex-wrap: wrap; gap: .6em; font-size: var(--size-meta); max-width: none; margin: 0; padding: 0; list-style: none; }
+
+/* F2: fuente visible donde está el dato. Sin filete (provisional: el filete
+   dentro de una tarjeta hacía doble línea con su borde, gusto 2) */
+.fuente { font-family: var(--font-mono); font-size: var(--size-meta); line-height: var(--leading); color: var(--ink-faint); max-width: 90ch; margin: var(--space-4) 0 0; }
+
+/* tarjeta = la ficha (dimensión 4, 2026-10-11): fondo --surface y borde de 1 px. En la
+   Grilla, que no lleva sombra ni esquinas redondeadas, es una ficha rectangular. El
+   borde es --mark y no --line: --line da 1,41:1 sobre la diapositiva (el mismo color
+   del filete fino que «no se veía clara»); --mark da 3,35:1, y la casa pide 3:1 a los
+   objetos gráficos. Si en el aula no separa las fichas desde la última fila: --ink-soft
+   (6,75:1 con luz de sala) o la variante .fondo (ficha, «Cuándo reconsiderar») */
+.tarjeta { background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); box-shadow: var(--shadow); padding: var(--space-5); }
+.tarjeta > :last-child { margin-bottom: 0; }
+.slide .tarjeta { padding: max(var(--space-4), calc(var(--size-body) * .9)); }
+
+/* cifra protagonista: un número grande, su unidad y una nota. Es la pieza de
+   texto que lleva el acento del bloque */
+.cifra { font-family: var(--font-figure, var(--font-display)); font-size: var(--size-figure); font-weight: 800; line-height: .85; letter-spacing: -.02em; color: var(--accent-ink); font-variant-numeric: proportional-nums; margin: 0; }
+.cifra .unidad { font-family: var(--font-text); font-size: .4em; font-weight: 400; color: var(--ink-soft); }
+.cifra-nota { color: var(--ink-soft); font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); margin: var(--space-2) 0 0; }
+
+/* etiqueta: neutra por defecto; el estado lleva color y palabra (el color nunca
+   va solo), sin signo: la Grilla habla con letra (F3) y un ícono es el registro
+   de las aplicaciones. v0.4.0: la palabra en el -ink del estado, sobre su -soft.
+   Caja homogénea (pedido de JP, 2026-10-09): suelta, mide lo que la palabra más
+   larga de los estados («no cumple», «en riesgo», «pendiente»: 9 letras de mono
+   con su espaciado, más el relleno y el borde), con la palabra centrada; en una
+   tabla llena su columna, así la columna queda pareja.
+   «En curso» (.sigue) es lo que sigue: el azul, en la palabra y en el borde */
+.etiqueta {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4em;
+  min-width: calc(9 * (1ch + .06em) + 1.4em + 2px); white-space: nowrap;
+  font-family: var(--font-mono); font-size: var(--size-meta); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft); background: transparent; border: 1px solid var(--line); border-radius: var(--radius); padding: .2em .7em;
+}
+.etiqueta.buena { color: var(--good-ink); background: var(--good-soft); border-color: transparent; }
+.etiqueta.alerta { color: var(--warn-ink); background: var(--warn-soft); border-color: transparent; }
+.etiqueta.critica { color: var(--critical-ink); background: var(--critical-soft); border-color: transparent; }
+.etiqueta.sigue { color: var(--accent-ink); border-color: var(--accent); }
+.tabla td > .etiqueta { display: flex; }
+
+/* fichas en paralelo (dimensión 4): un veredicto, una cita frente a otra. El grupo pone
+   --n columnas del mismo ancho (por defecto 2) y cada ficha ocupa --filas filas con
+   subgrid: las fichas miden lo mismo y cada fila (el estado, el nombre, el dato…)
+   queda a la misma altura en todas, aunque el texto de una sea más largo. --filas
+   tiene que ser el número de hijos de la ficha (4 en el veredicto, 2 en la cita); sin
+   declararlo vale 1, para una ficha de un solo bloque. En el celular se apilan.
+   <div class="tarjetas" style="--filas: 4">
+     <div class="tarjeta veredicto buena">
+       <span class="etiqueta buena">Cumple</span>
+       <p class="nombre">Déficit fiscal</p><p class="dato">2,2 %</p><p class="detalle">…</p>
+     </div>…
+   </div> */
+.tarjetas { display: grid; grid-template-columns: repeat(var(--n, 2), minmax(0, 1fr)); grid-auto-rows: auto; column-gap: var(--slide-gutter, var(--space-5)); row-gap: 0; align-items: stretch; }
+.tarjetas > .tarjeta { display: grid; grid-row: span var(--filas, 1); grid-template-rows: subgrid; row-gap: .5em; align-content: start; min-width: 0; margin: 0; }
+.tarjetas > .tarjeta > * { margin: 0; max-width: none; }
+
+/* el texto de una ficha (v0.7.0; los casos y los instrumentos de la sesión 7): el rótulo es un
+   .kicker, la cabeza un .nombre, el texto un <p> a .82 del cuerpo en la diapositiva (20,5 px al
+   proyectar, como la cita) y, si lleva, su .fuente al final. Antes, un <p> suelto dentro de
+   una ficha salía a 16 px al proyectar. --filas es el número de hijos.
+   <div class="tarjetas" style="--n: 3; --filas: 3">
+     <div class="tarjeta"><p class="kicker">Caso 1</p><p class="nombre">Reino Unido, 1998–2008</p><p>…</p></div>…
+   </div> */
+.tarjeta .nombre { font-size: var(--size-body); font-weight: 700; line-height: 1.2; }
+:where(.slide .tarjeta) > p { font-size: calc(var(--size-body) * .82); line-height: 1.3; }
+
+/* el veredicto: el estado (etiqueta, sola: el color de la ficha no dice nada), lo que se
+   mide (.nombre), el dato y su descripción */
+.veredicto .etiqueta { justify-self: start; align-self: start; }
+.veredicto .dato { font-size: calc(var(--size-body) * 1.6); font-weight: 800; line-height: 1.05; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.veredicto .detalle { font-size: calc(var(--size-body) * .82); line-height: 1.3; color: var(--ink-soft); }
+
+/* la cita: la misma ficha, sin estado. El rótulo de quién habla es un .kicker (mono) y el
+   texto citado va a .82 del cuerpo (20,5 px al proyectar, los que se vieron en clase;
+   antes `.dos p` le ganaba a `.cita` y el .9 declarado no se aplicaba nunca). Dos filas.
+   <div class="tarjetas" style="--filas: 2">
+     <figure class="tarjeta cita"><figcaption class="kicker">Autor</figcaption><blockquote>…</blockquote></figure>…
+   </div> */
+.cita { margin: 0; }
+.cita > blockquote { margin: 0; font-size: calc(var(--size-body) * .82); line-height: 1.3; }
+
+/* la cita sola (v0.7.0, decisión de JP del 2026-10-11; exploraciones/2026-10-11-extraccion/,
+   E de la ronda 2): sin caja. La ficha es para dos citas frente a frente; sola, sería un marco
+   alrededor del texto. Va en el mismo orden que la ficha: quién lo dice, corto y en mono, y
+   después la cita, al tamaño y en la medida del cuerpo, con la comilla de apertura colgada
+   para que el texto quede en el eje. La referencia completa va en la .fuente del pie, como
+   cualquier dato. Una frase en <b> solo si es la que prueba el título, y entonces la fuente
+   dice «Énfasis añadido».
+   <figure class="cita-sola"><figcaption class="kicker">Quién lo dice</figcaption><blockquote>«…»</blockquote></figure> */
+.cita-sola { display: grid; gap: .6em; margin: 0; }
+.cita-sola > .kicker { margin: 0; }
+.cita-sola > blockquote { margin: 0; font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); text-indent: -.5em; }
+
+/* las alternativas de una predicción en la diapositiva (v0.7.0; C de la exploración del
+   2026-10-11): una ficha por alternativa, la letra en mono y el valor que se vota al tamaño
+   del título grande. La respuesta se revela con la flecha: una etiqueta en su ficha con .step
+   (en lectura y al imprimir se ve). --filas: 3 con la etiqueta, 2 sin ella.
+   <div class="tarjetas alternativas" style="--n: 3; --filas: 3">
+     <div class="tarjeta"><p class="kicker">A</p><p class="valor">≈ 10 %</p></div>
+     <div class="tarjeta"><p class="kicker">B</p><p class="valor">≈ 33 %</p><span class="etiqueta buena step">Correcta</span></div>…
+   </div> */
+.tarjetas.alternativas .valor { font-size: var(--size-title-xl); font-weight: 800; line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.tarjetas.alternativas .etiqueta { justify-self: start; }
+
+/* variante .fondo (la alternativa viva de JP, 2026-10-11): el estado como fondo en lugar
+   de solo la etiqueta. La ficha toma el -soft de su estado (.buena, .alerta, .critica en
+   la ficha), pierde el borde (sin borde, el panel es la caja) y la etiqueta queda como
+   palabra sobre el fondo. Los fondos dan 1,11:1 sobre la diapositiva: se ven en pantalla
+   y se lavan con luz de sala; se activa si la etiqueta no se distingue desde la última
+   fila. La cita se queda como ficha neutra.
+   <div class="tarjetas fondo" style="--filas: 4">…</div> */
+.tarjetas.fondo > .tarjeta { border-color: transparent; }
+.tarjetas.fondo > .tarjeta.buena { background: var(--good-soft); }
+.tarjetas.fondo > .tarjeta.alerta { background: var(--warn-soft); }
+.tarjetas.fondo > .tarjeta.critica { background: var(--critical-soft); }
+.tarjetas.fondo .etiqueta { background: transparent; padding-inline: 0; justify-content: flex-start; min-width: 0; }
+.tarjetas.fondo .detalle { color: var(--ink); }
+
+/* botón: en tinta y en mono, como en los decks de GEP201 y la app de evaluación
+   (revisión, P3). Una identidad con manual de marca puede cambiarlo con --action */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: var(--tap); padding: 0 var(--space-5);
+  font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; line-height: 1; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--on-action, var(--paper)); background: var(--action, var(--ink));
+  border: 1px solid var(--action, var(--ink)); border-radius: var(--radius); cursor: pointer; text-decoration: none;
+  transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out);
+}
+.boton:hover { color: var(--on-accent); background: var(--action-hover, var(--accent)); border-color: var(--action-hover, var(--accent)); }
+.boton.secundario { color: var(--ink); background: transparent; border-color: var(--mark); }  /* v1.1.0: antes --line */
+.boton.secundario:hover { color: var(--ink); background: transparent; border-color: var(--ink); }
+.boton:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* la pregunta (v0.7.0, decisión de JP del 2026-10-11; exploraciones/2026-10-11-extraccion/, B):
+   el quiz y el clasificador de los recursos son la misma pieza. Un enunciado, sus
+   alternativas (botones de verdad, con el borde de la ficha: --mark da 3,35:1 y la casa pide
+   3:1 al borde de un control) y la explicación. Al responder, nucleo/pregunta.js marca
+   .respondida, .correcta y .elegida y pone dos etiquetas: «Correcta» en la correcta e
+   «Incorrecta» en la elegida, si no lo era. El resto no cambia de color (cada color dice una
+   sola cosa, y lo dice la etiqueta, sin ✓ ni ✗). La respuesta y las explicaciones van en el
+   HTML: data-correcta en la pregunta, data-valor en cada alternativa y, en cada explicación,
+   data-para con las alternativas a las que responde (sin data-para, se muestra siempre). Sin
+   JS se ven todas las explicaciones, como una hoja de respuestas.
+   <div class="pregunta" data-correcta="b">
+     <p class="kicker">Pregunta 2 de 5</p>
+     <p class="enunciado">…</p>
+     <div class="alternativas">
+       <button class="alternativa" type="button" data-valor="a"><span class="letra">A</span><span class="texto">…</span></button>…
+     </div>
+     <p class="retro" data-para="b">…</p><p class="retro" data-para="a c d">…</p>
+   </div>
+   El clasificador: la misma pieza con .clasificar y alternativas cortas, sin .letra; van en
+   fila y en mono. Un contador opcional en la página: <p data-puntaje>…</p>, y un botón con
+   data-reiniciar. */
+.pregunta { display: grid; gap: var(--space-4); max-width: 46rem; }
+.pregunta > * { margin: 0; }
+.pregunta .enunciado { font-family: var(--font-display); font-size: calc(var(--size-body) * 1.25); font-weight: 700; line-height: 1.3; max-width: var(--measure); }
+.pregunta .alternativas { display: grid; gap: var(--space-2); }
+.pregunta .alternativa {
+  display: flex; align-items: flex-start; gap: var(--space-3); width: 100%; min-height: var(--tap);
+  padding: var(--space-3) var(--space-4); margin: 0;
+  font: inherit; font-size: var(--size-body); line-height: var(--leading); text-align: left; color: var(--ink);
+  background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); cursor: pointer;
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+.pregunta .alternativa:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pregunta:not(.respondida) .alternativa:hover { border-color: var(--ink); }
+.pregunta .alternativa .letra { flex: none; min-width: 1.2em; padding-top: .2em; font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; color: var(--ink-soft); }
+.pregunta .alternativa .texto { flex: 1; min-width: 0; }
+.pregunta .alternativa .etiqueta { flex: none; align-self: center; }
+.pregunta.respondida .alternativa { cursor: default; }
+.pregunta.respondida .alternativa:is(.correcta, .elegida) { border-color: var(--ink); }
+.pregunta.respondida .alternativa:not(.correcta):not(.elegida) { color: var(--ink-soft); }
+.pregunta .retro { font-size: var(--size-body); line-height: var(--leading); max-width: var(--measure); }
+.js .pregunta:not(.respondida) .retro, .js .pregunta .retro.otra { display: none; }
+.pregunta.clasificar .enunciado { font-family: var(--font-text); font-size: var(--size-body); font-weight: 400; line-height: var(--leading); }
+.pregunta.clasificar .alternativas { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.pregunta.clasificar .alternativa { width: auto; max-width: 100%; flex-wrap: wrap; row-gap: var(--space-1); align-items: center; font-family: var(--font-mono); font-size: var(--size-meta); letter-spacing: .06em; text-transform: uppercase; }
+
+/* desplegable: <details> nativo (teclado y lectores de pantalla sin JS) */
+.desplegable { background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); }  /* v1.1.0: antes --line */
+.desplegable + .desplegable { margin-top: var(--space-2); }
+.desplegable > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
+  min-height: var(--tap); padding: var(--space-3) var(--space-4); cursor: pointer; list-style: none; font-weight: 600;
+}
+.desplegable > summary::-webkit-details-marker { display: none; }
+.desplegable > summary::after { content: "▾"; color: var(--ink-soft); transition: transform var(--dur-2) var(--ease-out); }
+.desplegable[open] > summary::after { transform: rotate(180deg); }
+.desplegable > :not(summary) { padding: 0 var(--space-4) var(--space-4); margin: 0; }
+.desplegable[open] { border-color: var(--ink-faint); }
+
+/* la lista de control (v1.4.0): quien la usa revisa su propio trabajo contra criterios y marca lo que
+   cumple (tres recursos de GEP201 la tienen: revisiones/2026-10-24-recursos-y-apps/). Compuesta con lo
+   que ya había, sin decisión visual nueva: cada criterio es una fila con el borde de la ficha (--mark,
+   como la alternativa de la pregunta) y una casilla nativa en tinta; lo marcado pasa el borde a tinta,
+   sin color (cada color dice una sola cosa). El avance va en mono («4 de 10») con una pista como la del
+   progreso de la página del plan. nucleo/pagina.js guarda lo marcado en el navegador y lo cuenta; sin
+   JS se marca igual y no guarda. Su forma no la ha visto JP: va en galeria/recurso-demo.html.
+   <div class="lista-control" data-lista="cadena">
+     <p class="avance"><span data-avance>0 de 6</span> <span class="pista" aria-hidden="true"><span class="barra"></span></span></p>
+     <fieldset><legend class="kicker">El problema</legend>
+       <label class="criterio"><input type="checkbox"> <span>…</span></label>…</fieldset>
+     <p class="nota">Tu avance se guarda en este navegador. <button class="boton secundario" type="button" data-desmarcar>Empezar de nuevo</button></p>
+   </div> */
+.lista-control { --hecho: 0; display: grid; gap: var(--space-4); max-width: 46rem; }  /* --hecho (0 a 1) lo pone pagina.js */
+.lista-control > * { margin: 0; }
+.lista-control fieldset { display: grid; gap: var(--space-2); min-width: 0; margin: 0; padding: 0; border: 0; }
+.lista-control legend { padding: 0; margin-bottom: var(--space-2); }
+.lista-control .criterio {
+  display: flex; align-items: flex-start; gap: var(--space-3); min-height: var(--tap); padding: var(--space-3) var(--space-4);
+  font-size: var(--size-body); line-height: var(--leading); background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); cursor: pointer;
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+.lista-control .criterio input { flex: none; width: 1.25em; height: 1.25em; margin: .15em 0 0; accent-color: var(--ink); cursor: pointer; }
+.lista-control .criterio:hover, .lista-control .criterio:has(input:checked) { border-color: var(--ink); }
+.lista-control .criterio:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lista-control .criterio input:focus-visible { outline: none; }
+.lista-control .avance { display: flex; align-items: center; gap: var(--space-3); font-family: var(--font-mono); font-size: var(--size-meta); color: var(--ink-soft); }
+.lista-control .avance .pista { flex: 1; max-width: 12rem; height: .6em; background: var(--line); border-radius: var(--radius); overflow: hidden; }
+.lista-control .avance .barra { display: block; width: calc(var(--hecho) * 100%); height: 100%; background: var(--ink); }
+.lista-control .nota { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); font-size: var(--size-meta); color: var(--ink-soft); }
+
+/* tabla: filetes finos, cabeceras en mono, cifras alineadas */
+.tabla-contenedor { overflow-x: auto; }
+.tabla { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.tabla th { font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); text-align: left; }
+.tabla th, .tabla td { padding: var(--space-2) var(--space-3) var(--space-2) 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tabla .num { text-align: right; font-family: var(--font-mono); }
+.tabla caption { caption-side: bottom; text-align: left; font-size: var(--size-meta); color: var(--ink-faint); padding-top: var(--space-2); }
+/* la fila que hay que mirar (v0.7.1, decisión de JP del 2026-10-11, D de la ronda 3 de
+   exploraciones/2026-10-11-extraccion/): no se marca la fila, se atenúan las demás. La
+   destacada queda en tinta y las otras pasan a --ink-soft (10,4:1, sobre el 7:1 de la casa),
+   con la negrita en 500; las etiquetas de estado no cambian. Reemplaza al fondo celeste de la
+   v0.7.0 (la tr.clave de la sesión 8), que no combinaba y se lavaba con luz de sala (1,12:1) */
+.tabla:has(tr.destacada) tbody tr:not(.destacada) td { color: var(--ink-soft); }
+.tabla:has(tr.destacada) tbody tr:not(.destacada) td b { font-weight: 500; }
+/* en la diapositiva (v0.7.0; la regla local de la sesión 8): las celdas a .82 del cuerpo
+   (20,5 px al proyectar; antes heredaban los 16 px de body) y, al proyectar, la tabla no se
+   encoge ni se vuelve una región con barra: si no cabe, se acorta el texto o va la .densa.
+   El estado de una fila va como etiqueta (.etiqueta.critica), no en rojo suelto */
+.slide .tabla td { font-size: calc(var(--size-body) * .82); line-height: 1.3; }
+@media (min-width: 721px) { .slide .tabla-contenedor { flex-shrink: 0; overflow: visible; } }
+
+/* marco de gráfico (PLAN §4.5): kicker, título que afirma, gráfico, fuente.
+   Patrón: las marcas se dibujan; las etiquetas son texto HTML, así respetan el
+   piso de 12 px en celular (el texto dentro de un SVG escalado no lo respeta).
+   Las medidas van en em: crecen con --size-meta en la diapositiva. Una barra
+   destacada en acento; el resto en --mark, más liviano que el texto (revisión, C4).
+   Barras con el valor en la punta (dimensión 4, 2026-10-11; «bars → value at the tip»,
+   guía de gráficos): cada fila lleva su --v (0 a 1) y el valor se pega al final de su
+   barra, no en una columna aparte. La barra se mide sobre una pista cuyo 100 % deja
+   4.5em libres a la derecha para el valor del extremo (--valor-ancho, si el valor es
+   más largo que «100 %»).
+   <dl class="barras">
+     <dt>Programa A</dt><dd style="--v: .82"><span class="barra destacada"></span><span class="valor">82 %</span></dd>…
+   </dl> */
+.marco { margin: 0; }
+.barras { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: .6em .9em; align-items: center; margin: var(--space-3) 0 0; font-family: var(--font-mono); font-size: var(--size-meta); }
+.barras dt { color: var(--ink-soft); }
+.barras dd { position: relative; height: 1.2em; margin: 0 var(--valor-ancho, 4.5em) 0 0; }
+.barras .barra { display: block; width: calc(var(--v) * 100%); height: 100%; background: var(--mark); border-radius: var(--radius); }
+.barras .barra.destacada { background: var(--accent); }
+.barras .valor { position: absolute; left: calc(var(--v) * 100% + .7em); top: 0; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Composiciones sobre la retícula de 12 columnas (v0.5.0, dimensión 3; fichas en
+   exploraciones/2026-10-09-espaciado-ritmo/). El canal entre columnas es
+   --slide-gutter (una línea del cuerpo), que define el marco de la diapositiva;
+   en una página sin él, vale --space-5. En el celular todas se apilan. */
+
+/* cifra al lado de sus razones: la cifra es la evidencia de un título que afirma.
+   El número y lo que mide, en las columnas 1 a 5; las razones, en las 6 a 12,
+   alineados arriba.
+   <div class="cifra-campo">
+     <div class="cifra-dato"><p class="cifra">7 650 <span class="unidad">%</span></p><p class="cifra-nota">…</p></div>
+     <ol class="razones"><li><b>…</b> …</li></ol>
+   </div> */
+.cifra-campo, .grafico-campo, .columnas { font-size: var(--size-body); }
+.cifra-campo, .grafico-campo { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--slide-gutter, var(--space-5)); align-items: start; }
+.cifra-campo > .cifra-dato { grid-column: 1 / 6; }
+.cifra-campo > .razones { grid-column: 6 / 13; margin: 0; padding-left: 1.5em; padding-top: .2em; font-size: var(--size-body); line-height: var(--leading); }
+.razones li + li { margin-top: .4em; }
+.razones b { display: block; }
+.cifra-dato .cifra-nota { margin-top: .5em; }
+
+/* gráfico con su lectura: el gráfico en las columnas 1 a 8 y lo que hay que ver en
+   él en las 9 a 12, al mismo nivel (no como pie de página). La fuente vuelve a ser
+   solo la fuente (F2). El gráfico es del tipo que pidan los datos: barras
+   horizontales (.barras) o columnas verticales (.grafico-columnas).
+   <div class="grafico-campo"><dl class="barras">…</dl><p class="lectura">…</p></div> */
+.grafico-campo > :not(.lectura) { grid-column: 1 / 9; margin: 0; }
+.grafico-campo > .lectura { grid-column: 9 / 13; margin: 0; max-width: none; font-size: var(--size-body); line-height: var(--leading); }
+.grafico-campo > .lectura b { color: var(--accent-ink); }
+
+/* columnas verticales con el valor encima y el periodo debajo, la destacada en el
+   acento y el resto en gris, sobre una línea de base (el .barchart del GEP201,
+   ahora en HTML y con tokens, para respetar el piso de 12 px en el celular).
+   <div class="grafico-columnas" role="img" aria-label="…">
+     <div class="col destacada" style="--v: .384"><span class="tope"><span class="valor">88</span><span class="barra"></span></span><span class="etq">2006-2011</span></div>…
+   </div> */
+.grafico-columnas { --alto: 12rem; font-size: var(--size-body); display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); align-items: end; }
+.slide .grafico-columnas { --alto: 15cqw; }
+.grafico-columnas .col { display: flex; flex-direction: column; align-items: stretch; gap: .4em; }
+.grafico-columnas .tope { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: .3em; border-bottom: 1px solid var(--line); }
+.grafico-columnas .barra { width: 62%; height: calc(var(--alto) * var(--v)); background: var(--mark); }
+.grafico-columnas .col.destacada .barra { background: var(--accent); }
+.grafico-columnas .valor, .grafico-columnas .etq { font-family: var(--font-mono); font-size: var(--size-meta); font-variant-numeric: tabular-nums; text-align: center; }
+.grafico-columnas .etq { color: var(--ink-soft); }
+.grafico-columnas .col.destacada .valor { color: var(--accent-ink); font-weight: 500; }
+
+/* columnas con número en tinta (B′, el original de GEP201): filete fino arriba,
+   número grande como ancla de cada columna, cabeza en negrita y texto en gris. El
+   número va en tinta: el azul es «mira esto» y «lo que sigue», y con tres números
+   azules por diapositiva dejaría de señalar algo. El número es opcional. --n fija
+   cuántas columnas.
+   El paso actual (.actual; v0.7.1, decisión de JP del 2026-10-11, D de la ronda 3): no
+   lleva color. Queda en tinta, con el filete de arriba en tinta y de 2 px, y los otros
+   pasos se atenúan (número y cabeza en --ink-soft y en 500). Antes, su número iba en azul,
+   y repetía lo que ya decía el título («hoy estamos en el segundo»). Sin .actual, todas las
+   columnas van iguales.
+   <div class="columnas" style="--n: 3">
+     <div class="actual"><span class="n">1</span><div><h3>…</h3><p>…</p></div></div>…
+   </div> */
+.columnas { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: var(--slide-gutter, var(--space-5)); }
+.columnas > div { display: flex; gap: .8em; border-top: 1px solid var(--line); padding-top: .9em; }
+.columnas > div > div { min-width: 0; }
+.columnas .n { flex: none; font-weight: 800; font-size: calc(var(--size-body) * 1.3); line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.columnas :is(h3, h4) { font-size: var(--size-body); font-weight: 700; line-height: 1.2; margin: 0 0 .25em; }
+.columnas p { max-width: none; margin: 0; font-size: calc(var(--size-body) * .8); line-height: 1.3; color: var(--ink-soft); }
+.columnas > .actual { border-top: 2px solid var(--ink); padding-top: calc(.9em - 1px); }
+.columnas:has(> .actual) > div:not(.actual) :is(.n, h3, h4) { color: var(--ink-soft); font-weight: 500; }
+
+/* la secuencia (v1.2.0, decisión 2 de JP del 2026-10-15, C; exploraciones/2026-10-15-composicion/):
+   pasos en orden, cada uno en una ficha (fondo --surface y borde --mark, 3:1 o más), unidos por flechas
+   dibujadas. Es la .ruta del deck de la DAES, generalizada; reemplaza la .cadena de la sesión 8 (borde
+   --line, 1,41:1, y la flecha como carácter) y la .hierarchy de las reglas fiscales. Las fichas miden lo
+   mismo y sus filas se alinean (subgrid, como .tarjetas). La flecha va en el canal, centrada en la
+   ficha y en --ink-soft: es dibujo, no un «→». El supuesto de una flecha cuelga debajo, con una llave
+   del centro de un paso al del siguiente, y va dentro del paso del que sale la flecha: así, en el
+   celular y para un lector de pantalla, se lee entre los dos pasos que une. El frágil (.fragil) es el
+   «mira esto» de la diapositiva (F4: una vez); la llave sigue en 1 px (con 2 px en un solo lado sería
+   una franja) y lo marca el color. .actual marca el paso en curso, como en .columnas: borde de 2 px en
+   tinta y los otros, atenuados. --n fija cuántos pasos.
+   En el celular los pasos se apilan, la flecha apunta hacia abajo y el supuesto queda como nota.
+   <ol class="secuencia" style="--n: 3">
+     <li><p class="kicker">Producto</p><p class="nombre">…</p><p class="detalle">…</p>
+         <p class="supuesto fragil"><span class="kicker">Supuesto frágil</span> …</p></li>
+     <li>…</li>
+   </ol> */
+.secuencia {
+  --canal: calc(var(--slide-gutter, var(--space-5)) * 1.6);
+  display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); grid-auto-rows: auto;
+  column-gap: var(--canal); row-gap: 0; margin: 0; padding: 0; list-style: none; font-size: var(--size-body);
+}
+.secuencia > li { display: grid; grid-row: span 4; grid-template-rows: subgrid; min-width: 0; margin: 0; }
+/* la ficha, detrás de las tres primeras filas del paso; el supuesto queda fuera */
+.secuencia > li::before {
+  content: ""; grid-area: 1 / 1 / 4 / 2;
+  background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.secuencia > li > * { grid-column: 1; position: relative; margin: 0; max-width: none; padding-inline: calc(var(--size-body) * .8); }
+.secuencia > li > .kicker { grid-row: 1; padding-top: .8em; }
+.secuencia > li > .nombre { grid-row: 2; padding-top: .3em; font-size: var(--size-body); font-weight: 700; line-height: 1.2; }
+.secuencia > li > .nombre:first-child { padding-top: .8em; }
+.secuencia > li > .detalle { grid-row: 3; padding-top: .35em; padding-bottom: .85em; font-size: calc(var(--size-body) * .82); line-height: 1.3; color: var(--ink-soft); }
+.secuencia > li:not(:has(> .detalle)) > .nombre { padding-bottom: .85em; }
+/* la flecha, en el canal: el trazo y su punta en un solo seudoelemento */
+.secuencia > li:not(:last-child)::after {
+  content: ""; grid-area: 1 / 1 / 4 / 2; align-self: center; justify-self: end; position: relative; z-index: 1;
+  width: calc(var(--canal) * .62); height: .72em; margin-right: calc(var(--canal) * -.81);
+  background: var(--ink-soft);
+  clip-path: polygon(0 calc(50% - 1px), calc(100% - .42em) calc(50% - 1px), calc(100% - .42em) 0, 100% 50%,
+                     calc(100% - .42em) 100%, calc(100% - .42em) calc(50% + 1px), 0 calc(50% + 1px));
+}
+/* el supuesto de la flecha que sale de este paso: una llave del centro de este paso al del siguiente */
+.secuencia .supuesto {
+  grid-row: 4; align-self: start; margin: .95em 0 0 50%; width: calc(100% + var(--canal)); padding: .5em .4em 0;
+  border-top: 1px solid var(--ink-soft); font-size: var(--size-meta); line-height: 1.3; text-align: center;
+}
+.secuencia .supuesto::before, .secuencia .supuesto::after { content: ""; position: absolute; top: -.5em; height: .5em; border-left: 1px solid var(--ink-soft); }
+.secuencia .supuesto::before { left: 0; }
+.secuencia .supuesto::after { right: 0; }
+.secuencia .supuesto > .kicker { display: block; margin: 0 0 .2em; }
+.secuencia .supuesto.fragil { border-top-color: var(--accent); }
+.secuencia .supuesto.fragil::before, .secuencia .supuesto.fragil::after { border-left-color: var(--accent); }
+.secuencia .supuesto.fragil > .kicker { color: var(--accent-ink); }
+.secuencia:has(> .actual) > li:not(.actual) > :is(.kicker, .nombre, .detalle) { color: var(--ink-soft); }
+.secuencia:has(> .actual) > li:not(.actual) > .nombre { font-weight: 500; }
+.secuencia > .actual::before { border: 2px solid var(--ink); }
+
+/* la red de causas (v1.2.0, decisión 3 de JP del 2026-10-15: C, con sus tres pedidos y el sombreado
+   de la ronda 3; exploraciones/2026-10-15-composicion/): las cajas en una retícula (cada .nodo dice su
+   columna, --col, y su fila, --fila; --filas si ocupa más de una) y las flechas que nucleo/red.js
+   dibuja desde la lista de relaciones (ul.relaciones > li, con data-de y data-a: los id de dos nodos).
+   Cada relación se escribe una vez: es la fuente de las flechas y lo que lee un lector de pantalla
+   (los nodos y las cabeceras van con aria-hidden); sin JS, la lista se ve debajo. La caja mide lo que
+   su texto y las flechas la siguen, también con la letra de otra identidad. Reemplaza el diagrama
+   generado de la sesión 8 (un script por deck, el texto abreviado y el detalle a 17 px) y el SVG del
+   Taller (en el celular, el texto bajaba a 6 px).
+   - El nodo es la ficha; la condición de interés (.final), con 2 px de tinta, mide lo que su texto.
+   - Las flechas, en --ink-soft: el grosor dice cuánto pesa la causa (.fuerte, .debil) y la discontinua,
+     que no hay evidencia (.sin-evidencia; en el nodo, su borde).
+   - La leyenda (.leyenda), no una explicación en texto: una muestra de cada trazo con su palabra, en
+     mono. Por defecto va debajo, a todo el ancho; en una celda libre, con --col y --fila.
+   - El camino (.camino en sus nodos y en sus relaciones) es lo que afirma el título: las flechas en el
+     acento, la caja con borde de 2 px del acento y fondo --accent-soft, y el nombre en tinta (en el
+     acento sobre el celeste daba 6,53:1). Lo demás se atenúa. Cuenta como un solo «mira esto».
+   - Las columnas miden lo que su texto más largo (auto); --n fija cuántas y --plantilla las fija a
+     mano (auto auto minmax(0, 1fr): la última toma lo que sobra).
+   - En el celular, el mismo diagrama, compacto: columnas iguales, el texto a 13 px y el canal angosto.
+   <figure class="red" style="--n: 3">
+     <p class="cabecera" style="--col: 1" aria-hidden="true">Prácticas de cuidado</p>…
+     <div class="nodo" id="r-lav" style="--col: 1; --fila: 2" aria-hidden="true"><p class="nombre">…</p><p class="detalle">…</p></div>…
+     <p class="leyenda" style="--col: 3; --fila: 5"><span><span class="muestra" aria-hidden="true"></span>Con evidencia</span>…</p>
+     <ul class="relaciones"><li data-de="r-lav" data-a="r-ira">Menos lavado de manos → más infección respiratoria</li>…</ul>
+   </figure> */
+.red {
+  --canal: calc(var(--slide-line, var(--space-5)) * 2);
+  position: relative; display: grid; grid-template-columns: var(--plantilla, repeat(var(--n, 3), auto));
+  grid-auto-rows: auto; column-gap: var(--canal); row-gap: calc(var(--slide-line, var(--space-5)) * .32);
+  align-items: center; margin: 0; font-size: var(--size-body);
+}
+.red > .cabecera {
+  grid-row: 1; grid-column: var(--col); align-self: end; margin: 0; max-width: none; white-space: nowrap;
+  font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft);
+}
+.red > .nodo {
+  grid-column: var(--col); grid-row: var(--fila) / span var(--filas, 1); align-self: center; position: relative; z-index: 1;
+  display: grid; gap: .05em; margin: 0; padding: .3em .6em .35em;
+  background: var(--surface); border: 1px solid var(--mark); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.red > .nodo > * { margin: 0; max-width: none; }
+.red .nodo .nombre { font-size: calc(var(--size-body) * .82); font-weight: 700; line-height: 1.2; }
+.red .nodo .detalle { font-size: var(--size-meta); line-height: 1.25; color: var(--ink-soft); }
+.red > .nodo.final { justify-self: start; max-width: 100%; border: 2px solid var(--ink); }
+.red > .nodo.sin-evidencia { border-style: dashed; }
+.red > svg.flechas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 0; }
+.red .flecha { color: var(--ink-soft); }
+.red .flecha line { stroke: currentColor; stroke-width: 2.5; fill: none; }
+.red .flecha.fuerte line { stroke-width: 6; }
+.red .flecha.debil line { stroke-width: 1.5; }
+.red .flecha.sin-evidencia line { stroke-width: 1.5; stroke-dasharray: 7 6; }
+.red .flecha .punta { fill: currentColor; }
+/* el camino: lo demás se atenúa (gris y peso 500; las flechas, en --mark) */
+.red:has(.camino) > .nodo:not(.camino) { color: var(--ink-soft); }
+.red:has(.camino) > .nodo:not(.camino) .nombre { font-weight: 500; }
+.red:has(.camino) > .nodo.final:not(.camino) { border: 1px solid var(--mark); }
+.red:has(.camino) .flecha:not(.camino) { color: var(--mark); }
+.red > .nodo.camino { border: 2px solid var(--accent); background: var(--accent-soft); }
+.red .flecha.camino { color: var(--accent); }
+.red .flecha.camino:not(.fuerte) line { stroke-width: 3; }
+/* la leyenda: una muestra de cada trazo y su palabra, con el color que el trazo tiene en el dibujo */
+.red > .leyenda {
+  grid-column: var(--col, 1 / -1); grid-row: var(--fila, auto); align-self: end; z-index: 1;
+  display: flex; flex-wrap: wrap; gap: .35em 1.2em; margin: 0; max-width: none;
+  font-family: var(--font-mono); font-size: var(--size-meta); line-height: 1.3; color: var(--ink-soft);
+}
+.red > .leyenda > span { display: inline-flex; align-items: center; gap: .55em; white-space: nowrap; }
+.red .leyenda .muestra { display: inline-block; flex: none; width: 2em; height: 0; border-top: 2.5px solid var(--ink-soft); }
+.red .leyenda .muestra.fuerte { border-top-width: 6px; }
+.red .leyenda .muestra.debil { border-top-width: 1.5px; }
+.red .leyenda .muestra.sin-evidencia { border-top: 2px dashed var(--ink-soft); }
+.red:has(.camino) .leyenda .muestra:not(.camino) { border-top-color: var(--mark); }
+.red .leyenda .muestra.camino { border-top: 3px solid var(--accent); }
+/* la lista de relaciones: sin JS, debajo del dibujo; con las flechas dibujadas, solo para los lectores
+   de pantalla (red.js pone .con-flechas) */
+.red > .relaciones { grid-column: 1 / -1; margin: .5em 0 0; padding-left: 1.2em; font-size: var(--size-meta); line-height: 1.3; }
+.red.con-flechas > .relaciones { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; padding: 0; }
+
+/* cierre con el QR (v0.7.0; la última diapositiva de la sesión 7): el texto y el enlace en las
+   columnas 1 a 8, el código en las 9 a 12. El código va siempre negro sobre blanco, también en
+   el tema oscuro (varios lectores no leen un QR invertido), con su margen de silencio de 4
+   módulos: con --qr como ancho total, el relleno es 4/37 de --qr en un QR de 29 módulos (si el
+   QR tiene otro tamaño, --qr-modulos). Sus colores son --qr-ink y --qr-paper, fijos a propósito.
+   <div class="qr-campo">
+     <div><h2 class="titulo xl">Recursos del curso</h2><p class="cuerpo">…</p><a href="…">…</a></div>
+     <svg class="qr" viewBox="0 0 29 29" role="img" aria-label="Código QR hacia …" shape-rendering="crispEdges">…</svg>
+   </div> */
+.qr-campo { --qr: 12rem; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--slide-gutter, var(--space-5)); align-items: center; font-size: var(--size-body); }
+.slide .qr-campo { --qr: 22cqw; }
+.qr-campo > :not(.qr) { grid-column: 1 / 9; min-width: 0; }
+.qr-campo > :not(.qr) > * { margin: 0 0 var(--slide-gap, var(--space-4)); }
+.qr-campo > :not(.qr) > :last-child { margin-bottom: 0; }
+.qr-campo a { font-family: var(--font-mono); font-size: var(--size-meta); }
+.qr-campo > .qr { grid-column: 9 / 13; justify-self: end; box-sizing: border-box; width: var(--qr); max-width: 100%; height: auto;
+  padding: calc(var(--qr) * 4 / (var(--qr-modulos, 29) + 8)); color: var(--qr-ink); background: var(--qr-paper); }
+
+/* celular: todo en una columna */
+@media (max-width: 720px) {
+  .qr-campo { grid-template-columns: minmax(0, 1fr); row-gap: var(--slide-gap, var(--space-4)); }
+  .qr-campo > :not(.qr), .qr-campo > .qr { grid-column: 1 / -1; justify-self: start; }
+  .cifra-campo, .grafico-campo { grid-template-columns: minmax(0, 1fr); row-gap: var(--slide-gap, var(--space-4)); }
+  .cifra-campo > .cifra-dato, .cifra-campo > .razones, .grafico-campo > :not(.lectura), .grafico-campo > .lectura { grid-column: 1 / -1; }
+  .columnas { grid-template-columns: minmax(0, 1fr); }
+  .columnas > div { gap: var(--space-3); padding-top: var(--space-3); }
+  .columnas > .actual { padding-top: calc(var(--space-3) - 1px); }
+  /* las fichas se apilan, cada una con su alto (ya no hay una fila de la otra con la
+     que alinearse) */
+  .tarjetas { grid-template-columns: minmax(0, 1fr); row-gap: var(--slide-gap, var(--space-4)); }
+  .tarjetas > .tarjeta { grid-row: auto; grid-template-rows: none; }
+  /* la secuencia: los pasos apilados, la flecha hacia abajo y el supuesto como nota */
+  .secuencia { grid-template-columns: minmax(0, 1fr); }
+  .secuencia > li { grid-row: auto; grid-template-rows: none; position: relative; padding-bottom: 2.4em; }
+  .secuencia > li:last-child { padding-bottom: 0; }
+  .secuencia > li:not(:last-child)::after {
+    grid-area: auto; position: absolute; left: 1.4em; bottom: .45em; width: .72em; height: 1.5em; margin: 0;
+    clip-path: polygon(calc(50% - 1px) 0, calc(50% + 1px) 0, calc(50% + 1px) calc(100% - .42em), 100% calc(100% - .42em),
+                       50% 100%, 0 calc(100% - .42em), calc(50% - 1px) calc(100% - .42em));
+  }
+  .secuencia .supuesto { margin: .7em 0 0; width: auto; padding: 0 0 0 .8em; text-align: left; border-top: 0; border-left: 1px solid var(--ink-soft); }
+  .secuencia .supuesto.fragil { border-left-color: var(--accent); }
+  .secuencia .supuesto::before, .secuencia .supuesto::after { display: none; }
+  /* la red: el mismo diagrama, compacto (columnas iguales, el texto a 13 px y el canal angosto) */
+  .red { --canal: 1.3em; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); row-gap: .5em; }
+  .red > .cabecera { white-space: normal; letter-spacing: .02em; line-height: 1.25; }
+  .red > .nodo { padding: .3em .4em .35em; }
+  .red .nodo :is(.nombre, .detalle) { font-size: var(--size-meta); }
+  .red > .leyenda { grid-column: 1 / -1; grid-row: auto; margin-top: .4em; }
+}
+</style>
+<style data-bv="nucleo/pagina.css" data-version="1.4.0">
+/* base-visual · núcleo · página — v1.4.0 (Etapa 3: el marco de un recurso y de una app)
+   El marco de una página, como deck.css lo es de un deck: lo que comparten los recursos de clase y las
+   apps (skill recurso-interactivo). Sale de lo que ya existía, sin decisión visual nueva:
+   - la cabeza, el filete de tinta de cada sección y el índice en mono, de la página del plan
+     (plan-visual/plantilla.html: .cabeza, .lead, .bloque, .indice), en uso desde el 2026-09-30;
+   - el esqueleto de los seis recursos de GEP201 (volver al índice, la cabecera, secciones con cornisa,
+     título y entrada, las referencias y el pie) y el marco de las dos apps de evaluación (la cabecera
+     con su contexto, los modos, la barra de acción abajo, 100dvh y la zona segura), medidos el
+     2026-10-24 (revisiones/2026-10-24-recursos-y-apps/).
+   Nada aparece al desplazarse: todo se ve sin JS (principios/universales.md). La barra de arriba no es
+   fija (en el celular le quitaría alto a la lectura). Solo lee tokens; lo táctil mide --tap.
+
+   Un recurso:
+   <header class="pagina-barra"><a href="…">Volver a GEP201</a><button id="theme-btn" class="boton secundario" type="button">Tema</button></header>
+   <main class="pagina">
+     <header class="cabeza">
+       <p class="kicker">GEP201 <span class="sub">· Unidad IV · Sesión 10</span></p>
+       <h1 class="titulo">Lo que se va a poder hacer, en una oración</h1>
+       <p class="entrada">Para qué sirve y cuánto toma.</p>
+       <nav class="anclas" aria-label="En esta página"><a href="#paso-1">1 · Leer</a>…</nav>
+     </header>
+     <section class="seccion" id="paso-1"><p class="kicker">Paso 1 · …</p><h2 class="titulo">…</h2><p class="cuerpo">…</p>…</section>
+     <section class="seccion referencias" id="referencias"><h2 class="titulo">Referencias</h2><ol>…</ol></section>
+   </main>
+   <footer class="pagina-pie">GEP201 · 28 de octubre de 2026</footer>
+
+   Una app:
+   <div class="app">
+     <header class="app-cabeza"><p class="nombre">…</p><p class="contexto">…</p><span class="etiqueta buena estado">Guardado</span></header>
+     <div class="app-modos" role="tablist"><button role="tab" aria-selected="true" aria-controls="modo-1">…</button>…</div>
+     <main class="app-cuerpo"><section id="modo-1" role="tabpanel">…</section>…</main>
+     <div class="app-accion"><p class="pista">…</p><button class="boton" type="button">…</button></div>
+   </div> */
+
+.pagina-barra, .pagina, .pagina-pie { max-width: 46rem; margin-inline: auto; padding-inline: clamp(16px, 4vw, 40px); }
+
+/* volver al índice del curso y el tema, en la voz del aparato (F3) */
+.pagina-barra { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding-top: var(--space-3); font-family: var(--font-mono); font-size: var(--size-meta); }
+.pagina-barra a { display: inline-flex; align-items: center; min-height: var(--tap); }
+.pagina-barra .boton { margin-left: auto; }
+
+.pagina { display: grid; gap: var(--space-7); padding-block: var(--space-6) var(--space-8); }
+.pagina > * { margin: 0; }
+.pagina .kicker { max-width: none; }
+
+/* la cabeza: la cornisa dice dónde está la página (F1); el título, lo que se va a poder hacer o la tesis */
+.cabeza { display: grid; gap: var(--space-3); }
+.cabeza > * { margin: 0; }
+.cabeza .titulo { font-size: var(--step-4); max-width: 22ch; }
+.entrada { font-size: var(--step-1); line-height: 1.45; color: var(--ink-soft); max-width: 62ch; }
+/* el índice de la página: las secciones, en mono */
+.anclas { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); font-family: var(--font-mono); font-size: var(--size-meta); }
+.anclas a { display: inline-flex; align-items: center; min-height: var(--tap); }
+
+/* cada sección, un paso: el filete de tinta arriba, la cornisa con el paso, un título que afirma o que es
+   la consigna, y lo que se hace en ella */
+.seccion { display: grid; gap: var(--space-4); border-top: 2px solid var(--ink); padding-top: var(--space-5); scroll-margin-top: var(--space-4); }
+.seccion > * { margin: 0; }
+.seccion > .kicker { margin-bottom: calc(-1 * var(--space-2)); }
+.seccion > .titulo { font-size: var(--step-2); }
+/* las referencias del final van además de la fuente junto a cada bloque (F2), nunca en su lugar */
+.referencias :is(ol, ul) { display: grid; gap: var(--space-2); margin: 0; padding-left: 1.2em; font-size: var(--size-meta); color: var(--ink-soft); }
+
+.pagina-pie { padding-bottom: var(--space-6); font-family: var(--font-mono); font-size: var(--size-meta); color: var(--ink-soft); }
+
+/* la app: una herramienta con estados. Ocupa la pantalla (100dvh, con la zona segura); la cabecera dice
+   qué es y en qué contexto se usa; los modos, en pestañas; la acción principal, abajo y siempre a mano */
+.app { min-height: 100dvh; display: grid; grid-template-rows: auto auto 1fr auto; }
+.app-cabeza, .app-modos, .app-cuerpo, .app-accion { padding-inline: max(clamp(16px, 4vw, 40px), env(safe-area-inset-left)) max(clamp(16px, 4vw, 40px), env(safe-area-inset-right)); }
+.app-cabeza { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-4); padding-block: max(var(--space-3), env(safe-area-inset-top)) var(--space-3); border-bottom: 1px solid var(--line); }
+.app-cabeza > * { margin: 0; }
+.app-cabeza .nombre { font-family: var(--font-display); font-size: var(--step-1); font-weight: 700; line-height: var(--leading-tight); }
+.app-cabeza .contexto { font-family: var(--font-mono); font-size: var(--size-meta); color: var(--ink-soft); }
+.app-cabeza .estado { margin-left: auto; }
+/* las pestañas: la elegida en tinta con su filete; las demás, atenuadas (F4: para destacar, se atenúa el resto) */
+.app-modos { display: flex; gap: var(--space-5); overflow-x: auto; border-bottom: 1px solid var(--line); }
+.app-modos [role="tab"] {
+  flex: none; min-height: var(--tap); padding: 0; background: none; border: 0; border-bottom: 2px solid transparent;
+  font-family: var(--font-mono); font-size: var(--size-meta); font-weight: 500; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft); cursor: pointer;
+}
+.app-modos [role="tab"][aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+.app-modos [role="tab"]:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.app-cuerpo { padding-block: var(--space-5); }
+.app-cuerpo > [role="tabpanel"] { display: grid; gap: var(--space-4); }
+.app-accion { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); padding-block: var(--space-3) max(var(--space-3), env(safe-area-inset-bottom)); background: var(--paper); border-top: 1px solid var(--mark); }
+.app-accion .pista { margin: 0; font-size: var(--size-meta); color: var(--ink-soft); }
+/* lo que se ve cuando todavía no hay nada: qué falta y qué hacer, no una caja vacía */
+.vacio { display: grid; gap: var(--space-3); justify-items: start; padding-block: var(--space-6); color: var(--ink-soft); }
+.vacio > * { margin: 0; }
+
+@media (max-width: 44rem) {
+  .cabeza .titulo { font-size: var(--step-3); }
+  .pagina { gap: var(--space-6); }
+}
+</style>
+<style>
+  /* propio de este recurso, solo con tokens (var(--…)): una pieza que el núcleo no trae, con un comentario
+     que diga qué hace quien la usa (se anota en base-visual/pendientes.md como candidata al núcleo) */
+
+  /* pantalla ancha (desde 75rem: computadora, proyector; el celular y el iPad vertical no cambian): quien la
+     usa salta entre pasos con el índice siempre a la vista, a la izquierda, y clasifica los casos de dos en
+     dos. El texto conserva su medida de lectura; lo que se ensancha son las piezas (tabla, fichas,
+     clasificador). Pedido de JP, 2026-10-25; candidata al núcleo («página ancha»). */
+  @media (min-width: 75rem) {
+    html { font-size: 112.5%; }  /* a la distancia de una computadora, el cuerpo a 18 px */
+    :root { --measure: 58ch; }    /* unos 72 caracteres: el borde alto de la medida (45-75) */
+    .pagina-barra, .pagina, .pagina-pie { max-width: 90rem; }
+    .pagina, .pagina-pie { padding-left: calc(40px + 15rem); }
+    .anclas {
+      position: fixed; top: calc(var(--tap) + var(--space-7)); left: max(40px, calc((100% - 90rem) / 2 + 40px));
+      width: 12rem; flex-direction: column; gap: 0;
+    }
+    .anclas::before { content: "En esta página"; color: var(--ink-faint); padding-bottom: var(--space-2); border-bottom: 1px solid var(--line); margin-bottom: var(--space-2); }
+  }
+  /* de dos en dos solo si caben las tres alternativas en una fila (a 1280 px se partían) */
+  @media (min-width: 90rem) {
+    .seccion { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-6); }
+    .seccion > * { grid-column: 1 / -1; }
+    .seccion > .pregunta.clasificar, .seccion > .desplegable { grid-column: auto; align-self: start; }
+    .seccion > .desplegable + .desplegable { margin-top: 0; }
+  }
+</style>
+</head>
+<body>
+<header class="pagina-barra">
+  <a href="https://cain971.github.io/gep201-recursos/">Volver a GEP201</a>
+  <button id="theme-btn" class="boton secundario" type="button">Tema</button>
+</header>
+<main class="pagina">
+  <header class="cabeza">
+    <p class="kicker">GEP201 <span class="sub">· Unidad IV · Sesión 10</span></p>
+    <h1 class="titulo">Saber cuánto no es saber qué lo causó</h1>
+    <p class="entrada">Qué es una evaluación de impacto, explicado desde cero y con los casos de la sesión 10. Sirve para el RP3 y el trabajo final. Toma unos 20 minutos.</p>
+    <nav class="anclas" aria-label="En esta página"><a href="#paso-1">1 · Dos preguntas</a> <a href="#paso-2">2 · Contrafactual</a> <a href="#paso-3">3 · Atajos</a> <a href="#paso-4">4 · Comparación</a> <a href="#paso-5">5 · Métodos</a> <a href="#paso-6">6 · Seguir y evaluar</a> <a href="#paso-7">7 · Tu trabajo</a></nav>
+  </header>
+
+  <section class="seccion" id="paso-1">
+    <p class="kicker">Paso 1 · Dos preguntas distintas</p>
+    <h2 class="titulo">Un dato de magnitud dice cuánto; una evidencia causal, qué lo produce</h2>
+    <p class="cuerpo">«¿Cuántos docentes faltan?» y «¿qué hace que falten menos?» son preguntas distintas. La primera se responde midiendo: es un dato de <b>magnitud</b>. La segunda pide mostrar que una cosa produce otra: es una pregunta <b>causal</b>, y para responderla hay que comparar con lo que habría pasado sin esa cosa.</p>
+    <p class="cuerpo">Clasifica cada afirmación: ¿es un dato de magnitud, una causa probada o una causa que se afirma sin prueba?</p>
+    <div class="pregunta clasificar" data-correcta="magnitud">
+      <p class="enunciado">En el Perú, el 11&nbsp;% de los docentes de primarias públicas no estaba en su escuela en una visita sin aviso</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="magnitud">Magnitud</button>
+        <button class="alternativa" type="button" data-valor="probada">Causa probada</button>
+        <button class="alternativa" type="button" data-valor="sinprueba">Causa sin prueba</button>
+      </div>
+      <p class="retro" data-para="magnitud">Correcto: dice cuántos, no por qué. Fuente: Chaudhury et al. (2006), cuadro 1.</p>
+      <p class="retro" data-para="probada sinprueba">No afirma ninguna causa: solo mide cuántos docentes faltaban. Es un dato de magnitud.</p>
+    </div>
+    <div class="pregunta clasificar" data-correcta="probada">
+      <p class="enunciado">En escuelas sorteadas para usar una cámara que registraba la asistencia, el ausentismo docente bajó 21 puntos frente a las no sorteadas</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="magnitud">Magnitud</button>
+        <button class="alternativa" type="button" data-valor="probada">Causa probada</button>
+        <button class="alternativa" type="button" data-valor="sinprueba">Causa sin prueba</button>
+      </div>
+      <p class="retro" data-para="probada">Correcto: el sorteo crea un grupo de comparación igual al tratado, así que la diferencia se debe a la cámara. Fuente: Duflo, Hanna y Ryan (2012).</p>
+      <p class="retro" data-para="magnitud">Tiene una cifra, pero no es solo un conteo: compara escuelas con y sin cámara, asignadas al azar. Eso la vuelve evidencia causal.</p>
+      <p class="retro" data-para="sinprueba">Aquí sí hay prueba: las escuelas se sortearon, así que la única diferencia sistemática entre los grupos es la cámara.</p>
+    </div>
+    <div class="pregunta clasificar" data-correcta="sinprueba">
+      <p class="enunciado">«La desnutrición crónica bajó 8 puntos en la última década, lo que demuestra el impacto del programa»</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="magnitud">Magnitud</button>
+        <button class="alternativa" type="button" data-valor="probada">Causa probada</button>
+        <button class="alternativa" type="button" data-valor="sinprueba">Causa sin prueba</button>
+      </div>
+      <p class="retro" data-para="sinprueba">Correcto: la caída es un dato de magnitud; «lo que demuestra el impacto» es una causa que no se probó. En diez años cambian muchas cosas además del programa.</p>
+      <p class="retro" data-para="magnitud">La primera mitad sí es magnitud, pero la frase afirma además que el programa lo causó. Por eso es una causa sin prueba.</p>
+      <p class="retro" data-para="probada">Una tendencia no prueba un efecto: falta saber qué habría pasado sin el programa.</p>
+    </div>
+    <div class="pregunta clasificar" data-correcta="sinprueba">
+      <p class="enunciado">«El 45&nbsp;% de los hogares ya tiene agua potable gracias al programa»</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="magnitud">Magnitud</button>
+        <button class="alternativa" type="button" data-valor="probada">Causa probada</button>
+        <button class="alternativa" type="button" data-valor="sinprueba">Causa sin prueba</button>
+      </div>
+      <p class="retro" data-para="sinprueba">Correcto: «gracias al programa» atribuye una causa que no se muestra. Algunos de esos hogares quizá ya tenían agua, o la habrían tenido igual.</p>
+      <p class="retro" data-para="magnitud">El 45&nbsp;% es magnitud, pero «gracias al programa» afirma una causa. Sin comparación, esa parte no está probada.</p>
+      <p class="retro" data-para="probada">No hay comparación con hogares sin el programa: la causa se afirma, no se prueba.</p>
+    </div>
+    <div class="pregunta clasificar" data-correcta="probada">
+      <p class="enunciado">Cuando el tablero de los supervisores marcaba una clínica, la asistencia de sus médicos subía de 23,6&nbsp;% a 41,3&nbsp;%, frente a clínicas casi iguales sin marcar</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="magnitud">Magnitud</button>
+        <button class="alternativa" type="button" data-valor="probada">Causa probada</button>
+        <button class="alternativa" type="button" data-valor="sinprueba">Causa sin prueba</button>
+      </div>
+      <p class="retro" data-para="probada">Correcto: compara clínicas justo arriba y justo abajo del umbral que las marcaba, que en lo demás son casi iguales (regresión discontinua). Fuente: Callen et al. (2020).</p>
+      <p class="retro" data-para="magnitud">No solo cuenta: compara clínicas marcadas con otras casi iguales que no lo fueron. Esa comparación es lo que la vuelve causal.</p>
+      <p class="retro" data-para="sinprueba">Sí hay prueba: el grupo de comparación son clínicas que quedaron apenas del otro lado del umbral.</p>
+    </div>
+    <p class="kicker" data-puntaje></p>
+    <p><button class="boton secundario" type="button" data-reiniciar>Volver a empezar</button></p>
+    <p class="fuente">Chaudhury et al. (2006), cuadro 1; Duflo, Hanna y Ryan (2012); Callen et al. (2020). Las afirmaciones sobre desnutrición y agua son ilustrativas, adaptadas de un ejercicio del curso.</p>
+  </section>
+
+  <section class="seccion" id="paso-2">
+    <p class="kicker">Paso 2 · El contrafactual</p>
+    <h2 class="titulo">El impacto es la diferencia con lo que habría pasado sin el programa</h2>
+    <p class="cuerpo">Una evaluación de impacto responde una pregunta: ¿cuánto cambió un resultado <i>por causa</i> de un programa, y solo de ese programa? La respuesta tiene una fórmula simple:</p>
+    <p class="cuerpo destacado">Impacto = resultado con el programa − resultado, de las mismas personas, sin el programa</p>
+    <p class="cuerpo">El problema es la segunda parte. Lo que habría pasado con los participantes si no hubieran recibido el programa se llama el <b>contrafactual</b>, y nunca se observa: una persona recibe el programa o no lo recibe, no las dos cosas a la vez. Por eso el contrafactual se <b>estima</b>, y toda evaluación de impacto es, en el fondo, una manera de estimarlo bien.</p>
+    <p class="fuente">Gertler, P. J. et al. (2016). <i>Impact evaluation in practice</i> (2.ª ed.). Banco Mundial y BID, <span style="white-space: nowrap">pp. 48-49</span>. Traducción propia.</p>
+    <div class="pregunta" data-correcta="b">
+      <p class="enunciado">La presencia docente en Punjab pasó de 85&nbsp;% a 92&nbsp;% en dos años. ¿Por qué esa cifra sola no da el impacto de la reforma?</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="a"><span class="letra">A</span><span class="texto">Porque el dato lo recogió el mismo gobierno</span></button>
+        <button class="alternativa" type="button" data-valor="b"><span class="letra">B</span><span class="texto">Porque no sabemos cuánto habría sido sin la reforma</span></button>
+        <button class="alternativa" type="button" data-valor="c"><span class="letra">C</span><span class="texto">Porque 7 puntos es una mejora pequeña</span></button>
+      </div>
+      <p class="retro" data-para="b">Eso es. Falta el contrafactual: cuánto habría sido la presencia en 2012 si no hubiera habido reforma. Quizá habría subido igual, o habría bajado.</p>
+      <p class="retro" data-para="a">Es una duda razonable sobre la calidad del dato, pero no es el problema principal: aun con un dato perfecto, faltaría saber qué habría pasado sin la reforma.</p>
+      <p class="retro" data-para="c">El tamaño no es el problema. Una mejora grande tampoco sería impacto si habría ocurrido igual sin la reforma.</p>
+    </div>
+  </section>
+
+  <section class="seccion" id="paso-3">
+    <p class="kicker">Paso 3 · Dos atajos engañosos</p>
+    <h2 class="titulo">Comparar antes y después, o con quien no quiso entrar, engaña</h2>
+    <div class="tarjetas" style="--n: 2; --filas: 3">
+      <div class="tarjeta"><p class="kicker">Atajo 1</p><p class="nombre">Antes y después</p><p>Usa a los mismos participantes antes del programa como su contrafactual. Supone que, sin el programa, nada habría cambiado; pero en el tiempo cambian la economía, otras políticas, el clima.</p></div>
+      <div class="tarjeta"><p class="kicker">Atajo 2</p><p class="nombre">Inscritos y no inscritos</p><p>Compara a quienes eligieron entrar con quienes no. Pero quien se inscribe suele ser distinto (más motivado, mejor informado): es el <b class="destacado">sesgo de selección</b>.</p></div>
+    </div>
+    <p class="fuente">Gertler et al. (2016), <span style="white-space: nowrap">pp. 54-58</span>.</p>
+    <div class="pregunta" data-correcta="c">
+      <p class="enunciado">Un ministerio prueba un programa en los distritos que se ofrecieron de voluntarios y los compara con los que no. ¿Qué atajo es?</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="a"><span class="letra">A</span><span class="texto">Ninguno: es una comparación con grupo de control</span></button>
+        <button class="alternativa" type="button" data-valor="b"><span class="letra">B</span><span class="texto">Antes y después</span></button>
+        <button class="alternativa" type="button" data-valor="c"><span class="letra">C</span><span class="texto">Inscritos y no inscritos</span></button>
+      </div>
+      <p class="retro" data-para="c">Correcto. Los distritos que se ofrecen probablemente tienen mejores autoridades o más capacidad; si les va mejor, no sabremos si fue el programa o eso.</p>
+      <p class="retro" data-para="a">Parece un grupo de control, pero no lo es: los distritos eligieron entrar. Un grupo de control válido no puede diferir en lo que hizo que unos entraran y otros no.</p>
+      <p class="retro" data-para="b">Compara dos grupos en el mismo momento, no un grupo en dos momentos. Su problema es otro: quién decidió entrar.</p>
+    </div>
+  </section>
+
+  <section class="seccion" id="paso-4">
+    <p class="kicker">Paso 4 · El grupo de comparación</p>
+    <h2 class="titulo">Un buen grupo de comparación cumple tres condiciones</h2>
+    <ol class="cuerpo">
+      <li><b>Se parece al grupo tratado</b> <span class="nota">Tiene, en promedio, las mismas características que el grupo que recibe el programa.</span></li>
+      <li><b>El programa no lo toca</b> <span class="nota">No recibe el programa ni sus efectos, ni otra intervención distinta al mismo tiempo.</span></li>
+      <li><b>Reaccionaría igual</b> <span class="nota">Si recibiera el programa, cambiaría tanto como el grupo tratado.</span></li>
+    </ol>
+    <p class="cuerpo">Si se cumplen las tres, la única diferencia entre los grupos es el programa, y la diferencia en el resultado es su impacto.</p>
+    <p class="fuente">Gertler et al. (2016), p. 52. Traducción propia.</p>
+  </section>
+
+  <section class="seccion" id="paso-5">
+    <p class="kicker">Paso 5 · Los métodos</p>
+    <h2 class="titulo">Sortear es lo más limpio; los demás métodos piden un supuesto</h2>
+    <div class="tabla-contenedor">
+      <table class="tabla">
+        <thead><tr><th scope="col">Método</th><th scope="col">Cómo arma el grupo de comparación</th></tr></thead>
+        <tbody>
+          <tr><td><b>Asignación aleatoria</b></td><td>Sortea quién recibe el programa: con grupos grandes, el sorteo los hace iguales en todo (cap. 4). Ejemplo: las cámaras en India.</td></tr>
+          <tr><td><b>Regresión discontinua</b></td><td>Compara a quienes quedaron justo arriba y justo abajo de un umbral de elegibilidad (cap. 6). Ejemplo: las clínicas marcadas en Punjab.</td></tr>
+          <tr><td><b>Diferencias en diferencias</b></td><td>Compara cuánto cambió el grupo tratado con cuánto cambió otro grupo. Supone que, sin el programa, los dos habrían seguido tendencias iguales (cap. 7).</td></tr>
+          <tr><td><b>Emparejamiento</b></td><td>Busca, para cada participante, alguien parecido en lo que se puede medir. Supone que no hay diferencias importantes que no se midieron (cap. 8).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fuente">Gertler et al. (2016), caps. 4, 6, 7 y 8 (<span style="white-space: nowrap">pp. 63</span>, 113, 129-141 y 143).</p>
+    <div class="pregunta" data-correcta="b">
+      <p class="enunciado">Barber compara el Punjab de Pakistán con el de India: parejos en 2011 y Pakistán adelante en 2012. ¿A qué método se parece?</p>
+      <div class="alternativas">
+        <button class="alternativa" type="button" data-valor="a"><span class="letra">A</span><span class="texto">Asignación aleatoria</span></button>
+        <button class="alternativa" type="button" data-valor="b"><span class="letra">B</span><span class="texto">Diferencias en diferencias</span></button>
+        <button class="alternativa" type="button" data-valor="c"><span class="letra">C</span><span class="texto">Regresión discontinua</span></button>
+      </div>
+      <p class="retro" data-para="b">Correcto: compara cuánto cambió cada Punjab. Le falta mostrar el supuesto clave: que antes de 2011 los dos seguían tendencias iguales. Con dos momentos, no se puede comprobar.</p>
+      <p class="retro" data-para="a">Nadie sorteó qué provincia recibía la reforma: la eligió el gobierno de Punjab. Sin sorteo, no hay garantía de que los grupos sean iguales.</p>
+      <p class="retro" data-para="c">No hay un umbral que separe a los dos Punjab: los separa una frontera nacional, con otros gobiernos y otras políticas.</p>
+    </div>
+    <p class="fuente">Barber (2013), p. 27; Gertler et al. (2016), p. 135.</p>
+  </section>
+
+  <section class="seccion" id="paso-6">
+    <p class="kicker">Paso 6 · Seguir y evaluar</p>
+    <h2 class="titulo">El seguimiento avisa; la evaluación explica</h2>
+    <p class="cuerpo">El seguimiento mide cada mes si un indicador va según lo previsto: sirve para gestionar y para decidir rápido. La evaluación de impacto estima cuánto del cambio se debe al programa: sirve para decidir si el programa merece seguir o crecer. Un buen sistema necesita las dos, y no conviene pedirle a una lo que solo puede dar la otra.</p>
+    <figure class="cita-sola">
+      <figcaption class="kicker">Barber, sobre los datos de su unidad de monitoreo</figcaption>
+      <blockquote>«[El dato] es sin duda suficientemente bueno para fines de gestión, pero por sí solo nunca será del todo convincente para un público escéptico.»</blockquote>
+    </figure>
+    <p class="cuerpo">Cómo se valora la evidencia de cada relación causal en un programa presupuestal (las categorías de la Directiva) se vio en la sesión 9: <a href="https://cain971.github.io/gep201-recursos/unidad-4/deck-prescriptivo-teoria-cambio.html">deck de la sesión 9</a>.</p>
+    <p class="fuente">Barber (2013), p. 22. Traducción propia. La distinción entre seguimiento y evaluación, basada en razonamiento a partir de Gertler et al. (2016), cap. 1.</p>
+  </section>
+
+  <section class="seccion" id="paso-7">
+    <p class="kicker">Paso 7 · Para tu trabajo</p>
+    <h2 class="titulo">Antes de usar evidencia en tu RP o tu trabajo final, comprueba</h2>
+    <div class="lista-control" data-lista="evidencia-causal">
+      <p class="avance"><span data-avance>0 de 5</span> <span class="pista" aria-hidden="true"><span class="barra"></span></span></p>
+      <fieldset><legend class="kicker">Al citar evidencia</legend>
+        <label class="criterio"><input type="checkbox"> <span>Cada relación causal cita un estudio que compara con un grupo</span></label>
+        <label class="criterio"><input type="checkbox"> <span>No uso una cifra de magnitud como prueba de una causa</span></label>
+        <label class="criterio"><input type="checkbox"> <span>Si cito un antes y después, digo que no prueba el efecto</span></label>
+        <label class="criterio"><input type="checkbox"> <span>Digo qué método usó cada estudio que cito</span></label>
+        <label class="criterio"><input type="checkbox"> <span>Si el estudio no es del Perú, digo dónde se hizo</span></label>
+      </fieldset>
+      <p class="nota">Tu avance se guarda en este navegador. <button class="boton secundario" type="button" data-desmarcar>Empezar de nuevo</button></p>
+    </div>
+  </section>
+
+  <section class="seccion referencias" id="referencias">
+    <h2 class="titulo">Referencias</h2>
+    <ol>
+      <li>Barber, M. (2013). <i>The good news from Pakistan</i>. Reform.</li>
+      <li>Callen, M., Gulzar, S., Hasanain, A., Khan, M. Y. y Rezaee, A. (2020). Data and policy decisions: Experimental evidence from Pakistan. <i>Journal of Development Economics, 146</i>, 102523. https://doi.org/10.1016/j.jdeveco.2020.102523</li>
+      <li>Chaudhury, N., Hammer, J., Kremer, M., Muralidharan, K. y Rogers, F. H. (2006). Missing in action: Teacher and health worker absence in developing countries. <i>Journal of Economic Perspectives, 20</i>(1), 91-116. https://doi.org/10.1257/089533006776526058</li>
+      <li>Duflo, E., Hanna, R. y Ryan, S. P. (2012). Incentives work: Getting teachers to come to school. <i>American Economic Review, 102</i>(4), 1241-1278. https://doi.org/10.1257/aer.102.4.1241</li>
+      <li>Gertler, P. J., Martínez, S., Premand, P., Rawlings, L. B. y Vermeersch, C. M. J. (2016). <i>Impact evaluation in practice</i> (2.ª ed.). Banco Mundial y Banco Interamericano de Desarrollo. https://doi.org/10.1596/978-1-4648-0779-4 (acceso abierto: <a href="https://hdl.handle.net/10986/25030">hdl.handle.net/10986/25030</a>). Hay edición en español: <i>La evaluación de impacto en la práctica</i> (2017), https://doi.org/10.1596/978-1-4648-0888-3</li>
+    </ol>
+  </section>
+</main>
+<footer class="pagina-pie">GEP201 · Unidad IV · Sesión 10 · 28 de octubre de 2026</footer>
+<script data-bv="nucleo/pagina.js" data-version="1.4.0">
+/* base-visual · núcleo · página (JS) — v1.4.0 (Etapa 3: el marco de un recurso y de una app)
+   Lo que hace una página del núcleo (un recurso o una app; skill recurso-interactivo). Cada parte no hace
+   nada si su pieza no está, y sin JS todo se ve y se usa igual (solo no se guarda nada):
+   - el botón «Tema» (#theme-btn): claro por defecto y el oscuro si la persona lo elige, recordado con la
+     misma clave que el deck (bv-tema), así que vale para todo lo publicado en el mismo sitio;
+   - la lista de control (.lista-control[data-lista]): guarda en el navegador lo marcado, con el nombre de
+     data-lista (único en la página), cuenta el avance en [data-avance] y --hecho, y lo desmarca todo con
+     un botón [data-desmarcar] (no data-reiniciar: ese es el de la pregunta);
+   - las pestañas de una app ([role="tablist"] con [role="tab"][aria-controls]): muestran el panel de la
+     elegida y ocultan los demás (sin JS se ven todos). */
+(function () {
+  'use strict';
+  var raiz = document.documentElement;
+  raiz.classList.add('js');
+  function leer(clave) { try { return localStorage.getItem(clave); } catch (e) { return null; } }
+  function guardar(clave, valor) {
+    try { if (valor === null) localStorage.removeItem(clave); else localStorage.setItem(clave, valor); } catch (e) {}
+  }
+  function todos(sel, dentro) { return Array.prototype.slice.call((dentro || document).querySelectorAll(sel)); }
+
+  // el tema
+  raiz.setAttribute('data-theme', leer('bv-tema') === 'dark' ? 'dark' : 'light');
+  var botonTema = document.getElementById('theme-btn');
+  function rotularTema() {
+    botonTema.textContent = raiz.getAttribute('data-theme') === 'dark' ? 'Tema claro' : 'Tema oscuro';
+  }
+  if (botonTema) {
+    botonTema.addEventListener('click', function () {
+      var t = raiz.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      raiz.setAttribute('data-theme', t);
+      guardar('bv-tema', t);
+      rotularTema();
+    });
+    rotularTema();
+  }
+
+  // la lista de control
+  todos('.lista-control[data-lista]').forEach(function (lista) {
+    var clave = 'bv-lista:' + location.pathname + ':' + lista.getAttribute('data-lista');
+    var casillas = todos('input[type="checkbox"]', lista);
+    var avance = lista.querySelector('[data-avance]');
+    var marcadas = [];
+    try { marcadas = JSON.parse(leer(clave) || '[]'); } catch (e) {}
+    casillas.forEach(function (c, i) { if (marcadas.indexOf(i) !== -1) c.checked = true; });
+    function contar(guardando) {
+      var hechas = casillas.filter(function (c) { return c.checked; }).length;
+      if (avance) avance.textContent = hechas + ' de ' + casillas.length;
+      lista.style.setProperty('--hecho', casillas.length ? hechas / casillas.length : 0);
+      if (guardando) {
+        var lo = [];
+        casillas.forEach(function (c, i) { if (c.checked) lo.push(i); });
+        guardar(clave, lo.length ? JSON.stringify(lo) : null);
+      }
+    }
+    casillas.forEach(function (c) { c.addEventListener('change', function () { contar(true); }); });
+    todos('[data-desmarcar]', lista).forEach(function (b) {
+      b.addEventListener('click', function () {
+        casillas.forEach(function (c) { c.checked = false; });
+        contar(true);
+      });
+    });
+    contar(false);
+  });
+
+  // las pestañas
+  todos('[role="tablist"]').forEach(function (grupo) {
+    var pestanas = todos('[role="tab"][aria-controls]', grupo);
+    function elegir(p) {
+      pestanas.forEach(function (o) {
+        var si = o === p;
+        o.setAttribute('aria-selected', si ? 'true' : 'false');
+        o.tabIndex = si ? 0 : -1;
+        var panel = document.getElementById(o.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !si;
+      });
+    }
+    pestanas.forEach(function (p, i) {
+      p.addEventListener('click', function () { elegir(p); });
+      p.addEventListener('keydown', function (ev) {
+        var paso = ev.key === 'ArrowRight' ? 1 : ev.key === 'ArrowLeft' ? -1 : 0;
+        if (!paso) return;
+        var otra = pestanas[(i + paso + pestanas.length) % pestanas.length];
+        elegir(otra);
+        otra.focus();
+      });
+    });
+    var elegida = pestanas.filter(function (p) { return p.getAttribute('aria-selected') === 'true'; })[0] || pestanas[0];
+    if (elegida) elegir(elegida);
+  });
+})();
+</script>
+<script data-bv="nucleo/pregunta.js" data-version="1.0.0">
+/* base-visual · núcleo · la pregunta (JS) — v1.0.0 (la 1.0; sin cambios desde la v0.7.0)
+   Un solo guion para el quiz y el clasificador de los recursos (antes, answer(), classify()
+   y pick(), con las respuestas en objetos de JS lejos de cada pregunta). Lee todo del HTML:
+   data-correcta en .pregunta, data-valor en cada .alternativa y data-para en cada .retro
+   (sin data-para, la explicación vale para cualquier respuesta). Ver componentes.css.
+   Al responder: .respondida, .correcta y .elegida; una etiqueta «Correcta» y, si hace
+   falta, otra «Incorrecta»; se muestran las explicaciones que corresponden y un aviso para
+   lectores de pantalla. Sin JS, nada se oculta: las explicaciones se ven todas.
+   Opcional en la página: un elemento con data-puntaje (lo llena: «2 de 3 correctas») y un
+   botón con data-reiniciar. */
+(function () {
+  'use strict';
+  document.documentElement.classList.add('js');
+  var preguntas = Array.prototype.slice.call(document.querySelectorAll('.pregunta[data-correcta]'));
+  if (!preguntas.length) return;
+
+  function etiqueta(clase, texto) {
+    var e = document.createElement('span');
+    e.className = 'etiqueta ' + clase;
+    e.textContent = texto;
+    return e;
+  }
+  function alternativas(p) { return Array.prototype.slice.call(p.querySelectorAll('.alternativa')); }
+  function letra(a) { var l = a.querySelector('.letra'); return l ? l.textContent.trim() : a.textContent.trim(); }
+
+  preguntas.forEach(function (p) {
+    var aviso = document.createElement('p');
+    aviso.className = 'visualmente-oculto';
+    aviso.setAttribute('aria-live', 'polite');
+    p.appendChild(aviso);
+    alternativas(p).forEach(function (a) {
+      a.addEventListener('click', function () { responder(p, a); });
+    });
+  });
+
+  function responder(p, elegida) {
+    if (p.classList.contains('respondida')) return;
+    var correcta = p.getAttribute('data-correcta'), valor = elegida.getAttribute('data-valor');
+    var buena = null;
+    p.classList.add('respondida');
+    alternativas(p).forEach(function (a) {
+      a.setAttribute('aria-disabled', 'true');
+      if (a.getAttribute('data-valor') === correcta) {
+        a.classList.add('correcta');
+        a.appendChild(etiqueta('buena', 'Correcta'));
+        buena = a;
+      }
+    });
+    elegida.classList.add('elegida');
+    elegida.setAttribute('aria-pressed', 'true');
+    if (valor !== correcta) elegida.appendChild(etiqueta('critica', 'Incorrecta'));
+    Array.prototype.slice.call(p.querySelectorAll('.retro')).forEach(function (r) {
+      var para = (r.getAttribute('data-para') || '').split(/\s+/).filter(Boolean);
+      r.classList.toggle('otra', para.length > 0 && para.indexOf(valor) < 0);
+    });
+    var aviso = p.querySelector('[aria-live]');
+    if (aviso) aviso.textContent = valor === correcta ? 'Correcta.' : 'Incorrecta. La correcta es ' + (buena ? letra(buena) : correcta) + '.';
+    puntaje();
+  }
+
+  function puntaje() {
+    var caja = document.querySelector('[data-puntaje]');
+    if (!caja) return;
+    var hechas = preguntas.filter(function (p) { return p.classList.contains('respondida'); });
+    var bien = hechas.filter(function (p) { var e = p.querySelector('.alternativa.elegida'); return e && e.classList.contains('correcta'); });
+    caja.textContent = bien.length + ' de ' + hechas.length + (hechas.length === 1 ? ' correcta' : ' correctas') + ' · ' + preguntas.length + ' preguntas';
+  }
+
+  var reiniciar = document.querySelector('[data-reiniciar]');
+  if (reiniciar) {
+    reiniciar.addEventListener('click', function () {
+      preguntas.forEach(function (p) {
+        p.classList.remove('respondida');
+        alternativas(p).forEach(function (a) {
+          a.classList.remove('correcta', 'elegida');
+          a.removeAttribute('aria-disabled');
+          a.removeAttribute('aria-pressed');
+          Array.prototype.slice.call(a.querySelectorAll('.etiqueta')).forEach(function (e) { e.remove(); });
+        });
+        Array.prototype.slice.call(p.querySelectorAll('.retro')).forEach(function (r) { r.classList.remove('otra'); });
+        var aviso = p.querySelector('[aria-live]');
+        if (aviso) aviso.textContent = '';
+      });
+      puntaje();
+    });
+  }
+  puntaje();
+})();
+</script>
+</body>
+</html>
