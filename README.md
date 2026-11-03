@@ -35,7 +35,7 @@ publica aquí; ya no hay copia "oficial" privada.
 
 - Un archivo `.html` por recurso, **autocontenido** (CSS y JS embebidos; sin dependencias externas salvo Google Fonts, con fallback del sistema).
 - Tipografía del curso: Playfair Display, IBM Plex Mono, Source Serif 4.
-- Al agregar un recurso: crear el `.html` en la carpeta de su unidad y añadir su tarjeta en `index.html`.
+- Al agregar un recurso o un deck: crear el `.html` en la carpeta de su unidad y añadir su tarjeta en `index.html`, **en el bloque de su sesión** (el índice va por sesión, en el orden en que se dictaron, desde el 2026-11-03), con su etiqueta «Presentación» o «Recurso». Después, el enlace a PAIDEIA.
 - La fuente de diseño pedagógico de cada recurso es el `.md` correspondiente en `gep201-curso/clases/unidad-X/`; ese `.md` enlaza a la URL publicada aquí.
 
 ## Relación con los otros repos de GEP201

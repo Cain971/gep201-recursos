@@ -75,6 +75,13 @@ footer{
   .bv-min12 { font-size: 12px !important; }
   .reset-btn { max-width: 100%; white-space: normal; }
 }
+
+/* Etiqueta del tipo de material (2026-11-03: índice por sesión) */
+.tipo{
+  display:block; font-family:'IBM Plex Mono',monospace; font-size:.62rem; letter-spacing:.16em;
+  color:var(--gold); text-transform:uppercase; margin-bottom:.35rem;
+}
+@media (max-width: 640px) { .tipo { font-size: 12px; } }
 </style>
 </head>
 <body>
@@ -82,39 +89,91 @@ footer{
 <div class="wrap">
   <div class="eyebrow">GEP201 · Gestión Financiera del Estado</div>
   <h1>Recursos de clase</h1>
-  <p class="sub">Materiales interactivos de apoyo para las sesiones del curso. Se van agregando conforme avanza el semestre.</p>
+  <p class="sub">Presentaciones y recursos de cada sesión, en el orden en que se dictaron. Se van agregando conforme avanza el semestre.</p>
 
-  <div class="unit-label">Unidad I — Introducción</div>
+  <div class="unit-label">Sesión 3 · 2 de setiembre · Triángulo estratégico</div>
   <a class="card" href="unidad-1/triangulo-estrategico.html">
-    <h2>Clase 3 · El triángulo estratégico de la política pública</h2>
+    <span class="tipo">Recurso</span>
+    <h2>El triángulo estratégico de la política pública</h2>
     <p>Marco de Moore, los tres vértices, casos aplicados y ejercicios de comprensión.</p>
   </a>
 
-  <div class="unit-label">Unidad II — Fundamentos</div>
+  <div class="unit-label">Sesión 4 · 9 de setiembre · Condición de interés</div>
   <a class="card" href="unidad-2/condicion-de-interes.html">
-    <h2>Clase 4 · La condición de interés</h2>
+    <span class="tipo">Recurso</span>
+    <h2>La condición de interés</h2>
     <p>Qué es según la Directiva del MEF, las tres secciones (definición, relevancia, magnitud), de dónde salen las fuentes y un autochequeo del borrador.</p>
   </a>
-  <div class="unit-label">Unidad III — Sistema de presupuesto</div>
+
+  <div class="unit-label">Sesión 5 · 16 de setiembre · Modelo explicativo</div>
   <a class="card" href="unidad-3/cadena-desde-la-solucion.html">
-    <h2>Clase 5 · Riesgos de construir la cadena causal desde la solución</h2>
+    <span class="tipo">Recurso</span>
+    <h2>Riesgos de construir la cadena causal desde la solución</h2>
     <p>El vicio de partir de una intervención ya decidida y armar la cadena de resultados hacia atrás. Caso anemia + caso extorsión y sicariato (normas oficiales 2025-2026).</p>
   </a>
   <a class="card" href="unidad-3/revision-de-evidencia-con-ia.html">
-    <h2>Clase 5 · Un asistente de evidencia, no un analista</h2>
+    <span class="tipo">Recurso</span>
+    <h2>Un asistente de evidencia, no un analista</h2>
     <p>Prompt copiable para revisar evidencia con IA sin volverla caja negra, más el método de bitácora (tu lectura primero, contraste, decisión) y un autochequeo.</p>
   </a>
+
+  <div class="unit-label">Sesión 6 · 23 de setiembre · Sistema de presupuesto y reglas fiscales</div>
+  <a class="card" href="unidad-3/deck-sistema-presupuesto-reglas-fiscales.html">
+    <span class="tipo">Presentación</span>
+    <h2>Sistema de presupuesto público y reglas fiscales</h2>
+    <p>La presentación de la sesión.</p>
+  </a>
   <a class="card" href="unidad-3/1990-y-las-reglas-fiscales.html">
-    <h2>Clase 6 · 1990 y las reglas fiscales</h2>
+    <span class="tipo">Recurso</span>
+    <h2>1990 y las reglas fiscales</h2>
     <p>El Fujishock producto por producto, y el argumento técnico completo (FMI) de por qué importan el déficit y la deuda — más el ejercicio del Consejo Fiscal.</p>
   </a>
   <a class="card" href="unidad-3/que-es-y-de-donde-viene-el-ppr.html">
-    <h2>Clase 6 · Qué es y de dónde viene el PPR</h2>
+    <span class="tipo">Recurso</span>
+    <h2>Qué es y de dónde viene el PPR</h2>
     <p>Los 7 puntos completos de la finalidad del PPR, y cómo el Perú lo adoptó desde 2008 — de 9 a 89 programas presupuestales.</p>
   </a>
 
-  </main>
-<footer>GEP201 · PUCP · Juan Pablo Silva Macher</footer>
+  <div class="unit-label">Sesión 7 · 30 de setiembre · Presupuesto por resultados</div>
+  <a class="card" href="unidad-3/deck-introduccion-ppr.html">
+    <span class="tipo">Presentación</span>
+    <h2>Presupuesto por resultados: qué es y cómo se aplica</h2>
+    <p>Motivación, modelos y mecanismos del presupuesto por resultados.</p>
+  </a>
+
+  <div class="unit-label">Sesión 8 · 7 de octubre · Programas presupuestales</div>
+  <a class="card" href="unidad-4/deck-programas-presupuestales.html">
+    <span class="tipo">Presentación</span>
+    <h2>Programas presupuestales</h2>
+    <p>Qué es un programa presupuestal y cómo se pasa del dato a la causa.</p>
+  </a>
+
+  <div class="unit-label">Sesión 9 · 21 de octubre · Modelo prescriptivo y teoría de cambio</div>
+  <a class="card" href="unidad-4/deck-prescriptivo-teoria-cambio.html">
+    <span class="tipo">Presentación</span>
+    <h2>De las causas a la intervención</h2>
+    <p>Modelo prescriptivo y teoría de cambio, con el caso de la seguridad vial.</p>
+  </a>
+
+  <div class="unit-label">Sesión 10 · 28 de octubre · El seguimiento como motor de la reforma</div>
+  <a class="card" href="unidad-4/deck-seguimiento-motor-reforma.html">
+    <span class="tipo">Presentación</span>
+    <h2>El seguimiento como motor de la reforma</h2>
+    <p>Punjab, el motor medir-decidir-actuar, por qué seguir no es evaluar, cuando el motor falla y el Semáforo Escuela.</p>
+  </a>
+  <a class="card" href="unidad-4/lectura-barber-punjab.html">
+    <span class="tipo">Recurso</span>
+    <h2>Barber con lupa</h2>
+    <p>Guía de lectura de Barber (2013) sobre la reforma educativa de Punjab.</p>
+  </a>
+  <a class="card" href="unidad-4/evaluacion-de-impacto.html">
+    <span class="tipo">Recurso</span>
+    <h2>Saber cuánto no es saber qué lo causó</h2>
+    <p>Qué es un contrafactual, por qué el «antes y después» engaña, los métodos de evaluación de impacto y una lista de control para tu trabajo.</p>
+  </a>
+
+  <footer>GEP201 · PUCP · Juan Pablo Silva Macher</footer>
 </div>
+</main>
 </body>
 </html>
