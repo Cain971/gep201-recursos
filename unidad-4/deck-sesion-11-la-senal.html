@@ -1152,6 +1152,9 @@ body.presenting .slide.active {
      base-visual/pendientes.md como candidata al núcleo) */
   body { margin: 0; padding: var(--space-5); background: var(--paper); color: var(--ink); font-family: var(--font-text); }
   @media (max-width: 720px) { body { padding: var(--space-3); } }
+  /* Preguntas a la sala más anchas (diap. 2, pedido de JP 2026-11-03): con la medida de 50ch, las preguntas 1 y 2
+     partían por una palabra. 66ch las deja en una línea; la 3 sigue en dos. */
+  .slide .preguntas-sala { --measure: 66ch; }
 </style>
 </head>
 <body>
@@ -1186,7 +1189,7 @@ body.presenting .slide.active {
     <div class="pad">
       <p class="kicker">Conversación <span class="sub">· 20 minutos</span></p>
       <h2 class="titulo">Con muy pocos recursos, este maestro saca mucho: ¿qué nos dice eso sobre la calidad del gasto?</h2>
-      <ol class="cuerpo">
+      <ol class="cuerpo preguntas-sala">
         <li><b>¿Qué hace que cada sol rinda más en esta escuela que en otra?</b></li>
         <li><b>¿Funcionaría aquí un programa diseñado igual para todo el país?</b></li>
         <li><b>¿Debe la calidad de la educación depender de la vocación de una sola persona?</b></li>
