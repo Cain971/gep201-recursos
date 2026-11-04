@@ -34,8 +34,9 @@ publica aquí; ya no hay copia "oficial" privada.
 ## Convención
 
 - Un archivo `.html` por recurso, **autocontenido** (CSS y JS embebidos; sin dependencias externas salvo Google Fonts, con fallback del sistema).
-- Tipografía del curso: Playfair Display, IBM Plex Mono, Source Serif 4.
-- Al agregar un recurso o un deck: crear el `.html` en la carpeta de su unidad y añadir su tarjeta en `index.html`, **en el bloque de su sesión** (el índice va por sesión, en el orden en que se dictaron, desde el 2026-11-03), con su etiqueta «Presentación» o «Recurso». Después, el enlace a PAIDEIA.
+- Tipografía: la identidad Grilla modular (Archivo, IBM Plex Mono) en la portada y en lo hecho con el núcleo de base-visual; los recursos de las sesiones 3 a 6 conservan la anterior (Playfair Display, IBM Plex Mono, Source Serif 4).
+- **`index.html` no se edita a mano:** se construye desde `gep201-curso/clases/portada-recursos.plantilla.html` con `ensamblar.py construir` de base-visual (desde el 2026-11-03).
+- Al agregar un recurso o un deck: crear el `.html` en la carpeta de su unidad y añadir su fila en esa plantilla, **en el bloque de su sesión** (el índice va por sesión, en el orden en que se dictaron), con su etiqueta «Presentación» o «Guía» (lo que ve el alumno; «recurso» queda como nombre interno). Después, el enlace a PAIDEIA.
 - La fuente de diseño pedagógico de cada recurso es el `.md` correspondiente en `gep201-curso/clases/unidad-X/`; ese `.md` enlaza a la URL publicada aquí.
 
 ## Relación con los otros repos de GEP201
